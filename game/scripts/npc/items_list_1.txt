@@ -6,14 +6,498 @@
 "XLSXContent"
 {
 	"item_kv_generator_test1" {
+		"_name" "item_kv_generator_test1"
 		"BaseClass" "item_lua"
 		"AbilityValues" {
 			"damage" "0.1 0.2 0.3 0.4"
 			"unknown_var_0" "1 1 2 3 4"
 			"unknown_var_1" "1000 2000 30000 40000"
 		}
+		"shopNpc" "none"
+		"ItemCost" "99"
 		"MaxLevel" "2"
 		"AbilityCooldown" "1 2 3 4"
 		"AbilityManaCost" "1 1 1 1"
+	}
+	"item_yuan_chu_yi_shi" {
+		"_name" "item_yuan_chu_yi_shi"
+		"BaseClass" "item_lua"
+		"AbilityValues" {
+		}
+		"shopNpc" "none"
+		"ItemCost" "99"
+		"ItemStackable" "99"
+		"Model" "particles/econ/events/fall_2022/player/fall_2022_emblem_effect_player_rock.vmdl"
+	}
+	"item_ruo_he_li_jin_gu_shi" {
+		"_name" "item_ruo_he_li_jin_gu_shi"
+		"BaseClass" "item_lua"
+		"AbilityValues" {
+		}
+		"shopNpc" "modules_npc_ji_shi_role"
+		"ItemCost" "100"
+		"ItemStackable" "99"
+		"Model" "models/items/tuskarr/sigil/boreal_sigil/boreal_sigil.vmdl"
+		"ModelScale" "1"
+		"AbilityTextureName" "owl_01"
+	}
+	"item_qiang_he_li_jin_gu_shi" {
+		"_name" "item_qiang_he_li_jin_gu_shi"
+		"BaseClass" "item_lua"
+		"AbilityValues" {
+		}
+		"shopNpc" "modules_npc_ji_shi_role"
+		"ItemCost" "101"
+		"ItemStackable" "99"
+		"Model" "models/items/tuskarr/sigil/boreal_sigil/boreal_sigil.vmdl"
+		"ModelScale" "1"
+		"AbilityTextureName" "owl_02"
+	}
+	"item_dian_ci_li_jin_gu_shi" {
+		"_name" "item_dian_ci_li_jin_gu_shi"
+		"BaseClass" "item_lua"
+		"AbilityValues" {
+		}
+		"shopNpc" "modules_npc_ji_shi_role"
+		"ItemCost" "102"
+		"ItemStackable" "99"
+		"Model" "models/items/tuskarr/sigil/boreal_sigil/boreal_sigil.vmdl"
+		"ModelScale" "1"
+		"AbilityTextureName" "owl_06"
+	}
+	"item_yin_li_sui_pian" {
+		"_name" "item_yin_li_sui_pian"
+		"BaseClass" "item_lua"
+		"AbilityValues" {
+		}
+		"shopNpc" "modules_npc_ji_shi_role"
+		"ItemCost" "103"
+		"ItemStackable" "99"
+		"Model" "models/items/tuskarr/sigil/boreal_sigil/boreal_sigil.vmdl"
+		"ModelScale" "1"
+		"AbilityTextureName" "owl_03"
+	}
+	"item_yuan_gu_wu_zhi_sui_pian" {
+		"_name" "item_yuan_gu_wu_zhi_sui_pian"
+		"BaseClass" "item_lua"
+		"AbilityValues" {
+		}
+		"shopNpc" "modules_npc_ji_shi_role"
+		"ItemCost" "104"
+		"ItemStackable" "99"
+		"Model" "models/props_gameplay/moon_shard/moon_shard_003.vmdl"
+		"ModelScale" "0.3000"
+		"AbilityTextureName" "owl_04"
+	}
+	"item_dian_kuang_zhi_yue_sui_pian" {
+		"_name" "item_dian_kuang_zhi_yue_sui_pian"
+		"BaseClass" "item_lua"
+		"AbilityValues" {
+		}
+		"shopNpc" "modules_npc_ji_shi_role"
+		"ItemCost" "105"
+		"ItemStackable" "99"
+		"Model" "models/props_gameplay/moon_shard/moon_shard_003.vmdl"
+		"ModelScale" "0.3000"
+		"AbilityTextureName" "owl_10"
+	}
+	"item_zhen_shi_bao_shi" {
+		"_name" "item_zhen_shi_bao_shi"
+		"BaseClass" "item_lua"
+		"AbilityValues" {
+		}
+		"shopNpc" "modules_npc_ji_shi_role"
+		"ItemCost" "106"
+		"ItemStackable" "99"
+		"Model" "models/props_gameplay/gem01.vmdl"
+		"ModelScale" "0.3000"
+		"AbilityTextureName" "owl_07"
+	}
+	"item_huan_qiang_fen_mo" {
+		"_name" "item_huan_qiang_fen_mo"
+		"BaseClass" "item_lua"
+		"AbilityValues" {
+		}
+		"shopNpc" "modules_npc_ji_shi_role"
+		"ItemCost" "107"
+		"ItemStackable" "99"
+		"Model" "models/props_structures/bad_ancient_sphere.vmdl"
+		"ModelScale" "0.3000"
+		"AbilityTextureName" "owl_08"
+	}
+	"item_guai_shou_he_xin" {
+		"_name" "item_guai_shou_he_xin"
+		"BaseClass" "item_lua"
+		"AbilityValues" {
+		}
+		"shopNpc" "modules_npc_ji_shi_role"
+		"ItemCost" "108"
+		"ItemStackable" "99"
+		"Model" "models/items/bane/bane_fall20_immortal_head/bane_fall20_immortal_brain_model.vmdl"
+		"ModelScale" "0.3000"
+		"AbilityTextureName" "owl_09"
+	}
+	"item_wei_luo_di_xi_ya_sheng_ming_zhi_shi" {
+		"_name" "item_wei_luo_di_xi_ya_sheng_ming_zhi_shi"
+		"BaseClass" "item_lua"
+		"AbilityValues" {
+		}
+		"shopNpc" "modules_npc_ji_shi_role"
+		"ItemCost" "109"
+		"ItemStackable" "99"
+		"Model" "models/props_gameplay/moon_shard/moon_shard_meteor.vmdl"
+		"ModelScale" "0.3000"
+		"AbilityTextureName" "owl_12"
+	}
+	"item_sai_li_meng_ni_de_yue_shi" {
+		"_name" "item_sai_li_meng_ni_de_yue_shi"
+		"BaseClass" "item_lua"
+		"AbilityValues" {
+		}
+		"shopNpc" "modules_npc_ji_shi_role"
+		"ItemCost" "110"
+		"ItemStackable" "99"
+		"Model" "models/props_gameplay/moon_shard/moon_shard_meteor.vmdl"
+		"ModelScale" "0.3000"
+		"AbilityTextureName" "owl_05"
+	}
+	"item_ni_ta_sha_ye_zhi_shi" {
+		"_name" "item_ni_ta_sha_ye_zhi_shi"
+		"BaseClass" "item_lua"
+		"AbilityValues" {
+		}
+		"shopNpc" "modules_npc_ji_shi_role"
+		"ItemCost" "111"
+		"ItemStackable" "99"
+		"Model" "models/props_gameplay/moon_shard/moon_shard_meteor.vmdl"
+		"ModelScale" "0.3000"
+		"AbilityTextureName" "owl_13"
+	}
+	"item_quan_neng_shen_de_zhu_fu" {
+		"_name" "item_quan_neng_shen_de_zhu_fu"
+		"BaseClass" "item_lua"
+		"AbilityValues" {
+		}
+		"shopNpc" "modules_npc_ji_shi_role"
+		"ItemCost" "112"
+		"ItemStackable" "99"
+		"Model" "models/props_gameplay/moon_shard/moon_shard_meteor.vmdl"
+		"ModelScale" "0.3000"
+		"AbilityTextureName" "owl_11"
+	}
+	"item_si_kui_ao_ke_de_nu_huo" {
+		"_name" "item_si_kui_ao_ke_de_nu_huo"
+		"BaseClass" "item_lua"
+		"AbilityValues" {
+		}
+		"shopNpc" "modules_npc_ji_shi_role"
+		"ItemCost" "113"
+		"ItemStackable" "99"
+		"Model" "models/props_gameplay/moon_shard/moon_shard_meteor.vmdl"
+		"ModelScale" "0.3000"
+		"AbilityTextureName" "owl_15"
+	}
+	"item_xu_kong_jing_hua" {
+		"_name" "item_xu_kong_jing_hua"
+		"BaseClass" "item_lua"
+		"AbilityValues" {
+		}
+		"shopNpc" "modules_npc_ji_shi_role"
+		"ItemCost" "114"
+		"ItemStackable" "99"
+		"Model" "models/items/faceless_void/faceless_void_arcana/faceless_void_arcana_chrono_sphere_fx.vmdl"
+		"ModelScale" "1"
+		"AbilityTextureName" "owl_18"
+	}
+	"item_long_zu_zhi_xue" {
+		"_name" "item_long_zu_zhi_xue"
+		"BaseClass" "item_lua"
+		"AbilityValues" {
+		}
+		"shopNpc" "modules_npc_ji_shi_role"
+		"ItemCost" "115"
+		"ItemStackable" "99"
+		"Model" "models/heroes/alchemist/alchemist_purple_bottle.vmdl"
+		"ModelScale" "2"
+		"AbilityTextureName" "owl_14"
+	}
+	"item_bing_yuan_su" {
+		"_name" "item_bing_yuan_su"
+		"BaseClass" "item_lua"
+		"AbilityValues" {
+		}
+		"shopNpc" "modules_npc_ji_shi_role"
+		"ItemCost" "117"
+		"ItemStackable" "99"
+		"Model" "models/items/windrunner/windrunner_arcana/wr_arc_legs_scrolling.vmdl"
+		"ModelScale" "0.5000"
+	}
+	"item_huo_yuan_su" {
+		"_name" "item_huo_yuan_su"
+		"BaseClass" "item_lua"
+		"AbilityValues" {
+		}
+		"shopNpc" "modules_npc_ji_shi_role"
+		"ItemCost" "118"
+		"ItemStackable" "99"
+		"Model" "models/heroes/snapfire/snapfire_magma_projectile.vmdl"
+		"ModelScale" "5"
+		"AbilityTextureName" "owl_19"
+	}
+	"item_lei_yuan_su" {
+		"_name" "item_lei_yuan_su"
+		"BaseClass" "item_lua"
+		"AbilityValues" {
+		}
+		"shopNpc" "modules_npc_ji_shi_role"
+		"ItemCost" "119"
+		"ItemStackable" "99"
+		"Model" "models/items/zeus/lightning_weapon/zuus_lightning_weapon_particle.vmdl"
+		"ModelScale" "0.8000"
+		"AbilityTextureName" "owl_17"
+	}
+	"item_an_yuan_su" {
+		"_name" "item_an_yuan_su"
+		"BaseClass" "item_lua"
+		"AbilityValues" {
+		}
+		"shopNpc" "modules_npc_ji_shi_role"
+		"ItemCost" "120"
+		"ItemStackable" "99"
+		"Model" "models/particle/sphere_alt.vmdl"
+		"ModelScale" "4"
+		"AbilityTextureName" "owl_13"
+	}
+	"item_bian_ti_mo_fang" {
+		"_name" "item_bian_ti_mo_fang"
+		"BaseClass" "item_lua"
+		"AbilityValues" {
+		}
+		"shopNpc" "modules_npc_ji_shi_role"
+		"ItemCost" "121"
+		"ItemStackable" "99"
+		"Model" "models/items/rubick/rubick_arcana/rubick_arcana_cube_inverted.vmdl"
+		"ModelScale" "0.2000"
+		"AbilityTextureName" "owl_27"
+	}
+	"item_tian_hui_sui_pian" {
+		"_name" "item_tian_hui_sui_pian"
+		"BaseClass" "item_lua"
+		"AbilityValues" {
+		}
+		"shopNpc" "modules_npc_ji_shi_role"
+		"ItemCost" "122"
+		"ItemStackable" "99"
+		"Model" "models/items/earthshaker/deep_magma/deep_magma_rock.vmdl"
+		"ModelScale" "4"
+		"AbilityTextureName" "owl_28"
+	}
+	"item_ye_yan_sui_pian" {
+		"_name" "item_ye_yan_sui_pian"
+		"BaseClass" "item_lua"
+		"AbilityValues" {
+		}
+		"shopNpc" "modules_npc_ji_shi_role"
+		"ItemCost" "123"
+		"ItemStackable" "99"
+		"Model" "models/props_rock/crystal_01.vmdl"
+		"ModelScale" "3"
+		"AbilityTextureName" "owl_29"
+	}
+	"item_chao_xi_zhi_li" {
+		"_name" "item_chao_xi_zhi_li"
+		"BaseClass" "item_lua"
+		"AbilityValues" {
+		}
+		"shopNpc" "modules_npc_ji_shi_role"
+		"ItemCost" "124"
+		"ItemStackable" "99"
+		"Model" "models/props_gameplay/rune_water.vmdl"
+		"ModelScale" "1"
+		"AbilityTextureName" "owl_23"
+	}
+	"item_mu" {
+		"_name" "item_mu"
+		"BaseClass" "item_lua"
+		"AbilityValues" {
+		}
+		"shopNpc" "modules_npc_tiejiang_role"
+		"ItemCost" "125"
+		"ItemStackable" "99"
+		"Model" "models/props_gameplay/branch.vmdl"
+		"ModelScale" "1"
+		"AbilityTextureName" "owl_30"
+	}
+	"item_tie" {
+		"_name" "item_tie"
+		"BaseClass" "item_lua"
+		"AbilityValues" {
+		}
+		"shopNpc" "modules_npc_tiejiang_role"
+		"ItemCost" "126"
+		"ItemStackable" "99"
+		"Model" "models/items/queenofpain/queenofpain_arcana/debut/models/qop_rock_lib/hellrock_04.vmdl"
+		"ModelScale" "1"
+		"AbilityTextureName" "owl_31"
+	}
+	"item_jin" {
+		"_name" "item_jin"
+		"BaseClass" "item_lua"
+		"AbilityValues" {
+		}
+		"shopNpc" "modules_npc_tiejiang_role"
+		"ItemCost" "127"
+		"ItemStackable" "99"
+		"Model" "models/props_gameplay/rune_goldxp.vmdl"
+		"ModelScale" "1"
+		"AbilityTextureName" "owl_32"
+	}
+	"item_yin" {
+		"_name" "item_yin"
+		"BaseClass" "item_lua"
+		"AbilityValues" {
+		}
+		"shopNpc" "modules_npc_tiejiang_role"
+		"ItemCost" "128"
+		"ItemStackable" "99"
+		"Model" "models/props_gameplay/rune_goldxp.vmdl"
+		"ModelScale" "1"
+	}
+	"item_lan_shui_jing" {
+		"_name" "item_lan_shui_jing"
+		"BaseClass" "item_lua"
+		"AbilityValues" {
+		}
+		"shopNpc" "modules_npc_zhen_bao_role"
+		"ItemCost" "129"
+		"ItemStackable" "99"
+		"Model" "models/items/meepo/diggers_divining_rod/diggers_divining_rod_gem_saphire.vmdl"
+		"ModelScale" "1.5000"
+		"AbilityTextureName" "owl_34"
+	}
+	"item_zi_shui_jing" {
+		"_name" "item_zi_shui_jing"
+		"BaseClass" "item_lua"
+		"AbilityValues" {
+		}
+		"shopNpc" "modules_npc_zhen_bao_role"
+		"ItemCost" "130"
+		"ItemStackable" "99"
+		"Model" "models/items/meepo/diggers_divining_rod/diggers_divining_rod_gem_pink.vmdl"
+		"ModelScale" "1.5000"
+		"AbilityTextureName" "owl_33"
+	}
+	"item_hong_shui_jing" {
+		"_name" "item_hong_shui_jing"
+		"BaseClass" "item_lua"
+		"AbilityValues" {
+		}
+		"shopNpc" "modules_npc_zhen_bao_role"
+		"ItemCost" "131"
+		"ItemStackable" "99"
+		"Model" "models/items/meepo/diggers_divining_rod/diggers_divining_rod_gem_ruby.vmdl"
+		"ModelScale" "1.5000"
+		"AbilityTextureName" "owl_19"
+	}
+	"item_huang_shui_jing" {
+		"_name" "item_huang_shui_jing"
+		"BaseClass" "item_lua"
+		"AbilityValues" {
+		}
+		"shopNpc" "modules_npc_zhen_bao_role"
+		"ItemCost" "132"
+		"ItemStackable" "99"
+		"Model" "models/items/meepo/diggers_divining_rod/diggers_divining_rod_gem_topaz.vmdl"
+		"ModelScale" "1.5000"
+		"AbilityTextureName" "owl_35"
+	}
+	"item_hei_yao_shi" {
+		"_name" "item_hei_yao_shi"
+		"BaseClass" "item_lua"
+		"AbilityValues" {
+		}
+		"shopNpc" "modules_npc_zhen_bao_role"
+		"ItemCost" "133"
+		"ItemStackable" "99"
+		"Model" "models/items/meepo/diggers_divining_rod/diggers_divining_rod_gem_saphire.vmdl"
+		"ModelScale" "1.5000"
+		"AbilityTextureName" "owl_20"
+	}
+	"item_hong_se_cao_yao" {
+		"_name" "item_hong_se_cao_yao"
+		"BaseClass" "item_lua"
+		"AbilityValues" {
+		}
+		"shopNpc" "modules_npc_ji_shi_role"
+		"ItemCost" "134"
+		"ItemStackable" "99"
+		"Model" "models/items/enchantress/enchantress_2021_immortal/enchantress_2021_immortal_flower_b_doublesided.vmdl"
+		"ModelScale" "1"
+		"AbilityTextureName" "owl_24"
+	}
+	"item_zi_se_cao_yao" {
+		"_name" "item_zi_se_cao_yao"
+		"BaseClass" "item_lua"
+		"AbilityValues" {
+		}
+		"shopNpc" "modules_npc_ji_shi_role"
+		"ItemCost" "135"
+		"ItemStackable" "99"
+		"Model" "models/items/enchantress/enchantress_2021_immortal/enchantress_2021_immortal_flower_b_doublesided.vmdl"
+		"ModelScale" "1"
+		"AbilityTextureName" "owl_21"
+	}
+	"item_lv_se_cao_yao" {
+		"_name" "item_lv_se_cao_yao"
+		"BaseClass" "item_lua"
+		"AbilityValues" {
+		}
+		"shopNpc" "modules_npc_ji_shi_role"
+		"ItemCost" "136"
+		"ItemStackable" "99"
+		"Model" "models/items/enchantress/enchantress_2021_immortal/enchantress_2021_immortal_flower_b_doublesided.vmdl"
+		"ModelScale" "1"
+		"AbilityTextureName" "owl_25"
+	}
+	"item_huang_se_cao_yao" {
+		"_name" "item_huang_se_cao_yao"
+		"BaseClass" "item_lua"
+		"AbilityValues" {
+		}
+		"shopNpc" "modules_npc_ji_shi_role"
+		"ItemCost" "137"
+		"ItemStackable" "99"
+		"Model" "models/items/enchantress/enchantress_2021_immortal/enchantress_2021_immortal_flower_b_doublesided.vmdl"
+		"ModelScale" "1"
+		"AbilityTextureName" "owl_26"
+	}
+	"item_ma_jia_jie_zhi" {
+		"_name" "item_ma_jia_jie_zhi"
+		"BaseClass" "item_lua"
+		"AbilityValues" {
+		}
+		"shopNpc" "none"
+		"ItemCost" "138"
+		"ItemStackable" "99"
+	}
+	"item_ma_jia_shou_zhuo" {
+		"_name" "item_ma_jia_shou_zhuo"
+		"BaseClass" "item_lua"
+		"AbilityValues" {
+		}
+		"shopNpc" "none"
+		"ItemCost" "139"
+		"ItemStackable" "99"
+		"AbilityTextureName" "item_ma_jia_shou_zhuo"
+	}
+	"item_ma_jia_xiang_lian" {
+		"_name" "item_ma_jia_xiang_lian"
+		"BaseClass" "item_lua"
+		"AbilityValues" {
+		}
+		"shopNpc" "none"
+		"ItemCost" "140"
+		"ItemStackable" "99"
+		"AbilityTextureName" "item_ma_jia_xiang_lian"
 	}
 }

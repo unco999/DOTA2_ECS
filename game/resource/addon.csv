@@ -1,2 +1,61 @@
 ﻿Tokens,English,SChinese
 addon_game_name,YOUR ADDON NAME,你的游戏名
+strength_up,strength growth,力量成长
+intelligence_up,intelligence growth,智力成长
+dexterity_up,dexterity growth,敏捷成长
+attack_damage_up,attack damage growth,攻击力成长
+magic_resistance_up,magic resistance growth,魔法抗性成长
+flame_attack_up,flame attack growth,火焰攻击成长
+ice_attack_up,ice attack growth,冰霜攻击成长
+lightning_attack_up,lightning attack growth,闪电攻击成长
+shadow_attack_up,shadow attack growth,暗影攻击成长
+fire_resistance_up,fire resistance growth,火焰抗性成长
+frost_resistance_up,frost resistance growth,冰霜抗性成长
+lightning_resistance_up,lightning resistance growth,闪电抗性成长
+storm_resistance_up,storm resistance growth,暗影抗性成长
+
+ni_ao_er_de_de_bi_lu,ni_ao_er_de_de_bi_lu,尼奥尔德的壁炉
+qing_xue_cheng,ni_ao_er_de_de_bi_lu,晴雪城
+zi_luo_lan_gao_yuan,ni_ao_er_de_de_bi_lu,紫罗兰高原
+zi_luo_lan_dang_an_guan,ni_ao_er_de_de_bi_lu,紫罗兰档案馆
+mo_er_bi_ke,ni_ao_er_de_de_bi_lu,莫尔比克
+kui_wa_si,ni_ao_er_de_de_bi_lu,奎瓦斯
+dui_gu_di,ni_ao_er_de_de_bi_lu,堆谷地
+shi_tang_cheng,ni_ao_er_de_de_bi_lu,石堂城
+qiu_shi_ling,ni_ao_er_de_de_bi_lu,囚尸岭
+gao_zhong_zhen,ni_ao_er_de_de_bi_lu,高钟镇
+nuo_lun_shan_mai,ni_ao_er_de_de_bi_lu,洛伦山脉
+bing_dong_wang_guo,ni_ao_er_de_de_bi_lu,冰冻王国
+ye_xing_zhi_lu,ni_ao_er_de_de_bi_lu,野性之路
+hong_ren_guan,ni_ao_er_de_de_bi_lu,弘仁观
+lei_ting_ping_yuan,ni_ao_er_de_de_bi_lu,雷霆平原
+lan_xin_bing_chuan,ni_ao_er_de_de_bi_lu,蓝心冰川
+shuang_dong_ping_yuan,ni_ao_er_de_de_bi_lu,霜冻平原
+kai_en_cheng,kai_en_cheng,凯恩城
+si_nuv_zhi_di,sdsd,肆虐之地
+sen_lin,asd,森林
+jian_yu,asd,监狱
+xian_ji_zhi_yuan,asd,献祭之渊
+dong_ku_yi_ji,asd,洞窟遗迹
+kuang_dong,asd,矿洞
+qing_xue_cheng_zhi_guan,asd,晴雪城之冠
+xue_ji_sen_lin,asd,雪霁森林
+shuang_hua_sen_lin,asd,霜华森林
+qing_xue_mi_jing_sen_lin,asd,晴雪秘境森林
+qing_xue_cheng_di_xue,asd,晴雪城地穴
+I32hao_di_dong,asd,32号地洞
+zhi_zhu_chao_xue,asd,蜘蛛巢穴
+dong_ku_yi_ji_yi_ceng,asd,洞窟一层
+dong_ku_yi_ji_er_ceng,asd,洞窟二层
+dong_ku_yi_ji_san_ceng,asd,洞窟三层
+dong_ku_yi_ji_shen_chu,asd,洞窟深处
+jian_yu_yi_ceng,asd,监狱一层
+jian_yu_er_ceng,asd,监狱二层
+jian_yu_san_ceng,asd,监狱三层
+jian_yu_shen_chu,asd,监狱四层
+xian_ji_zhi_yuan_yi_ceng,asd,献祭之渊一层
+xian_ji_zhi_yuan_er_ceng,献祭之渊二层
+xian_ji_zhi_yuan_san_ceng,献祭之渊三层
+xian_ji_zhi_yuan_si_ceng,献祭之渊四层
+xian_ji_zhi_yuan_wu_ceng,献祭之渊五层
+xian_ji_zhi_yuan_wu_xian,献祭之渊深层

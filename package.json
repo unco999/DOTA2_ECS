@@ -79,5 +79,10 @@
     },
     "engines": {
         "node": ">=16.0.0"
+    },
+    "dependencies": {
+        "@douyinfe/semi-animation-react": "^2.49.2",
+        "@serprex/react-motion": "^0.6.3",
+        "raf": "^3.4.1"
     }
 }

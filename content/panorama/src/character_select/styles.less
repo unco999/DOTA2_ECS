@@ -1,0 +1,51 @@
+.root {
+    width: 100%;
+    height: 100%;
+}
+
+
+@keyframes 'scan' {
+    0% {
+        background-position: 150% 0%; 
+        x:-1000px;
+        opacity: 0;
+    }
+    50%{
+        opacity: 1;
+    }
+    100% {
+        background-position: -50% 150%; 
+        x:880px;
+        opacity: 0;
+    }
+  }
+
+.create_role{
+    background-image:url("file://{images}/custom_game/ui/create_role.png")
+}
+
+
+
+.scan-effect {
+    animation-name: scan;
+    animation-duration: 0.7s;
+    animation-iteration-count: 1;
+    background-size: 200% 200%;
+    animation-fill-mode:forwards;
+    wash-color:rgb(235, 221, 141);
+}
+
+@keyframes my_test {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+
+Slider{
+    max-width: 100px;
+    max-height: 15px;
+}

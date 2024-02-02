@@ -18,6 +18,7 @@
     },
     "include": ["src"],
     "tstl": {
+        
         "luaTarget": "JIT",
         "sourceMapTraceback": true,
         "luaPlugins": [

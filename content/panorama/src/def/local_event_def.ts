@@ -10,4 +10,45 @@ export interface LocalEvent {
         key: string;
         content: any;
     };
+
+    LargePopupBox:{
+        tag_name:string;
+        player_id:PlayerID
+    }
+
+    C:{
+        entity:number,
+        className:string;
+        key:string;
+        data:any;
+    }
+
+    OkPanel:{
+        title:string;
+        type:string;
+        uuid:string;
+        data:any;
+    }
+
+    OkNumberInputPanel:{
+        title:string;
+        type:string;
+        uuid:string;
+        data:any;
+    }
+
+    create_role:{}
+
+    OpenCreateName:{}
+    OpenCreateMap:{}
+    OpenCreateHero:{}
+
+    create_name:string
+    create_map:string
+    create_hero:string
+
+    next_shop:string
+    back_shop:string
+
+    in_shop:{}
 }

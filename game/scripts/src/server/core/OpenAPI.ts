@@ -4,7 +4,7 @@ export type Headers = Record<string, string>;
 declare const ONLINE_TEST_MODE: boolean;
 
 const ServerAddress: string = IsInToolsMode()
-    ? `http://` // 本地测试（工具模式的服务器地址）
+    ? `https://ap-southeast-1.aws.data.mongodb-api.com/app/application-0-dxtin/endpoint` // 本地测试（工具模式的服务器地址）
     : ONLINE_TEST_MODE
     ? `http://` // 在线测试（在线测试服的地址）
     : 'http://'; // 正式服的服务器地址
@@ -34,8 +34,8 @@ export type OpenAPIConfig = {
 };
 
 export const OpenAPI: OpenAPIConfig = {
-    NETWORK_ACTIVITY_TIMEOUT: 10000,
-    ABSOLUTE_TIMEOUT: 10000,
+    NETWORK_ACTIVITY_TIMEOUT: 3000,
+    ABSOLUTE_TIMEOUT: 3000,
     BASE: ServerAddress,
     VERSION: '1.0.0',
     WITH_CREDENTIALS: false,
@@ -43,7 +43,11 @@ export const OpenAPI: OpenAPIConfig = {
     TOKEN: undefined,
     USERNAME: undefined,
     PASSWORD: undefined,
-    HEADERS: undefined,
+    HEADERS: {
+        'Content-Type': 'application/json',
+        "apiKey":"HIZH7rzmt2JBpVNIqY9jyJ87t7yytJT1UWxcWM4znErbAGXjtRlDoddiqamvASYz",
+        "Accept":"application/json"
+    },
     ENCODE_PATH: undefined,
     AUTHKEY: ServerAuthKey,
 };

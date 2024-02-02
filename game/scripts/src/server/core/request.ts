@@ -83,11 +83,11 @@ const getHeaders = (config: OpenAPIConfig, options: ApiRequestOptions): Record<s
 const getRequestBody = (options: ApiRequestOptions): any => {
     if (options.body) {
         if (options.mediaType?.includes('/json')) {
-            return json.encode(options.body);
+            return JSON.encode(options.body);
         } else if (isString(options.body)) {
             return options.body;
         } else {
-            return json.encode(options.body);
+            return JSON.encode(options.body);
         }
     }
     return undefined;
@@ -164,7 +164,7 @@ export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions): P
             const url = getUrl(config, options);
             const body = getRequestBody(options);
             const headers = getHeaders(config, options);
-
+            print(body)
             const should_sign = !NoSignatureURLs.includes(options.url);
             const response = await sendRequest(config, options, url, body, headers, should_sign, config.AUTHKEY);
 
@@ -172,9 +172,11 @@ export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions): P
 
             // 如果body包含error code，那么throw之
             if (response.Body) {
+                print(response.Body)
                 try {
                     let data = JSON.decode(response.Body);
                     if (data && data.state == `ERROR`) {
+                        print("[http err]",response.Body)
                         // reject(`${data.errorCode ?? `UNKNOWN ERROR CODE`} : ${data.errorMessage ?? 'No Message'}`);
                         reject({ errorCode: data.errorCode ?? `UNKNOWN ERROR CODE`, errorMessage: data.errorMessage ?? 'No Message' });
                     } else {

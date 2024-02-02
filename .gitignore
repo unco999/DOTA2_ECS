@@ -40,3 +40,8 @@ content/panorama/src/shared
 
 #ignore local test scripts
 scripts/.test
+*.vmap
+*.png
+*.vmat
+*.fbx
+*.vmdl

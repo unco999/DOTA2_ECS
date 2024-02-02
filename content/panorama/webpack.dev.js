@@ -88,6 +88,8 @@ module.exports = {
         }),
         new PanoramaManifestPlugin({
             entries: [
+                { import: './debug/layout.xml', type: 'Hud' },
+
                 // js entires will be loaded in the scripts tag in the manifest
                 { import: './utils/x-nettable-dispatcher.ts', filename: 'x-nettable-dispatcher.js' },
 
@@ -100,7 +102,13 @@ module.exports = {
                 { import: './end_screen/layout.xml', type: 'EndScreen', filename: 'end_screen.xml' },
 
                 // if filename is not set, it will use the name of the entry
+                { import: './dungeon/layout.xml', type: 'Hud' },
+                { import: './system/layout.xml', type: 'Hud' },
+                { import: './character_select/layout.xml', type: 'Hud' },
+                { import: './big_world/layout.xml', type: 'Hud' },
+                { import: './npc/layout.xml', type: 'Hud' },
                 { import: './hud/layout.xml', type: 'Hud' },
+
             ],
         }),
         // use ignore plugin to ignore less files changes

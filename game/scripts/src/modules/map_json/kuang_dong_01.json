@@ -1,0 +1,3760 @@
+{
+    "tileset1": [
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/3dtileset/snow_city_road/tileset_snow_1.vmdl",
+            "name": "tileset1",
+            "origin": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/3dtileset/snow_city_road/tileset_snow_1.vmdl",
+            "name": "tileset1",
+            "origin": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 1
+        }
+    ],
+    "tileset10": [
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/3dtileset/snow_city_road/tileset_snow_10.vmdl",
+            "name": "tileset10",
+            "origin": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/3dtileset/snow_city_road/tileset_snow_10.vmdl",
+            "name": "tileset10",
+            "origin": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 1
+        }
+    ],
+    "tileset11": [
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/3dtileset/snow_city_road/tileset_snow_11.vmdl",
+            "name": "tileset11",
+            "origin": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_rocks_nsew_01f.vmdl",
+            "name": "tileset11",
+            "origin": {
+                "x": 275.84716796875,
+                "y": -391.48291015625,
+                "z": 0.2421875
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_nature/mushroom_wild_00.vmdl",
+            "name": "tileset11",
+            "origin": {
+                "x": 279.02783203125,
+                "y": -447.52465820313,
+                "z": 0.091064453125
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_nature/mushroom_wild_01.vmdl",
+            "name": "tileset11",
+            "origin": {
+                "x": -306.52490234375,
+                "y": -177.55529785156,
+                "z": 0.175048828125
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_nature/mushroom_wild_01.vmdl",
+            "name": "tileset11",
+            "origin": {
+                "x": 407.16943359375,
+                "y": -154.32666015625,
+                "z": 0.02294921875
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_nature/mushroom_wild_00.vmdl",
+            "name": "tileset11",
+            "origin": {
+                "x": -344.912109375,
+                "y": -37.74365234375,
+                "z": 0.108154296875
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/3dtileset/snow_city_road/tileset_snow_11.vmdl",
+            "name": "tileset11",
+            "origin": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_rocks_nsew_01f.vmdl",
+            "name": "tileset11",
+            "origin": {
+                "x": 275.84716796875,
+                "y": -391.48291015625,
+                "z": 0.2421875
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_nature/mushroom_wild_00.vmdl",
+            "name": "tileset11",
+            "origin": {
+                "x": 279.02783203125,
+                "y": -447.52465820313,
+                "z": 0.091064453125
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_nature/mushroom_wild_01.vmdl",
+            "name": "tileset11",
+            "origin": {
+                "x": -306.52490234375,
+                "y": -177.55529785156,
+                "z": 0.175048828125
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_nature/mushroom_wild_01.vmdl",
+            "name": "tileset11",
+            "origin": {
+                "x": 407.16943359375,
+                "y": -154.32666015625,
+                "z": 0.02294921875
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_nature/mushroom_wild_00.vmdl",
+            "name": "tileset11",
+            "origin": {
+                "x": -344.912109375,
+                "y": -37.74365234375,
+                "z": 0.108154296875
+            },
+            "scale": 1
+        }
+    ],
+    "tileset12": [
+        {
+            "angle": {
+                "x": 0,
+                "y": 53.193294525146,
+                "z": 0
+            },
+            "model": "models/props_gameplay/neutral_stash_rocks.vmdl",
+            "name": "tileset12",
+            "origin": {
+                "x": 48.412841796875,
+                "y": 317.41845703125,
+                "z": -0.00360107421875
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/3dtileset/snow_city_road/tileset_snow_12.vmdl",
+            "name": "tileset12",
+            "origin": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 270.67822265625,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset12",
+            "origin": {
+                "x": 9.7203369140625,
+                "y": -370.61633300781,
+                "z": 0.0240478515625
+            },
+            "scale": 0.78479999303818
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 270.15759277344,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset12",
+            "origin": {
+                "x": 13.769287109375,
+                "y": -165.49645996094,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 182.3744354248,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks_nsw_01a.vmdl",
+            "name": "tileset12",
+            "origin": {
+                "x": 8.162109375,
+                "y": 18.765869140625,
+                "z": -1.7745666503906
+            },
+            "scale": 0.71778398752213
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset12",
+            "origin": {
+                "x": -329.29077148438,
+                "y": 20.609375,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset12",
+            "origin": {
+                "x": -174.98132324219,
+                "y": 20.023315429688,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset12",
+            "origin": {
+                "x": -453.39624023438,
+                "y": 20.609375,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_rocks_nsew_01f.vmdl",
+            "name": "tileset12",
+            "origin": {
+                "x": 430.78833007813,
+                "y": -216.91357421875,
+                "z": 0.114501953125
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/buffer_stop002.vmdl",
+            "name": "tileset12",
+            "origin": {
+                "x": 338.96606445313,
+                "y": 86.554077148438,
+                "z": 0.1241455078125
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/buffer_stop002.vmdl",
+            "name": "tileset12",
+            "origin": {
+                "x": -258.63098144531,
+                "y": 343.71508789063,
+                "z": -0.1395263671875
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 53.193294525146,
+                "z": 0
+            },
+            "model": "models/props_gameplay/neutral_stash_rocks.vmdl",
+            "name": "tileset12",
+            "origin": {
+                "x": 48.412841796875,
+                "y": 317.41845703125,
+                "z": -0.00360107421875
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_nature/mushroom_wild_01.vmdl",
+            "name": "tileset12",
+            "origin": {
+                "x": 307.57958984375,
+                "y": -380.2177734375,
+                "z": 0.041748046875
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "maps/cavern_assets/models/mushrooms/mushrooms_cavern_small_03.vmdl",
+            "name": "tileset12",
+            "origin": {
+                "x": -428.50537109375,
+                "y": 287.49645996094,
+                "z": -0.0166015625
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_rocks_nsew_01f.vmdl",
+            "name": "tileset12",
+            "origin": {
+                "x": 430.78833007813,
+                "y": -216.91357421875,
+                "z": 0.114501953125
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/3dtileset/snow_city_road/tileset_snow_12.vmdl",
+            "name": "tileset12",
+            "origin": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 270.67822265625,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset12",
+            "origin": {
+                "x": 9.7203369140625,
+                "y": -370.61633300781,
+                "z": 0.0240478515625
+            },
+            "scale": 0.78479999303818
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 270.15759277344,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset12",
+            "origin": {
+                "x": 13.769287109375,
+                "y": -165.49645996094,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 182.3744354248,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks_nsw_01a.vmdl",
+            "name": "tileset12",
+            "origin": {
+                "x": 8.162109375,
+                "y": 18.765869140625,
+                "z": -1.7745666503906
+            },
+            "scale": 0.71778398752213
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset12",
+            "origin": {
+                "x": -329.29077148438,
+                "y": 20.609375,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset12",
+            "origin": {
+                "x": -174.98132324219,
+                "y": 20.023315429688,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset12",
+            "origin": {
+                "x": -453.39624023438,
+                "y": 20.609375,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_rocks_nsew_01f.vmdl",
+            "name": "tileset12",
+            "origin": {
+                "x": 430.78833007813,
+                "y": -216.91357421875,
+                "z": 0.114501953125
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/buffer_stop002.vmdl",
+            "name": "tileset12",
+            "origin": {
+                "x": 338.96606445313,
+                "y": 86.554077148438,
+                "z": 0.1241455078125
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/buffer_stop002.vmdl",
+            "name": "tileset12",
+            "origin": {
+                "x": -258.63098144531,
+                "y": 343.71508789063,
+                "z": -0.1395263671875
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 53.193294525146,
+                "z": 0
+            },
+            "model": "models/props_gameplay/neutral_stash_rocks.vmdl",
+            "name": "tileset12",
+            "origin": {
+                "x": 48.412841796875,
+                "y": 317.41845703125,
+                "z": -0.00360107421875
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_nature/mushroom_wild_01.vmdl",
+            "name": "tileset12",
+            "origin": {
+                "x": 307.57958984375,
+                "y": -380.2177734375,
+                "z": 0.041748046875
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_nature/mushroom_wild_01.vmdl",
+            "name": "tileset12",
+            "origin": {
+                "x": -439.17102050781,
+                "y": -333.87170410156,
+                "z": -0.01416015625
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "maps/cavern_assets/models/mushrooms/mushrooms_cavern_small_03.vmdl",
+            "name": "tileset12",
+            "origin": {
+                "x": -428.50537109375,
+                "y": 287.49645996094,
+                "z": -0.0166015625
+            },
+            "scale": 1
+        }
+    ],
+    "tileset13": [
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/3dtileset/snow_city_road/tileset_snow_13.vmdl",
+            "name": "tileset13",
+            "origin": {
+                "x": -43.752990722656,
+                "y": 1.2608642578125,
+                "z": -34.298828125
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 2.7214739322662,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset13",
+            "origin": {
+                "x": 363.87225341797,
+                "y": -6.789306640625,
+                "z": -34.274780273438
+            },
+            "scale": 0.78479999303818
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 2.2007958889008,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset13",
+            "origin": {
+                "x": 158.73840332031,
+                "y": -10.05615234375,
+                "z": -34.274780273438
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 274.41766357422,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks_nsw_01a.vmdl",
+            "name": "tileset13",
+            "origin": {
+                "x": -25.206939697266,
+                "y": -22.229431152344,
+                "z": -36.073394775391
+            },
+            "scale": 0.71778398752213
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 92.043235778809,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset13",
+            "origin": {
+                "x": -15.017761230469,
+                "y": -359.53338623047,
+                "z": -34.274780273438
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 92.043235778809,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset13",
+            "origin": {
+                "x": -19.933746337891,
+                "y": -205.30120849609,
+                "z": -34.274780273438
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 92.043235778809,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset13",
+            "origin": {
+                "x": -10.592987060547,
+                "y": -418.47741699219,
+                "z": -34.274780273438
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "maps/cavern_assets/models/mushrooms/mushrooms_cavern_small_03.vmdl",
+            "name": "tileset13",
+            "origin": {
+                "x": -380.83551025391,
+                "y": -367.30773925781,
+                "z": -34.391357421875
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "maps/cavern_assets/models/mushrooms/mushrooms_cavern_small_02.vmdl",
+            "name": "tileset13",
+            "origin": {
+                "x": -463.47808837891,
+                "y": -16.532470703125,
+                "z": -34.3125
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/3dtileset/snow_city_road/tileset_snow_13.vmdl",
+            "name": "tileset13",
+            "origin": {
+                "x": -43.752990722656,
+                "y": 1.2608642578125,
+                "z": -34.298828125
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 2.7214739322662,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset13",
+            "origin": {
+                "x": 363.87225341797,
+                "y": -6.789306640625,
+                "z": -34.274780273438
+            },
+            "scale": 0.78479999303818
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 2.2007958889008,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset13",
+            "origin": {
+                "x": 158.73840332031,
+                "y": -10.05615234375,
+                "z": -34.274780273438
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 274.41766357422,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks_nsw_01a.vmdl",
+            "name": "tileset13",
+            "origin": {
+                "x": -25.206939697266,
+                "y": -22.229431152344,
+                "z": -36.073394775391
+            },
+            "scale": 0.71778398752213
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 92.043235778809,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset13",
+            "origin": {
+                "x": -15.017761230469,
+                "y": -359.53338623047,
+                "z": -34.274780273438
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 92.043235778809,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset13",
+            "origin": {
+                "x": -19.933746337891,
+                "y": -205.30120849609,
+                "z": -34.274780273438
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 92.043235778809,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset13",
+            "origin": {
+                "x": -10.592987060547,
+                "y": -418.47741699219,
+                "z": -34.274780273438
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "maps/cavern_assets/models/mushrooms/mushrooms_cavern_small_03.vmdl",
+            "name": "tileset13",
+            "origin": {
+                "x": -380.83551025391,
+                "y": -367.30773925781,
+                "z": -34.391357421875
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "maps/cavern_assets/models/mushrooms/mushrooms_cavern_small_02.vmdl",
+            "name": "tileset13",
+            "origin": {
+                "x": -463.47808837891,
+                "y": -16.532470703125,
+                "z": -34.3125
+            },
+            "scale": 1
+        }
+    ],
+    "tileset14": [
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/3dtileset/snow_city_road/tileset_snow_14.vmdl",
+            "name": "tileset14",
+            "origin": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_rocks_nsew_01f.vmdl",
+            "name": "tileset14",
+            "origin": {
+                "x": -461.23828125,
+                "y": -354.27966308594,
+                "z": 0.0621337890625
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/3dtileset/snow_city_road/tileset_snow_14.vmdl",
+            "name": "tileset14",
+            "origin": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 270.67822265625,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset14",
+            "origin": {
+                "x": 54.873291015625,
+                "y": -386.67517089844,
+                "z": 0.0240478515625
+            },
+            "scale": 0.78479999303818
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 270.15759277344,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset14",
+            "origin": {
+                "x": 58.922302246094,
+                "y": -181.55529785156,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 182.3744354248,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks_nsw_01a.vmdl",
+            "name": "tileset14",
+            "origin": {
+                "x": 53.315063476563,
+                "y": 2.70703125,
+                "z": -1.7745666503906
+            },
+            "scale": 0.71778398752213
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 181.60852050781,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset14",
+            "origin": {
+                "x": 235.72052001953,
+                "y": 10.992431640625,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 181.60852050781,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset14",
+            "origin": {
+                "x": 419.53344726563,
+                "y": 17.671630859375,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset14",
+            "origin": {
+                "x": -284.13781738281,
+                "y": 4.550537109375,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset14",
+            "origin": {
+                "x": -129.82836914063,
+                "y": 3.9644775390625,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset14",
+            "origin": {
+                "x": -408.24334716797,
+                "y": 4.550537109375,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_rocks_nsew_01f.vmdl",
+            "name": "tileset14",
+            "origin": {
+                "x": -461.23828125,
+                "y": -354.27966308594,
+                "z": 0.0621337890625
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_rocks_nsew_01f.vmdl",
+            "name": "tileset14",
+            "origin": {
+                "x": 389.82983398438,
+                "y": -332.40356445313,
+                "z": -0.08740234375
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mine_tool_plate001.vmdl",
+            "name": "tileset14",
+            "origin": {
+                "x": -256.09948730469,
+                "y": -309.85400390625,
+                "z": -0.094482421875
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/buffer_stop002.vmdl",
+            "name": "tileset14",
+            "origin": {
+                "x": -191.78475952148,
+                "y": 159.14001464844,
+                "z": 0.073974609375
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mine_cart002.vmdl",
+            "name": "tileset14",
+            "origin": {
+                "x": -1.079833984375,
+                "y": 10.495239257813,
+                "z": 0.079833984375
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_rocks_nsew_01f.vmdl",
+            "name": "tileset14",
+            "origin": {
+                "x": 389.82983398438,
+                "y": -332.40356445313,
+                "z": -0.08740234375
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/3dtileset/snow_city_road/tileset_snow_14.vmdl",
+            "name": "tileset14",
+            "origin": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 270.67822265625,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset14",
+            "origin": {
+                "x": 54.873291015625,
+                "y": -386.67517089844,
+                "z": 0.0240478515625
+            },
+            "scale": 0.78479999303818
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 270.15759277344,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset14",
+            "origin": {
+                "x": 58.922302246094,
+                "y": -181.55529785156,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 182.3744354248,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks_nsw_01a.vmdl",
+            "name": "tileset14",
+            "origin": {
+                "x": 53.315063476563,
+                "y": 2.70703125,
+                "z": -1.7745666503906
+            },
+            "scale": 0.71778398752213
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 181.60852050781,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset14",
+            "origin": {
+                "x": 235.72052001953,
+                "y": 10.992431640625,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 181.60852050781,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset14",
+            "origin": {
+                "x": 419.53344726563,
+                "y": 17.671630859375,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset14",
+            "origin": {
+                "x": -284.13781738281,
+                "y": 4.550537109375,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset14",
+            "origin": {
+                "x": -129.82836914063,
+                "y": 3.9644775390625,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset14",
+            "origin": {
+                "x": -408.24334716797,
+                "y": 4.550537109375,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_rocks_nsew_01f.vmdl",
+            "name": "tileset14",
+            "origin": {
+                "x": -461.23828125,
+                "y": -354.27966308594,
+                "z": 0.0621337890625
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_rocks_nsew_01f.vmdl",
+            "name": "tileset14",
+            "origin": {
+                "x": 389.82983398438,
+                "y": -332.40356445313,
+                "z": -0.08740234375
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mine_tool_plate001.vmdl",
+            "name": "tileset14",
+            "origin": {
+                "x": -256.09948730469,
+                "y": -309.85400390625,
+                "z": -0.094482421875
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/buffer_stop002.vmdl",
+            "name": "tileset14",
+            "origin": {
+                "x": -191.78475952148,
+                "y": 159.14001464844,
+                "z": 0.073974609375
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mine_cart002.vmdl",
+            "name": "tileset14",
+            "origin": {
+                "x": -1.079833984375,
+                "y": 10.495239257813,
+                "z": 0.079833984375
+            },
+            "scale": 1
+        }
+    ],
+    "tileset15": [
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/3dtileset/snow_city_road/tileset_snow_15.vmdl",
+            "name": "tileset15",
+            "origin": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset15",
+            "origin": {
+                "x": -378.67114257813,
+                "y": 20.609375,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset15",
+            "origin": {
+                "x": -224.36169433594,
+                "y": 20.023315429688,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset15",
+            "origin": {
+                "x": -59.4931640625,
+                "y": 20.609375,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset15",
+            "origin": {
+                "x": 94.816284179688,
+                "y": 20.023315429688,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset15",
+            "origin": {
+                "x": 233.81481933594,
+                "y": 20.609375,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset15",
+            "origin": {
+                "x": 388.12426757813,
+                "y": 20.023315429688,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_rocks_nsew_01f.vmdl",
+            "name": "tileset15",
+            "origin": {
+                "x": -101.84338378906,
+                "y": -311.00134277344,
+                "z": -0.031005859375
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_rocks_nsew_01f.vmdl",
+            "name": "tileset15",
+            "origin": {
+                "x": 310.49609375,
+                "y": -295.98156738281,
+                "z": -0.1044921875
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mine_cart002.vmdl",
+            "name": "tileset15",
+            "origin": {
+                "x": 73.433471679688,
+                "y": 36.648559570313,
+                "z": -0.18701171875
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/3dtileset/snow_city_road/tileset_snow_15.vmdl",
+            "name": "tileset15",
+            "origin": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset15",
+            "origin": {
+                "x": -378.67114257813,
+                "y": 20.609375,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset15",
+            "origin": {
+                "x": -224.36169433594,
+                "y": 20.023315429688,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset15",
+            "origin": {
+                "x": -59.4931640625,
+                "y": 20.609375,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset15",
+            "origin": {
+                "x": 94.816284179688,
+                "y": 20.023315429688,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset15",
+            "origin": {
+                "x": 233.81481933594,
+                "y": 20.609375,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset15",
+            "origin": {
+                "x": 388.12426757813,
+                "y": 20.023315429688,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_rocks_nsew_01f.vmdl",
+            "name": "tileset15",
+            "origin": {
+                "x": -101.84338378906,
+                "y": -311.00134277344,
+                "z": -0.031005859375
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_rocks_nsew_01f.vmdl",
+            "name": "tileset15",
+            "origin": {
+                "x": 310.49609375,
+                "y": -295.98156738281,
+                "z": -0.1044921875
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mine_cart002.vmdl",
+            "name": "tileset15",
+            "origin": {
+                "x": 73.433471679688,
+                "y": 36.648559570313,
+                "z": -0.18701171875
+            },
+            "scale": 1
+        }
+    ],
+    "tileset16": [
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/3dtileset/snow_city_road/tileset_snow_16.vmdl",
+            "name": "tileset16",
+            "origin": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 270.56332397461,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset16",
+            "origin": {
+                "x": -2.881591796875,
+                "y": -255.47314453125,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 270.56332397461,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset16",
+            "origin": {
+                "x": -1.95068359375,
+                "y": -409.78125,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 270.56332397461,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset16",
+            "origin": {
+                "x": -4.1015625,
+                "y": -131.37377929688,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 270.56332397461,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset16",
+            "origin": {
+                "x": -2.881591796875,
+                "y": 253.80114746094,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 270.56332397461,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset16",
+            "origin": {
+                "x": -1.95068359375,
+                "y": 99.493041992188,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 270.56332397461,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset16",
+            "origin": {
+                "x": -4.1015625,
+                "y": 377.90051269531,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_rocks_nsew_01f.vmdl",
+            "name": "tileset16",
+            "origin": {
+                "x": -346.34838867188,
+                "y": 23.122741699219,
+                "z": 0.0458984375
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_nature/mushroom_wild_01.vmdl",
+            "name": "tileset16",
+            "origin": {
+                "x": 359.43969726563,
+                "y": 248.49102783203,
+                "z": 0.02197265625
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/3dtileset/snow_city_road/tileset_snow_16.vmdl",
+            "name": "tileset16",
+            "origin": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 270.56332397461,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset16",
+            "origin": {
+                "x": -2.881591796875,
+                "y": -255.47314453125,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 270.56332397461,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset16",
+            "origin": {
+                "x": -1.95068359375,
+                "y": -409.78125,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 270.56332397461,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset16",
+            "origin": {
+                "x": -4.1015625,
+                "y": -131.37377929688,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 270.56332397461,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset16",
+            "origin": {
+                "x": -2.881591796875,
+                "y": 253.80114746094,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 270.56332397461,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset16",
+            "origin": {
+                "x": -1.95068359375,
+                "y": 99.493041992188,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 270.56332397461,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset16",
+            "origin": {
+                "x": -4.1015625,
+                "y": 377.90051269531,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_rocks_nsew_01f.vmdl",
+            "name": "tileset16",
+            "origin": {
+                "x": -346.34838867188,
+                "y": 23.122741699219,
+                "z": 0.0458984375
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_nature/mushroom_wild_01.vmdl",
+            "name": "tileset16",
+            "origin": {
+                "x": 359.43969726563,
+                "y": 248.49102783203,
+                "z": 0.02197265625
+            },
+            "scale": 1
+        }
+    ],
+    "tileset17": [
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/3dtileset/snow_city_road/tileset_snow_17.vmdl",
+            "name": "tileset17",
+            "origin": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 270.67822265625,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset17",
+            "origin": {
+                "x": 9.7203369140625,
+                "y": -396.26803588867,
+                "z": 0.0240478515625
+            },
+            "scale": 0.78479999303818
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 270.15759277344,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset17",
+            "origin": {
+                "x": 13.769287109375,
+                "y": -191.14819335938,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 182.3744354248,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks_nsw_01a.vmdl",
+            "name": "tileset17",
+            "origin": {
+                "x": 8.162109375,
+                "y": -6.8858032226563,
+                "z": -1.7745666503906
+            },
+            "scale": 0.71778398752213
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset17",
+            "origin": {
+                "x": -329.29077148438,
+                "y": -5.0423278808594,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset17",
+            "origin": {
+                "x": -174.98132324219,
+                "y": -5.6283950805664,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset17",
+            "origin": {
+                "x": -453.39624023438,
+                "y": -5.0423278808594,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mine_tool_bucket001.vmdl",
+            "name": "tileset17",
+            "origin": {
+                "x": 414.83325195313,
+                "y": -175.10266113281,
+                "z": -0.028076171875
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mine_tool_pick001.vmdl",
+            "name": "tileset17",
+            "origin": {
+                "x": 228.33032226563,
+                "y": 297.14660644531,
+                "z": 0.00341796875
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_rocks_ew_01f.vmdl",
+            "name": "tileset17",
+            "origin": {
+                "x": -306.67944335938,
+                "y": -252.90216064453,
+                "z": -0.036865234375
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_rocks_ew_01f.vmdl",
+            "name": "tileset17",
+            "origin": {
+                "x": 337.67272949219,
+                "y": 133.39324951172,
+                "z": -0.0225830078125
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_rocks_ew_01f.vmdl",
+            "name": "tileset17",
+            "origin": {
+                "x": -350.060546875,
+                "y": 364.00933837891,
+                "z": 0.061767578125
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_rocks_ew_01f.vmdl",
+            "name": "tileset17",
+            "origin": {
+                "x": -128.72436523438,
+                "y": 318.83746337891,
+                "z": 0.01171875
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_rocks_nsew_01f.vmdl",
+            "name": "tileset17",
+            "origin": {
+                "x": 341.77453613281,
+                "y": -405.34539794922,
+                "z": 0.0062255859375
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_nature/mushroom_wild_00.vmdl",
+            "name": "tileset17",
+            "origin": {
+                "x": 162.89086914063,
+                "y": 136.22625732422,
+                "z": 0.038818359375
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_nature/mushroom_wild_01.vmdl",
+            "name": "tileset17",
+            "origin": {
+                "x": -320.53259277344,
+                "y": 302.91778564453,
+                "z": 0.04931640625
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/3dtileset/snow_city_road/tileset_snow_17.vmdl",
+            "name": "tileset17",
+            "origin": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 270.67822265625,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset17",
+            "origin": {
+                "x": 9.7203369140625,
+                "y": -396.26803588867,
+                "z": 0.0240478515625
+            },
+            "scale": 0.78479999303818
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 270.15759277344,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset17",
+            "origin": {
+                "x": 13.769287109375,
+                "y": -191.14819335938,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 182.3744354248,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks_nsw_01a.vmdl",
+            "name": "tileset17",
+            "origin": {
+                "x": 8.162109375,
+                "y": -6.8858032226563,
+                "z": -1.7745666503906
+            },
+            "scale": 0.71778398752213
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset17",
+            "origin": {
+                "x": -329.29077148438,
+                "y": -5.0423278808594,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset17",
+            "origin": {
+                "x": -174.98132324219,
+                "y": -5.6283950805664,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset17",
+            "origin": {
+                "x": -453.39624023438,
+                "y": -5.0423278808594,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mine_tool_bucket001.vmdl",
+            "name": "tileset17",
+            "origin": {
+                "x": 414.83325195313,
+                "y": -175.10266113281,
+                "z": -0.028076171875
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mine_tool_pick001.vmdl",
+            "name": "tileset17",
+            "origin": {
+                "x": 228.33032226563,
+                "y": 297.14660644531,
+                "z": 0.00341796875
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_rocks_ew_01f.vmdl",
+            "name": "tileset17",
+            "origin": {
+                "x": -306.67944335938,
+                "y": -252.90216064453,
+                "z": -0.036865234375
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_rocks_ew_01f.vmdl",
+            "name": "tileset17",
+            "origin": {
+                "x": 337.67272949219,
+                "y": 133.39324951172,
+                "z": -0.0225830078125
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_rocks_ew_01f.vmdl",
+            "name": "tileset17",
+            "origin": {
+                "x": -350.060546875,
+                "y": 364.00933837891,
+                "z": 0.061767578125
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_rocks_ew_01f.vmdl",
+            "name": "tileset17",
+            "origin": {
+                "x": -128.72436523438,
+                "y": 318.83746337891,
+                "z": 0.01171875
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_rocks_nsew_01f.vmdl",
+            "name": "tileset17",
+            "origin": {
+                "x": 341.77453613281,
+                "y": -405.34539794922,
+                "z": 0.0062255859375
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_nature/mushroom_wild_00.vmdl",
+            "name": "tileset17",
+            "origin": {
+                "x": 162.89086914063,
+                "y": 136.22625732422,
+                "z": 0.038818359375
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_nature/mushroom_wild_01.vmdl",
+            "name": "tileset17",
+            "origin": {
+                "x": -320.53259277344,
+                "y": 302.91778564453,
+                "z": 0.04931640625
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "maps/cavern_assets/models/mushrooms/mushrooms_cavern_small_04.vmdl",
+            "name": "tileset17",
+            "origin": {
+                "x": -511.31884765625,
+                "y": 320.22802734375,
+                "z": -0.045166015625
+            },
+            "scale": 1
+        }
+    ],
+    "tileset18": [
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/3dtileset/snow_city_road/tileset_snow_18.vmdl",
+            "name": "tileset18",
+            "origin": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 270.67822265625,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset18",
+            "origin": {
+                "x": 36.644165039063,
+                "y": -414.54769897461,
+                "z": 0.0240478515625
+            },
+            "scale": 0.78479999303818
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 270.15759277344,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset18",
+            "origin": {
+                "x": 40.693176269531,
+                "y": -209.42785644531,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 182.3744354248,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks_nsw_01a.vmdl",
+            "name": "tileset18",
+            "origin": {
+                "x": 35.0859375,
+                "y": -25.165466308594,
+                "z": -1.7745666503906
+            },
+            "scale": 0.71778398752213
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 181.60852050781,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset18",
+            "origin": {
+                "x": 217.49139404297,
+                "y": -16.880187988281,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 181.60852050781,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset18",
+            "origin": {
+                "x": 401.30432128906,
+                "y": -10.200927734375,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset18",
+            "origin": {
+                "x": -302.36694335938,
+                "y": -23.321990966797,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset18",
+            "origin": {
+                "x": -148.05749511719,
+                "y": -23.908058166504,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset18",
+            "origin": {
+                "x": -426.47247314453,
+                "y": -23.321990966797,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 11.242953300476,
+                "z": 0
+            },
+            "model": "models/props_mines/wheel_barrow_mine003.vmdl",
+            "name": "tileset18",
+            "origin": {
+                "x": 310.06005859375,
+                "y": 329.65258789063,
+                "z": 0.235595703125
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mine_tool_cluster001b.vmdl",
+            "name": "tileset18",
+            "origin": {
+                "x": -335.17199707031,
+                "y": 291.48742675781,
+                "z": -0.006103515625
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mine_cart002.vmdl",
+            "name": "tileset18",
+            "origin": {
+                "x": 21.169342041016,
+                "y": -39.366455078125,
+                "z": 0.04443359375
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_rocks_nsew_01f.vmdl",
+            "name": "tileset18",
+            "origin": {
+                "x": 340.49743652344,
+                "y": -356.44323730469,
+                "z": 0.016845703125
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "maps/cavern_assets/models/mushrooms/mushrooms_cavern_small_05.vmdl",
+            "name": "tileset18",
+            "origin": {
+                "x": -361.51782226563,
+                "y": -317.69607543945,
+                "z": 0.039794921875
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "maps/cavern_assets/models/mushrooms/mushrooms_cavern_small_05.vmdl",
+            "name": "tileset18",
+            "origin": {
+                "x": 393.31726074219,
+                "y": -350.72924804688,
+                "z": -0.02880859375
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/3dtileset/snow_city_road/tileset_snow_18.vmdl",
+            "name": "tileset18",
+            "origin": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/3dtileset/snow_city_road/tileset_snow_18.vmdl",
+            "name": "tileset18",
+            "origin": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 270.67822265625,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset18",
+            "origin": {
+                "x": 36.644165039063,
+                "y": -414.54769897461,
+                "z": 0.0240478515625
+            },
+            "scale": 0.78479999303818
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 270.15759277344,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset18",
+            "origin": {
+                "x": 40.693176269531,
+                "y": -209.42785644531,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 182.3744354248,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks_nsw_01a.vmdl",
+            "name": "tileset18",
+            "origin": {
+                "x": 35.0859375,
+                "y": -25.165466308594,
+                "z": -1.7745666503906
+            },
+            "scale": 0.71778398752213
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 181.60852050781,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset18",
+            "origin": {
+                "x": 217.49139404297,
+                "y": -16.880187988281,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 181.60852050781,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset18",
+            "origin": {
+                "x": 401.30432128906,
+                "y": -10.200927734375,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset18",
+            "origin": {
+                "x": -302.36694335938,
+                "y": -23.321990966797,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset18",
+            "origin": {
+                "x": -148.05749511719,
+                "y": -23.908058166504,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset18",
+            "origin": {
+                "x": -426.47247314453,
+                "y": -23.321990966797,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 11.242953300476,
+                "z": 0
+            },
+            "model": "models/props_mines/wheel_barrow_mine003.vmdl",
+            "name": "tileset18",
+            "origin": {
+                "x": 310.06005859375,
+                "y": 329.65258789063,
+                "z": 0.235595703125
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mine_tool_cluster001b.vmdl",
+            "name": "tileset18",
+            "origin": {
+                "x": -335.17199707031,
+                "y": 291.48742675781,
+                "z": -0.006103515625
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mine_cart002.vmdl",
+            "name": "tileset18",
+            "origin": {
+                "x": 21.169342041016,
+                "y": -39.366455078125,
+                "z": 0.04443359375
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_rocks_nsew_01f.vmdl",
+            "name": "tileset18",
+            "origin": {
+                "x": 340.49743652344,
+                "y": -356.44323730469,
+                "z": 0.016845703125
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "maps/cavern_assets/models/mushrooms/mushrooms_cavern_small_05.vmdl",
+            "name": "tileset18",
+            "origin": {
+                "x": -361.51782226563,
+                "y": -317.69607543945,
+                "z": 0.039794921875
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "maps/cavern_assets/models/mushrooms/mushrooms_cavern_small_05.vmdl",
+            "name": "tileset18",
+            "origin": {
+                "x": 393.31726074219,
+                "y": -350.72924804688,
+                "z": -0.02880859375
+            },
+            "scale": 1
+        }
+    ],
+    "tileset19": [
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/3dtileset/snow_city_road/tileset_snow_19.vmdl",
+            "name": "tileset19",
+            "origin": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset19",
+            "origin": {
+                "x": -414.81976318359,
+                "y": -6.1012878417969,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0.76589202880859,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks_nsw_01a.vmdl",
+            "name": "tileset19",
+            "origin": {
+                "x": -48.325592041016,
+                "y": -1.4224319458008,
+                "z": -1.7745666503906
+            },
+            "scale": 0.71778398752213
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset19",
+            "origin": {
+                "x": -230.89181518555,
+                "y": -4.5843281745911,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 88.549034118652,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset19",
+            "origin": {
+                "x": -48.758422851563,
+                "y": 182.92477416992,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 89.069709777832,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset19",
+            "origin": {
+                "x": -38.953308105469,
+                "y": 387.85012817383,
+                "z": 0.0240478515625
+            },
+            "scale": 0.78479999303818
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 95.169860839844,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_track_broken_end_01.vmdl",
+            "name": "tileset19",
+            "origin": {
+                "x": -3.8464050292969,
+                "y": -200.79241943359,
+                "z": 0.0068359375
+            },
+            "scale": 0.85000002384186
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 87.128364562988,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset19",
+            "origin": {
+                "x": -3.650146484375,
+                "y": -412.9084777832,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset19",
+            "origin": {
+                "x": 266.1865234375,
+                "y": 5.8799738883972,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset19",
+            "origin": {
+                "x": 420.49597167969,
+                "y": 5.2939071655273,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset19",
+            "origin": {
+                "x": 97.051818847656,
+                "y": 0.98263502120972,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 111.37925720215,
+                "z": 0
+            },
+            "model": "models/props_mines/wheel_barrow_mine002.vmdl",
+            "name": "tileset19",
+            "origin": {
+                "x": -300.27893066406,
+                "y": 312.82531738281,
+                "z": 0.01385498046875
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/buffer_stop002.vmdl",
+            "name": "tileset19",
+            "origin": {
+                "x": 309.21435546875,
+                "y": 250.33551025391,
+                "z": -0.03497314453125
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/3dtileset/snow_city_road/tileset_snow_19.vmdl",
+            "name": "tileset19",
+            "origin": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset19",
+            "origin": {
+                "x": -414.81976318359,
+                "y": -6.1012878417969,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0.76589202880859,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks_nsw_01a.vmdl",
+            "name": "tileset19",
+            "origin": {
+                "x": -48.325592041016,
+                "y": -1.4224319458008,
+                "z": -1.7745666503906
+            },
+            "scale": 0.71778398752213
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset19",
+            "origin": {
+                "x": -230.89181518555,
+                "y": -4.5843281745911,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 88.549034118652,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset19",
+            "origin": {
+                "x": -48.758422851563,
+                "y": 182.92477416992,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 89.069709777832,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset19",
+            "origin": {
+                "x": -38.953308105469,
+                "y": 387.85012817383,
+                "z": 0.0240478515625
+            },
+            "scale": 0.78479999303818
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 95.169860839844,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_track_broken_end_01.vmdl",
+            "name": "tileset19",
+            "origin": {
+                "x": -3.8464050292969,
+                "y": -200.79241943359,
+                "z": 0.0068359375
+            },
+            "scale": 0.85000002384186
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 87.128364562988,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset19",
+            "origin": {
+                "x": -3.650146484375,
+                "y": -412.9084777832,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset19",
+            "origin": {
+                "x": 266.1865234375,
+                "y": 5.8799738883972,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset19",
+            "origin": {
+                "x": 420.49597167969,
+                "y": 5.2939071655273,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/mines_tracks001.vmdl",
+            "name": "tileset19",
+            "origin": {
+                "x": 97.051818847656,
+                "y": 0.98263502120972,
+                "z": 0.0240478515625
+            },
+            "scale": 0.72000002861023
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 111.37925720215,
+                "z": 0
+            },
+            "model": "models/props_mines/wheel_barrow_mine002.vmdl",
+            "name": "tileset19",
+            "origin": {
+                "x": -300.27893066406,
+                "y": 312.82531738281,
+                "z": 0.01385498046875
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_mines/buffer_stop002.vmdl",
+            "name": "tileset19",
+            "origin": {
+                "x": 309.21435546875,
+                "y": 250.33551025391,
+                "z": -0.03497314453125
+            },
+            "scale": 1
+        }
+    ],
+    "tileset2": [
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/3dtileset/snow_city_road/tileset_snow_2.vmdl",
+            "name": "tileset2",
+            "origin": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/3dtileset/snow_city_road/tileset_snow_2.vmdl",
+            "name": "tileset2",
+            "origin": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 1
+        }
+    ],
+    "tileset3": [
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/3dtileset/snow_city_road/tileset_snow_3.vmdl",
+            "name": "tileset3",
+            "origin": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/3dtileset/snow_city_road/tileset_snow_3.vmdl",
+            "name": "tileset3",
+            "origin": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 1
+        }
+    ],
+    "tileset4": [
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/3dtileset/snow_city_road/tileset_snow_4.vmdl",
+            "name": "tileset4",
+            "origin": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/3dtileset/snow_city_road/tileset_snow_4.vmdl",
+            "name": "tileset4",
+            "origin": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 1
+        }
+    ],
+    "tileset5": [
+        {
+            "angle": {
+                "x": 0,
+                "y": 180.00007629395,
+                "z": 0
+            },
+            "model": "models/3dtileset/snow_city_road/tileset_snow_5.vmdl",
+            "name": "tileset5",
+            "origin": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 180.00007629395,
+                "z": 0
+            },
+            "model": "models/3dtileset/snow_city_road/tileset_snow_5.vmdl",
+            "name": "tileset5",
+            "origin": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 180.00007629395,
+                "z": 0
+            },
+            "model": "models/3dtileset/snow_city_road/tileset_snow_5.vmdl",
+            "name": "tileset5",
+            "origin": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 1
+        }
+    ],
+    "tileset6": [
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/3dtileset/snow_city_road/tileset_snow_6.vmdl",
+            "name": "tileset6",
+            "origin": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/3dtileset/snow_city_road/tileset_snow_6.vmdl",
+            "name": "tileset6",
+            "origin": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 1
+        }
+    ],
+    "tileset7": [
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/3dtileset/snow_city_road/tileset_snow_7.vmdl",
+            "name": "tileset7",
+            "origin": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/3dtileset/snow_city_road/tileset_snow_7.vmdl",
+            "name": "tileset7",
+            "origin": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 1
+        }
+    ],
+    "tileset8": [
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_rock/stalagmite_cluster_02.vmdl",
+            "name": "tileset8",
+            "origin": {
+                "x": -345.57818603516,
+                "y": -145.56848144531,
+                "z": -0.0126953125
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/3dtileset/snow_city_road/tileset_snow_8.vmdl",
+            "name": "tileset8",
+            "origin": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_rock/stalagmite_cluster_02.vmdl",
+            "name": "tileset8",
+            "origin": {
+                "x": -345.57818603516,
+                "y": -145.56848144531,
+                "z": -0.0126953125
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_rock/stalagmite_cluster_02.vmdl",
+            "name": "tileset8",
+            "origin": {
+                "x": -139.40710449219,
+                "y": -80.818481445313,
+                "z": 0.001953125
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 100.4348449707,
+                "z": 0
+            },
+            "model": "models/props_rock/stalagmite_cluster_02.vmdl",
+            "name": "tileset8",
+            "origin": {
+                "x": 28.593933105469,
+                "y": -33.86181640625,
+                "z": -0.0567626953125
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 100.4348449707,
+                "z": 0
+            },
+            "model": "models/props_rock/stalagmite_cluster_02.vmdl",
+            "name": "tileset8",
+            "origin": {
+                "x": 306.48886108398,
+                "y": -150.80041503906,
+                "z": -0.0567626953125
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/3dtileset/snow_city_road/tileset_snow_8.vmdl",
+            "name": "tileset8",
+            "origin": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_rock/stalagmite_cluster_02.vmdl",
+            "name": "tileset8",
+            "origin": {
+                "x": -345.57818603516,
+                "y": -145.56848144531,
+                "z": -0.0126953125
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/props_rock/stalagmite_cluster_02.vmdl",
+            "name": "tileset8",
+            "origin": {
+                "x": -139.40710449219,
+                "y": -80.818481445313,
+                "z": 0.001953125
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 100.4348449707,
+                "z": 0
+            },
+            "model": "models/props_rock/stalagmite_cluster_02.vmdl",
+            "name": "tileset8",
+            "origin": {
+                "x": 28.593933105469,
+                "y": -33.86181640625,
+                "z": -0.0567626953125
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 100.4348449707,
+                "z": 0
+            },
+            "model": "models/props_rock/stalagmite_cluster_02.vmdl",
+            "name": "tileset8",
+            "origin": {
+                "x": 306.48886108398,
+                "y": -150.80041503906,
+                "z": -0.0567626953125
+            },
+            "scale": 1
+        }
+    ],
+    "tileset9": [
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/3dtileset/snow_city_road/tileset_snow_9.vmdl",
+            "name": "tileset9",
+            "origin": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 1
+        },
+        {
+            "angle": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "model": "models/3dtileset/snow_city_road/tileset_snow_9.vmdl",
+            "name": "tileset9",
+            "origin": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 1
+        }
+    ]
+}

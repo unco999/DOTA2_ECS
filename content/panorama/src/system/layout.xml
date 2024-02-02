@@ -1,0 +1,6 @@
+<root>
+    <scripts>
+        <include src="./script.tsx" />
+    </scripts>
+    <Panel class="root" hittest="false" />
+</root>

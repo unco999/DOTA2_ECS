@@ -1,0 +1,1379 @@
+{
+"qing_xue_cheng":{
+    "modules_type":"snow_01",
+    "modules":
+    [{"modelname":"2","rotate":1},{"modelname":"8","rotate":1},{"modelname":"6","rotate":2},{"modelname":"3","rotate":0},{"modelname":"7","rotate":0},{"modelname":"13","rotate":2},{"modelname":"6","rotate":2},{"modelname":"11","rotate":3},{"modelname":"11","rotate":3},{"modelname":"6","rotate":1},{"modelname":"5","rotate":0},{"modelname":"4","rotate":0},{"modelname":"5","rotate":2},{"modelname":"4","rotate":3},{"modelname":"8","rotate":1},{"modelname":"2","rotate":3},{"modelname":"4","rotate":2},{"modelname":"11","rotate":3},{"modelname":"17","rotate":2},{"modelname":"17","rotate":0},{"modelname":"4","rotate":1},{"modelname":"3","rotate":0},{"modelname":"6","rotate":0},{"modelname":"6","rotate":2},{"modelname":"14","rotate":0},{"modelname":"15","rotate":2},{"modelname":"16","rotate":1},{"modelname":"18","rotate":2},{"modelname":"7","rotate":1},{"modelname":"3","rotate":0},{"modelname":"8","rotate":0},{"modelname":"7","rotate":0},{"modelname":"17","rotate":1},{"modelname":"8","rotate":1},{"modelname":"2","rotate":0},{"modelname":"9","rotate":2},{"modelname":"13","rotate":3},{"modelname":"5","rotate":1},{"modelname":"12","rotate":3},{"modelname":"17","rotate":1},{"modelname":"11","rotate":2},{"modelname":"11","rotate":0},{"modelname":"16","rotate":0},{"modelname":"10","rotate":0},{"modelname":"11","rotate":2},{"modelname":"10","rotate":0},{"modelname":"18","rotate":3},{"modelname":"15","rotate":2},{"modelname":"6","rotate":1},{"modelname":"6","rotate":3},{"modelname":"12","rotate":2},{"modelname":"14","rotate":0},{"modelname":"7","rotate":1},{"modelname":"7","rotate":0},{"modelname":"17","rotate":1},{"modelname":"6","rotate":1},{"modelname":"1","rotate":0},{"modelname":"8","rotate":1},{"modelname":"10","rotate":0},{"modelname":"16","rotate":0},{"modelname":"16","rotate":0},{"modelname":"16","rotate":0},{"modelname":"2","rotate":3},{"modelname":"13","rotate":1}]
+    ,"npcs":[
+        {
+            "angles": {
+                "x": 0,
+                "y": 320.54876708984,
+                "z": 0
+            },
+            "model": "models/heroes/beastmaster/beastmaster.vmdl",
+            "name": "modules_npc_ma_fu_role",
+            "origin": {
+                "x": 432.87182617188,
+                "y": 1709.8011474609,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 269.58526611328,
+                "z": 0
+            },
+            "model": "models/items/lycan/wolves/_ascension_of_the_hallowed_beast_summons/_ascension_of_the_hallowed_beast_summons.vmdl",
+            "name": "modules_npc_ma_fu_build",
+            "origin": {
+                "x": 518.73822021484,
+                "y": 1903.2667236328,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 136.86734008789,
+                "z": 0
+            },
+            "model": "models/props_structures/secretshop_dire001.vmdl",
+            "name": "modules_npc_za_huo_build",
+            "origin": {
+                "x": 1423.8546142578,
+                "y": -3567.5014648438,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 132.12797546387,
+                "z": 0
+            },
+            "model": "models/heroes/shopkeeper/shopkeeper.vmdl",
+            "name": "modules_npc_za_huo_role",
+            "origin": {
+                "x": 1316.7315673828,
+                "y": -3473.7644042969,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 254.62203979492,
+                "z": 0
+            },
+            "model": "models/props_structures/secretshop_radiant003.vmdl",
+            "name": "modules_npc_zhen_bao_build",
+            "origin": {
+                "x": 1882.0622558594,
+                "y": -2166.3020019531,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 274.07312011719,
+                "z": 0
+            },
+            "model": "models/props_generic/scarecrow_01.vmdl",
+            "name": "modules_npc_zhen_bao_role",
+            "origin": {
+                "x": 1920.1827392578,
+                "y": -2348.2023925781,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 73.37264251709,
+                "z": 0
+            },
+            "model": "models/props_structures/shop_newplayerexperience_01.vmdl",
+            "name": "modules_npc_wu_qi_build",
+            "origin": {
+                "x": -1611.9957275391,
+                "y": -2911.4299316406,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 101.80280303955,
+                "z": 0
+            },
+            "model": "models/props_gameplay/shopkeeper_fountain/shopkeeper_fountain.vmdl",
+            "name": "modules_npc_tiejiang_role",
+            "origin": {
+                "x": -1618.5101318359,
+                "y": -2714.9660644531,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 24.154460906982,
+                "z": 0
+            },
+            "model": "models/props_gameplay/anvil/anvil_00.vmdl",
+            "name": "modules_npc_wu_qi_build",
+            "origin": {
+                "x": -1926.5885009766,
+                "y": -2610.1115722656,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 286.71588134766,
+                "z": 0
+            },
+            "model": "models/props_structures/shop_newplayerexperience_01.vmdl",
+            "name": "modules_npc_fang_ju_build",
+            "origin": {
+                "x": 1870.7006835938,
+                "y": -1109.6947021484,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 334.9899597168,
+                "z": 0
+            },
+            "model": "models/creeps/darkreef/gaoler/darkreef_gaoler.vmdl",
+            "name": "modules_npc_fang_ju_role",
+            "origin": {
+                "x": 1992.1788330078,
+                "y": -1308.9831542969,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 292.80187988281,
+                "z": 0
+            },
+            "model": "models/props_structures/sideshop_radiant001.vmdl",
+            "name": "modules_npc_peng_ren_build",
+            "origin": {
+                "x": 3059.7531738281,
+                "y": -207.38977050781,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 327.03405761719,
+                "z": 0
+            },
+            "model": "models/courier/minipudge/minipudge.vmdl",
+            "name": "modules_npc_peng_ren_role",
+            "origin": {
+                "x": 3345.7788085938,
+                "y": -223.00549316406,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 1.2505202293396,
+                "z": 0
+            },
+            "model": "models/heroes/warlock/warlock.vmdl",
+            "name": "modules_npc_lv_dian_role",
+            "origin": {
+                "x": -546.24487304688,
+                "y": 255.92680358887,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 297.71780395508,
+                "z": 0
+            },
+            "model": "models/props_structures/secretshop_radiant003.vmdl",
+            "name": "modules_npc_yao_dian_build",
+            "origin": {
+                "x": 1089.4782714844,
+                "y": 714.55541992188,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 286.04000854492,
+                "z": 0
+            },
+            "model": "models/props_gameplay/npc/shopkeeper_the_lost_meepo/shopkeeper_the_lost_meepo.vmdl",
+            "name": "modules_npc_yao_dian_role",
+            "origin": {
+                "x": 1222.1069335938,
+                "y": 566.26104736328,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 296.49392700195,
+                "z": 0
+            },
+            "model": "models/items/bounty_hunter/bh_taunt_goldpiles/bh_taunt_goldpiles_pile.vmdl",
+            "name": "modules_npc_zhen_bao_build",
+            "origin": {
+                "x": 1254.6944580078,
+                "y": 2690.87109375,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 309.62158203125,
+                "z": 0
+            },
+            "model": "models/items/bounty_hunter/bh_taunt_goldpiles/bh_taunt_goldpiles_pileexit.vmdl",
+            "name": "modules_npc_zhen_bao_build",
+            "origin": {
+                "x": 1185.0446777344,
+                "y": 2557.2966308594,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 313.44775390625,
+                "z": 0
+            },
+            "model": "models/props_gameplay/treasure_chest_gold.vmdl",
+            "name": "modules_npc_zhen_bao_build",
+            "origin": {
+                "x": 1170.2556152344,
+                "y": 2659.5356445313,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 317.57623291016,
+                "z": 0
+            },
+            "model": "models/courier/greevil/gold_greevil.vmdl",
+            "name": "modules_npc_zhen_bao_role",
+            "origin": {
+                "x": 1444.4315185547,
+                "y": 2612.4150390625,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 208.75408935547,
+                "z": 0
+            },
+            "model": "models/props_structures/tent_dk.vmdl",
+            "name": "modules_npc_ji_shi_build",
+            "origin": {
+                "x": -806.47064208984,
+                "y": -1780.0993652344,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 20.684982299805,
+                "z": 0
+            },
+            "model": "models/props_structures/tent_dk_med.vmdl",
+            "name": "modules_npc_ji_shi_build",
+            "origin": {
+                "x": -681.33648681641,
+                "y": -1459.2364501953,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 304.17825317383,
+                "z": 0
+            },
+            "model": "models/props_structures/tent_dk_small.vmdl",
+            "name": "modules_npc_ji_shi_build",
+            "origin": {
+                "x": -475.73165893555,
+                "y": -1612.40625,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 328.62084960938,
+                "z": 0
+            },
+            "model": "models/heroes/shopkeeper_dire/shopkeeper_dire.vmdl",
+            "name": "modules_npc_ji_shi_role",
+            "origin": {
+                "x": -487.7001953125,
+                "y": -1978.001953125,
+                "z": 128
+            }
+        }
+    ]
+    ,"skin":"mark0",
+    "spawn_point":{"x":-3000,"y":964}
+},
+"zi_luo_lan_gao_yuan":{
+    "modules_type":"zi_luo_lan",
+    "modules":[{"modelname":"7","rotate":1},{"modelname":"10","rotate":1},{"modelname":"11","rotate":3},{"modelname":"6","rotate":2},{"modelname":"7","rotate":3},{"modelname":"15","rotate":2},{"modelname":"18","rotate":0},{"modelname":"18","rotate":0},{"modelname":"14","rotate":3},{"modelname":"17","rotate":0},{"modelname":"11","rotate":1},{"modelname":"5","rotate":3},{"modelname":"15","rotate":0},{"modelname":"14","rotate":0},{"modelname":"17","rotate":1},{"modelname":"16","rotate":0},{"modelname":"14","rotate":3},{"modelname":"18","rotate":2},{"modelname":"17","rotate":0},{"modelname":"4","rotate":1},{"modelname":"11","rotate":3},{"modelname":"16","rotate":0},{"modelname":"17","rotate":3},{"modelname":"14","rotate":1},{"modelname":"16","rotate":0},{"modelname":"2","rotate":3},{"modelname":"17","rotate":1},{"modelname":"13","rotate":0},{"modelname":"13","rotate":1},{"modelname":"7","rotate":3},{"modelname":"18","rotate":1},{"modelname":"16","rotate":0},{"modelname":"5","rotate":2},{"modelname":"6","rotate":3},{"modelname":"11","rotate":1},{"modelname":"7","rotate":3},{"modelname":"14","rotate":1},{"modelname":"7","rotate":0},{"modelname":"17","rotate":1},{"modelname":"12","rotate":2},{"modelname":"4","rotate":0},{"modelname":"4","rotate":3},{"modelname":"11","rotate":1},{"modelname":"4","rotate":0},{"modelname":"14","rotate":3},{"modelname":"7","rotate":2},{"modelname":"11","rotate":3},{"modelname":"9","rotate":1},{"modelname":"17","rotate":3},{"modelname":"7","rotate":1},{"modelname":"12","rotate":3},{"modelname":"16","rotate":1},{"modelname":"17","rotate":1},{"modelname":"11","rotate":0},{"modelname":"11","rotate":2},{"modelname":"17","rotate":3},{"modelname":"17","rotate":1},{"modelname":"16","rotate":0},{"modelname":"15","rotate":1},{"modelname":"6","rotate":3},{"modelname":"11","rotate":2},{"modelname":"2","rotate":3},{"modelname":"14","rotate":0},{"modelname":"7","rotate":2}]
+    ,"npcs":[
+        {
+            "angles": {
+                "x": 0,
+                "y": 320.54876708984,
+                "z": 0
+            },
+            "model": "models/heroes/beastmaster/beastmaster.vmdl",
+            "name": "modules_npc_ma_fu_role",
+            "origin": {
+                "x": 432.87182617188,
+                "y": 1709.8011474609,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 269.58526611328,
+                "z": 0
+            },
+            "model": "models/items/lycan/wolves/_ascension_of_the_hallowed_beast_summons/_ascension_of_the_hallowed_beast_summons.vmdl",
+            "name": "modules_npc_ma_fu_build",
+            "origin": {
+                "x": 518.73822021484,
+                "y": 1903.2667236328,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 136.86734008789,
+                "z": 0
+            },
+            "model": "models/props_structures/secretshop_dire001.vmdl",
+            "name": "modules_npc_za_huo_build",
+            "origin": {
+                "x": 1423.8546142578,
+                "y": -3567.5014648438,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 132.12797546387,
+                "z": 0
+            },
+            "model": "models/heroes/shopkeeper/shopkeeper.vmdl",
+            "name": "modules_npc_za_huo_role",
+            "origin": {
+                "x": 1316.7315673828,
+                "y": -3473.7644042969,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 254.62203979492,
+                "z": 0
+            },
+            "model": "models/props_structures/secretshop_radiant003.vmdl",
+            "name": "modules_npc_zhen_bao_build",
+            "origin": {
+                "x": 1882.0622558594,
+                "y": -2166.3020019531,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 274.07312011719,
+                "z": 0
+            },
+            "model": "models/props_generic/scarecrow_01.vmdl",
+            "name": "modules_npc_zhen_bao_role",
+            "origin": {
+                "x": 1920.1827392578,
+                "y": -2348.2023925781,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 73.37264251709,
+                "z": 0
+            },
+            "model": "models/props_structures/shop_newplayerexperience_01.vmdl",
+            "name": "modules_npc_wu_qi_build",
+            "origin": {
+                "x": -1611.9957275391,
+                "y": -2911.4299316406,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 101.80280303955,
+                "z": 0
+            },
+            "model": "models/props_gameplay/shopkeeper_fountain/shopkeeper_fountain.vmdl",
+            "name": "modules_npc_tiejiang_role",
+            "origin": {
+                "x": -1618.5101318359,
+                "y": -2714.9660644531,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 24.154460906982,
+                "z": 0
+            },
+            "model": "models/props_gameplay/anvil/anvil_00.vmdl",
+            "name": "modules_npc_wu_qi_build",
+            "origin": {
+                "x": -1926.5885009766,
+                "y": -2610.1115722656,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 286.71588134766,
+                "z": 0
+            },
+            "model": "models/props_structures/shop_newplayerexperience_01.vmdl",
+            "name": "modules_npc_fang_ju_build",
+            "origin": {
+                "x": 1870.7006835938,
+                "y": -1109.6947021484,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 334.9899597168,
+                "z": 0
+            },
+            "model": "models/creeps/darkreef/gaoler/darkreef_gaoler.vmdl",
+            "name": "modules_npc_fang_ju_role",
+            "origin": {
+                "x": 1992.1788330078,
+                "y": -1308.9831542969,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 292.80187988281,
+                "z": 0
+            },
+            "model": "models/props_structures/sideshop_radiant001.vmdl",
+            "name": "modules_npc_peng_ren_build",
+            "origin": {
+                "x": 3059.7531738281,
+                "y": -207.38977050781,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 327.03405761719,
+                "z": 0
+            },
+            "model": "models/courier/minipudge/minipudge.vmdl",
+            "name": "modules_npc_peng_ren_role",
+            "origin": {
+                "x": 3345.7788085938,
+                "y": -223.00549316406,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 1.2505202293396,
+                "z": 0
+            },
+            "model": "models/heroes/warlock/warlock.vmdl",
+            "name": "modules_npc_lv_dian_role",
+            "origin": {
+                "x": -546.24487304688,
+                "y": 255.92680358887,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 297.71780395508,
+                "z": 0
+            },
+            "model": "models/props_structures/secretshop_radiant003.vmdl",
+            "name": "modules_npc_yao_dian_build",
+            "origin": {
+                "x": 1089.4782714844,
+                "y": 714.55541992188,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 286.04000854492,
+                "z": 0
+            },
+            "model": "models/props_gameplay/npc/shopkeeper_the_lost_meepo/shopkeeper_the_lost_meepo.vmdl",
+            "name": "modules_npc_yao_dian_role",
+            "origin": {
+                "x": 1222.1069335938,
+                "y": 566.26104736328,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 296.49392700195,
+                "z": 0
+            },
+            "model": "models/items/bounty_hunter/bh_taunt_goldpiles/bh_taunt_goldpiles_pile.vmdl",
+            "name": "modules_npc_zhen_bao_build",
+            "origin": {
+                "x": 1254.6944580078,
+                "y": 2690.87109375,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 309.62158203125,
+                "z": 0
+            },
+            "model": "models/items/bounty_hunter/bh_taunt_goldpiles/bh_taunt_goldpiles_pileexit.vmdl",
+            "name": "modules_npc_zhen_bao_build",
+            "origin": {
+                "x": 1185.0446777344,
+                "y": 2557.2966308594,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 313.44775390625,
+                "z": 0
+            },
+            "model": "models/props_gameplay/treasure_chest_gold.vmdl",
+            "name": "modules_npc_zhen_bao_build",
+            "origin": {
+                "x": 1170.2556152344,
+                "y": 2659.5356445313,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 317.57623291016,
+                "z": 0
+            },
+            "model": "models/courier/greevil/gold_greevil.vmdl",
+            "name": "modules_npc_zhen_bao_role",
+            "origin": {
+                "x": 1444.4315185547,
+                "y": 2612.4150390625,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 208.75408935547,
+                "z": 0
+            },
+            "model": "models/props_structures/tent_dk.vmdl",
+            "name": "modules_npc_ji_shi_build",
+            "origin": {
+                "x": -806.47064208984,
+                "y": -1780.0993652344,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 20.684982299805,
+                "z": 0
+            },
+            "model": "models/props_structures/tent_dk_med.vmdl",
+            "name": "modules_npc_ji_shi_build",
+            "origin": {
+                "x": -681.33648681641,
+                "y": -1459.2364501953,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 304.17825317383,
+                "z": 0
+            },
+            "model": "models/props_structures/tent_dk_small.vmdl",
+            "name": "modules_npc_ji_shi_build",
+            "origin": {
+                "x": -475.73165893555,
+                "y": -1612.40625,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 328.62084960938,
+                "z": 0
+            },
+            "model": "models/heroes/shopkeeper_dire/shopkeeper_dire.vmdl",
+            "name": "modules_npc_ji_shi_role",
+            "origin": {
+                "x": -487.7001953125,
+                "y": -1978.001953125,
+                "z": 128
+            }
+        }
+    ]
+    ,"skin":"mark14"
+    ,"spawn_point":{"x":-0,"y":0}
+},
+"zi_luo_lan_dang_an_guan":{
+    "modules_type":"zi_luo_lan",
+    "modules":[{"modelname":"6","rotate":0},{"modelname":"11","rotate":0},{"modelname":"9","rotate":2},{"modelname":"4","rotate":3},{"modelname":"2","rotate":2},{"modelname":"6","rotate":2},{"modelname":"7","rotate":0},{"modelname":"7","rotate":1},{"modelname":"11","rotate":3},{"modelname":"6","rotate":2},{"modelname":"5","rotate":3},{"modelname":"7","rotate":1},{"modelname":"6","rotate":3},{"modelname":"11","rotate":0},{"modelname":"17","rotate":2},{"modelname":"14","rotate":2},{"modelname":"13","rotate":1},{"modelname":"9","rotate":0},{"modelname":"6","rotate":1},{"modelname":"14","rotate":3},{"modelname":"5","rotate":1},{"modelname":"9","rotate":3},{"modelname":"1","rotate":0},{"modelname":"6","rotate":1},{"modelname":"16","rotate":0},{"modelname":"11","rotate":1},{"modelname":"4","rotate":2},{"modelname":"5","rotate":2},{"modelname":"6","rotate":0},{"modelname":"6","rotate":1},{"modelname":"10","rotate":1},{"modelname":"11","rotate":3},{"modelname":"13","rotate":3},{"modelname":"13","rotate":1},{"modelname":"6","rotate":0},{"modelname":"6","rotate":1},{"modelname":"4","rotate":2},{"modelname":"6","rotate":3},{"modelname":"2","rotate":3},{"modelname":"17","rotate":0},{"modelname":"13","rotate":1},{"modelname":"7","rotate":3},{"modelname":"16","rotate":1},{"modelname":"17","rotate":0},{"modelname":"6","rotate":1},{"modelname":"5","rotate":0},{"modelname":"11","rotate":3},{"modelname":"17","rotate":2},{"modelname":"7","rotate":2},{"modelname":"7","rotate":0},{"modelname":"16","rotate":1},{"modelname":"13","rotate":2},{"modelname":"17","rotate":3},{"modelname":"17","rotate":1},{"modelname":"17","rotate":3},{"modelname":"16","rotate":1},{"modelname":"15","rotate":0},{"modelname":"14","rotate":2},{"modelname":"2","rotate":1},{"modelname":"13","rotate":0},{"modelname":"7","rotate":2},{"modelname":"6","rotate":3},{"modelname":"12","rotate":2},{"modelname":"18","rotate":0}]
+    ,"npcs":[
+        {
+            "angles": {
+                "x": 0,
+                "y": 320.54876708984,
+                "z": 0
+            },
+            "model": "models/heroes/beastmaster/beastmaster.vmdl",
+            "name": "modules_npc_ma_fu_role",
+            "origin": {
+                "x": 432.87182617188,
+                "y": 1709.8011474609,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 269.58526611328,
+                "z": 0
+            },
+            "model": "models/items/lycan/wolves/_ascension_of_the_hallowed_beast_summons/_ascension_of_the_hallowed_beast_summons.vmdl",
+            "name": "modules_npc_ma_fu_build",
+            "origin": {
+                "x": 518.73822021484,
+                "y": 1903.2667236328,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 136.86734008789,
+                "z": 0
+            },
+            "model": "models/props_structures/secretshop_dire001.vmdl",
+            "name": "modules_npc_za_huo_build",
+            "origin": {
+                "x": 1423.8546142578,
+                "y": -3567.5014648438,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 132.12797546387,
+                "z": 0
+            },
+            "model": "models/heroes/shopkeeper/shopkeeper.vmdl",
+            "name": "modules_npc_za_huo_role",
+            "origin": {
+                "x": 1316.7315673828,
+                "y": -3473.7644042969,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 254.62203979492,
+                "z": 0
+            },
+            "model": "models/props_structures/secretshop_radiant003.vmdl",
+            "name": "modules_npc_zhen_bao_build",
+            "origin": {
+                "x": 1882.0622558594,
+                "y": -2166.3020019531,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 274.07312011719,
+                "z": 0
+            },
+            "model": "models/props_generic/scarecrow_01.vmdl",
+            "name": "modules_npc_zhen_bao_role",
+            "origin": {
+                "x": 1920.1827392578,
+                "y": -2348.2023925781,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 73.37264251709,
+                "z": 0
+            },
+            "model": "models/props_structures/shop_newplayerexperience_01.vmdl",
+            "name": "modules_npc_wu_qi_build",
+            "origin": {
+                "x": -1611.9957275391,
+                "y": -2911.4299316406,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 101.80280303955,
+                "z": 0
+            },
+            "model": "models/props_gameplay/shopkeeper_fountain/shopkeeper_fountain.vmdl",
+            "name": "modules_npc_tiejiang_role",
+            "origin": {
+                "x": -1618.5101318359,
+                "y": -2714.9660644531,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 24.154460906982,
+                "z": 0
+            },
+            "model": "models/props_gameplay/anvil/anvil_00.vmdl",
+            "name": "modules_npc_wu_qi_build",
+            "origin": {
+                "x": -1926.5885009766,
+                "y": -2610.1115722656,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 286.71588134766,
+                "z": 0
+            },
+            "model": "models/props_structures/shop_newplayerexperience_01.vmdl",
+            "name": "modules_npc_fang_ju_build",
+            "origin": {
+                "x": 1870.7006835938,
+                "y": -1109.6947021484,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 334.9899597168,
+                "z": 0
+            },
+            "model": "models/creeps/darkreef/gaoler/darkreef_gaoler.vmdl",
+            "name": "modules_npc_fang_ju_role",
+            "origin": {
+                "x": 1992.1788330078,
+                "y": -1308.9831542969,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 292.80187988281,
+                "z": 0
+            },
+            "model": "models/props_structures/sideshop_radiant001.vmdl",
+            "name": "modules_npc_peng_ren_build",
+            "origin": {
+                "x": 3059.7531738281,
+                "y": -207.38977050781,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 327.03405761719,
+                "z": 0
+            },
+            "model": "models/courier/minipudge/minipudge.vmdl",
+            "name": "modules_npc_peng_ren_role",
+            "origin": {
+                "x": 3345.7788085938,
+                "y": -223.00549316406,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 1.2505202293396,
+                "z": 0
+            },
+            "model": "models/heroes/warlock/warlock.vmdl",
+            "name": "modules_npc_lv_dian_role",
+            "origin": {
+                "x": -546.24487304688,
+                "y": 255.92680358887,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 297.71780395508,
+                "z": 0
+            },
+            "model": "models/props_structures/secretshop_radiant003.vmdl",
+            "name": "modules_npc_yao_dian_build",
+            "origin": {
+                "x": 1089.4782714844,
+                "y": 714.55541992188,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 286.04000854492,
+                "z": 0
+            },
+            "model": "models/props_gameplay/npc/shopkeeper_the_lost_meepo/shopkeeper_the_lost_meepo.vmdl",
+            "name": "modules_npc_yao_dian_role",
+            "origin": {
+                "x": 1222.1069335938,
+                "y": 566.26104736328,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 296.49392700195,
+                "z": 0
+            },
+            "model": "models/items/bounty_hunter/bh_taunt_goldpiles/bh_taunt_goldpiles_pile.vmdl",
+            "name": "modules_npc_zhen_bao_build",
+            "origin": {
+                "x": 1254.6944580078,
+                "y": 2690.87109375,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 309.62158203125,
+                "z": 0
+            },
+            "model": "models/items/bounty_hunter/bh_taunt_goldpiles/bh_taunt_goldpiles_pileexit.vmdl",
+            "name": "modules_npc_zhen_bao_build",
+            "origin": {
+                "x": 1185.0446777344,
+                "y": 2557.2966308594,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 313.44775390625,
+                "z": 0
+            },
+            "model": "models/props_gameplay/treasure_chest_gold.vmdl",
+            "name": "modules_npc_zhen_bao_build",
+            "origin": {
+                "x": 1170.2556152344,
+                "y": 2659.5356445313,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 317.57623291016,
+                "z": 0
+            },
+            "model": "models/courier/greevil/gold_greevil.vmdl",
+            "name": "modules_npc_zhen_bao_role",
+            "origin": {
+                "x": 1444.4315185547,
+                "y": 2612.4150390625,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 208.75408935547,
+                "z": 0
+            },
+            "model": "models/props_structures/tent_dk.vmdl",
+            "name": "modules_npc_ji_shi_build",
+            "origin": {
+                "x": -806.47064208984,
+                "y": -1780.0993652344,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 20.684982299805,
+                "z": 0
+            },
+            "model": "models/props_structures/tent_dk_med.vmdl",
+            "name": "modules_npc_ji_shi_build",
+            "origin": {
+                "x": -681.33648681641,
+                "y": -1459.2364501953,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 304.17825317383,
+                "z": 0
+            },
+            "model": "models/props_structures/tent_dk_small.vmdl",
+            "name": "modules_npc_ji_shi_build",
+            "origin": {
+                "x": -475.73165893555,
+                "y": -1612.40625,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 328.62084960938,
+                "z": 0
+            },
+            "model": "models/heroes/shopkeeper_dire/shopkeeper_dire.vmdl",
+            "name": "modules_npc_ji_shi_role",
+            "origin": {
+                "x": -487.7001953125,
+                "y": -1978.001953125,
+                "z": 128
+            }
+        }
+    ]
+    ,"skin":"mark14"
+    ,"spawn_point":{"x":-0,"y":0}
+    },
+"ni_ao_er_de_de_bi_lu":{
+    "modules_type":"bi_lu_01",
+    "modules":[{"modelname":"5","rotate":2},{"modelname":"4","rotate":3},{"modelname":"17","rotate":2},{"modelname":"14","rotate":2},{"modelname":"17","rotate":0},{"modelname":"17","rotate":3},{"modelname":"17","rotate":0},{"modelname":"6","rotate":2},{"modelname":"11","rotate":0},{"modelname":"6","rotate":1},{"modelname":"11","rotate":3},{"modelname":"11","rotate":0},{"modelname":"16","rotate":0},{"modelname":"17","rotate":2},{"modelname":"18","rotate":1},{"modelname":"6","rotate":1},{"modelname":"11","rotate":3},{"modelname":"2","rotate":0},{"modelname":"11","rotate":2},{"modelname":"6","rotate":2},{"modelname":"7","rotate":3},{"modelname":"17","rotate":0},{"modelname":"17","rotate":2},{"modelname":"2","rotate":1},{"modelname":"11","rotate":3},{"modelname":"16","rotate":0},{"modelname":"4","rotate":1},{"modelname":"4","rotate":0},{"modelname":"4","rotate":3},{"modelname":"18","rotate":3},{"modelname":"17","rotate":0},{"modelname":"11","rotate":1},{"modelname":"16","rotate":1},{"modelname":"18","rotate":2},{"modelname":"15","rotate":0},{"modelname":"17","rotate":0},{"modelname":"4","rotate":1},{"modelname":"13","rotate":3},{"modelname":"7","rotate":2},{"modelname":"8","rotate":0},{"modelname":"11","rotate":3},{"modelname":"17","rotate":3},{"modelname":"16","rotate":1},{"modelname":"17","rotate":1},{"modelname":"8","rotate":1},{"modelname":"17","rotate":3},{"modelname":"15","rotate":0},{"modelname":"16","rotate":1},{"modelname":"11","rotate":2},{"modelname":"12","rotate":2},{"modelname":"16","rotate":1},{"modelname":"15","rotate":2},{"modelname":"12","rotate":0},{"modelname":"2","rotate":2},{"modelname":"1","rotate":0},{"modelname":"2","rotate":3},{"modelname":"14","rotate":0},{"modelname":"5","rotate":1},{"modelname":"8","rotate":0},{"modelname":"6","rotate":0},{"modelname":"18","rotate":3},{"modelname":"17","rotate":0},{"modelname":"6","rotate":2},{"modelname":"4","rotate":2}]
+    ,"npcs":[
+        {
+            "angles": {
+                "x": 0,
+                "y": 320.54876708984,
+                "z": 0
+            },
+            "model": "models/heroes/beastmaster/beastmaster.vmdl",
+            "name": "modules_npc_ma_fu_role",
+            "origin": {
+                "x": 432.87182617188,
+                "y": 1709.8011474609,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 269.58526611328,
+                "z": 0
+            },
+            "model": "models/items/lycan/wolves/_ascension_of_the_hallowed_beast_summons/_ascension_of_the_hallowed_beast_summons.vmdl",
+            "name": "modules_npc_ma_fu_build",
+            "origin": {
+                "x": 518.73822021484,
+                "y": 1903.2667236328,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 136.86734008789,
+                "z": 0
+            },
+            "model": "models/props_structures/secretshop_dire001.vmdl",
+            "name": "modules_npc_za_huo_build",
+            "origin": {
+                "x": 1423.8546142578,
+                "y": -3567.5014648438,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 132.12797546387,
+                "z": 0
+            },
+            "model": "models/heroes/shopkeeper/shopkeeper.vmdl",
+            "name": "modules_npc_za_huo_role",
+            "origin": {
+                "x": 1316.7315673828,
+                "y": -3473.7644042969,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 254.62203979492,
+                "z": 0
+            },
+            "model": "models/props_structures/secretshop_radiant003.vmdl",
+            "name": "modules_npc_zhen_bao_build",
+            "origin": {
+                "x": 1882.0622558594,
+                "y": -2166.3020019531,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 274.07312011719,
+                "z": 0
+            },
+            "model": "models/props_generic/scarecrow_01.vmdl",
+            "name": "modules_npc_zhen_bao_role",
+            "origin": {
+                "x": 1920.1827392578,
+                "y": -2348.2023925781,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 73.37264251709,
+                "z": 0
+            },
+            "model": "models/props_structures/shop_newplayerexperience_01.vmdl",
+            "name": "modules_npc_wu_qi_build",
+            "origin": {
+                "x": -1611.9957275391,
+                "y": -2911.4299316406,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 101.80280303955,
+                "z": 0
+            },
+            "model": "models/props_gameplay/shopkeeper_fountain/shopkeeper_fountain.vmdl",
+            "name": "modules_npc_tiejiang_role",
+            "origin": {
+                "x": -1618.5101318359,
+                "y": -2714.9660644531,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 24.154460906982,
+                "z": 0
+            },
+            "model": "models/props_gameplay/anvil/anvil_00.vmdl",
+            "name": "modules_npc_wu_qi_build",
+            "origin": {
+                "x": -1926.5885009766,
+                "y": -2610.1115722656,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 286.71588134766,
+                "z": 0
+            },
+            "model": "models/props_structures/shop_newplayerexperience_01.vmdl",
+            "name": "modules_npc_fang_ju_build",
+            "origin": {
+                "x": 1870.7006835938,
+                "y": -1109.6947021484,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 334.9899597168,
+                "z": 0
+            },
+            "model": "models/creeps/darkreef/gaoler/darkreef_gaoler.vmdl",
+            "name": "modules_npc_fang_ju_role",
+            "origin": {
+                "x": 1992.1788330078,
+                "y": -1308.9831542969,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 292.80187988281,
+                "z": 0
+            },
+            "model": "models/props_structures/sideshop_radiant001.vmdl",
+            "name": "modules_npc_peng_ren_build",
+            "origin": {
+                "x": 3059.7531738281,
+                "y": -207.38977050781,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 327.03405761719,
+                "z": 0
+            },
+            "model": "models/courier/minipudge/minipudge.vmdl",
+            "name": "modules_npc_peng_ren_role",
+            "origin": {
+                "x": 3345.7788085938,
+                "y": -223.00549316406,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 1.2505202293396,
+                "z": 0
+            },
+            "model": "models/heroes/warlock/warlock.vmdl",
+            "name": "modules_npc_lv_dian_role",
+            "origin": {
+                "x": -546.24487304688,
+                "y": 255.92680358887,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 297.71780395508,
+                "z": 0
+            },
+            "model": "models/props_structures/secretshop_radiant003.vmdl",
+            "name": "modules_npc_yao_dian_build",
+            "origin": {
+                "x": 1089.4782714844,
+                "y": 714.55541992188,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 286.04000854492,
+                "z": 0
+            },
+            "model": "models/props_gameplay/npc/shopkeeper_the_lost_meepo/shopkeeper_the_lost_meepo.vmdl",
+            "name": "modules_npc_yao_dian_role",
+            "origin": {
+                "x": 1222.1069335938,
+                "y": 566.26104736328,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 296.49392700195,
+                "z": 0
+            },
+            "model": "models/items/bounty_hunter/bh_taunt_goldpiles/bh_taunt_goldpiles_pile.vmdl",
+            "name": "modules_npc_zhen_bao_build",
+            "origin": {
+                "x": 1254.6944580078,
+                "y": 2690.87109375,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 309.62158203125,
+                "z": 0
+            },
+            "model": "models/items/bounty_hunter/bh_taunt_goldpiles/bh_taunt_goldpiles_pileexit.vmdl",
+            "name": "modules_npc_zhen_bao_build",
+            "origin": {
+                "x": 1185.0446777344,
+                "y": 2557.2966308594,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 313.44775390625,
+                "z": 0
+            },
+            "model": "models/props_gameplay/treasure_chest_gold.vmdl",
+            "name": "modules_npc_zhen_bao_build",
+            "origin": {
+                "x": 1170.2556152344,
+                "y": 2659.5356445313,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 317.57623291016,
+                "z": 0
+            },
+            "model": "models/courier/greevil/gold_greevil.vmdl",
+            "name": "modules_npc_zhen_bao_role",
+            "origin": {
+                "x": 1444.4315185547,
+                "y": 2612.4150390625,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 208.75408935547,
+                "z": 0
+            },
+            "model": "models/props_structures/tent_dk.vmdl",
+            "name": "modules_npc_ji_shi_build",
+            "origin": {
+                "x": -806.47064208984,
+                "y": -1780.0993652344,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 20.684982299805,
+                "z": 0
+            },
+            "model": "models/props_structures/tent_dk_med.vmdl",
+            "name": "modules_npc_ji_shi_build",
+            "origin": {
+                "x": -681.33648681641,
+                "y": -1459.2364501953,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 304.17825317383,
+                "z": 0
+            },
+            "model": "models/props_structures/tent_dk_small.vmdl",
+            "name": "modules_npc_ji_shi_build",
+            "origin": {
+                "x": -475.73165893555,
+                "y": -1612.40625,
+                "z": 128
+            }
+        },
+        {
+            "angles": {
+                "x": 0,
+                "y": 328.62084960938,
+                "z": 0
+            },
+            "model": "models/heroes/shopkeeper_dire/shopkeeper_dire.vmdl",
+            "name": "modules_npc_ji_shi_role",
+            "origin": {
+                "x": -487.7001953125,
+                "y": -1978.001953125,
+                "z": 128
+            }
+        }
+    ],
+    "skin":"mark16"
+    ,"spawn_point":{"x":-0,"y":0}
+}
+}
