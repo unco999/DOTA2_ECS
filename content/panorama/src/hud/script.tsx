@@ -351,6 +351,7 @@ const OkNumberInputPanel: FC = () => {
     const entry_number_panel = useRef<TextEntry>()
 
     useLocalEvent("OkNumberInputPanel",(event)=>{
+        $.Msg("接受到输入",event)
         set_event(event)
     })
 
@@ -386,11 +387,39 @@ const OkNumberInputPanel: FC = () => {
         GameEvents.SendCustomGameEventToServer(event!.uuid,{uuid:event!.uuid,type:event!.type,click:"not_ok"})
     }
 
+    const check = () => {
+        const num = parseInt(entry_number_panel.current!.text,0)
+        if(num == null || num == 0 || isNaN(num)){
+            return false
+        }
+        return true
+    }
+
     
     const ok = () => {
         next_state("init")
+
+        if(event?.call_back){
+            event.call_back(Number(entry_number_panel.current?.text ?? 0))
+        }
+
+        if(event?.type == "ji_shi_buy_item" && !check()){
+            GameUI.CustomUIConfig().EventBus?.emit("LargePopupBox",{
+                tag_name:"你输入的数字不合法...",
+                player_id:Players.GetLocalPlayer(),
+            })
+            return
+        }
+        if(event?.type == "ji_shi_sell_item" && !check()){
+            GameUI.CustomUIConfig().EventBus?.emit("LargePopupBox",{
+                tag_name:"你输入的数字不合法...",
+                player_id:Players.GetLocalPlayer(),
+            })
+            return
+        }
+
         GameUI.CustomUIConfig().EventBus?.emit(event!.type,{input:entry_number_panel.current?.text})
-        GameEvents.SendCustomGameEventToServer(event!.uuid,{uuid:event!.uuid,type:event!.type,click:"ok",data:{input:entry_number_panel.current?.text,item_name:event?.data.item_name},PlayerID:Players.GetLocalPlayer()})
+        GameEvents.SendCustomGameEventToServer(event!.uuid,{uuid:event!.uuid,type:event!.type,click:"ok",data:{input:entry_number_panel.current?.text,...event},PlayerID:Players.GetLocalPlayer()})
     }
       
     /**更换状态只能用这个接口 */
@@ -442,4 +471,3 @@ render(
 
 
 
-console.log(`Hello, world!`);

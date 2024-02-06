@@ -1,4 +1,4 @@
-import { http, to_debug, doc } from "../../fp";
+import { http, to_debug, doc, to_save } from "../../fp";
 
 
 /**
@@ -17,7 +17,8 @@ import { http, to_debug, doc } from "../../fp";
 //         return 0.1
 //     })
 // })
-to_debug()
+to_debug(),
+to_save()
 )
 export class CurCityInfo{
     constructor(

@@ -1,8 +1,7 @@
-import { NONE, WAIT, deep_print, get_entity, http_comp_decorator_container_with_init, http_with_system_container, http_with_user_container, replace$2obj } from "../../fp";
+import { NONE, WAIT, deep_print, get_entity, replace$2obj } from "../../fp";
 import { System } from "../../lib/ecs/System";
 import { OpenAPI } from "../../server/core/OpenAPI";
 import { request } from "../../server/core/request";
-import { PLAYER } from "../component/base";
 
 
 //@负责初始化http组件的系统
@@ -58,10 +57,10 @@ export class steam_id_http_init_system extends System {
     //    }).catch(err=>{
     //        print(err)
     //    })
-        if(http_comp_decorator_container_with_init.size != 0) {
+        if(container.http_comp_decorator_container_with_init.size != 0) {
             const body:{[collection in string]:{[steam_id in string]:{comp_name:string[]}}|{}} = {}
-            for (let [key,val] of http_comp_decorator_container_with_init){
-                const steam_id = GameRules.world.getEntityById(val.instance["$$$$entity"]).get(PLAYER).steam_id
+            for (let [key,val] of container.http_comp_decorator_container_with_init){
+                const steam_id = GameRules.world.getEntityById(val.instance["$$$$entity"]).get(c.base.PLAYER).steam_id
                 print(`当前${val.instance.constructor.name} == ${steam_id}`)
                 if(!`${event.xstateid}=>${event.state}`.includes(val.stage)){
                     continue;
@@ -105,12 +104,13 @@ export class steam_id_http_init_system extends System {
                     
     
                     http.Send((res)=>{
-                        const data = JSON.decode(res.Body).documents
+                        const data = JSON.decode(res.Body)?.documents
+                        if(data == null) return;
                         print("数据分析")
                         DeepPrintTable(data)
                         for(let key in data){
                             const comp_name = data[key]?.["#comp"]
-                            for (let [_,val] of http_comp_decorator_container_with_init){
+                            for (let [_,val] of container.http_comp_decorator_container_with_init){
                                 print("当前遍历的name",comp_name)
                                 if(val && comp_name == val?.instance?.constructor?.name){
                                     print("该comp",data[key]["_id"],"<id")
@@ -128,7 +128,7 @@ export class steam_id_http_init_system extends System {
     
                         let null_record_comp = new Set<any>()
     
-                        for (let [_,val] of http_comp_decorator_container_with_init){
+                        for (let [_,val] of container.http_comp_decorator_container_with_init){
                             const new_table = replace$2obj(val.instance)
                             for(let key in new_table){
                                 if(typeof val.instance[key] == "object" && val.instance[key].wait == "wait"){
@@ -151,21 +151,21 @@ export class steam_id_http_init_system extends System {
                                     "documents": this.update_mongodb(null_record_comp),
                                 }
                             }).then(elm=>{
-                                http_comp_decorator_container_with_init.clear()
+                                container.http_comp_decorator_container_with_init.clear()
                             }).catch(err=>{
                                 print(err)
                             })
                         } else{
-                            http_comp_decorator_container_with_init.clear()
+                            container.http_comp_decorator_container_with_init.clear()
                         }
                     })
                 }
             }
         }
 
-        if(http_with_system_container.size !=0){
+        if(container.http_with_system_container.size !=0){
             print("event.xstateid","当前的大阶段",event.xstateid,"当前的小阶段",event.state)
-            const cur_op_http_instance = Array.from(http_with_system_container).map(elm=>{
+            const cur_op_http_instance = Array.from(container.http_with_system_container).map(elm=>{
                 if(`${event.xstateid}=>${event.state}`.includes(elm[1].stage)){
                     print("当前服务器的stage触发了")
                     return elm[1].system_key(elm[1].instance)
@@ -203,7 +203,7 @@ export class steam_id_http_init_system extends System {
     update_mongodb(instance_list:Set<any>){
         let new_list = []
         for(let elm of instance_list){
-            new_list.push(replace$2obj({steam_id:get_entity(elm).get(PLAYER).steam_id,"#comp":elm.constructor.name,...elm}))
+            new_list.push(replace$2obj({steam_id:get_entity(elm).get(c.base.PLAYER).steam_id,"#comp":elm.constructor.name,...elm}))
         }
         return new_list
     }
@@ -212,7 +212,7 @@ export class steam_id_http_init_system extends System {
         this.engine.subscribe(GameRules.event.xstateChangeEvent,(event)=>{
             if(event.xstateid == "game_state_main" || event.xstateid == "ui_city"){
                 print("当前状态asdasdsadsad",event.xstateid,event.state)
-                Timers.CreateTimer(GameRules.GetGameFrameTime(),()=>{
+                Timers.CreateTimer(GameRules.GetGameFrameTime() * 60,()=>{
                     print("执行了")
                     try{
                         this.start(event)

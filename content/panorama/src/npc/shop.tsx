@@ -24,7 +24,8 @@ export const Shop = () =>{
     const [ye_wai_state,set_yewai_state] = useState<string>("none")
     const [ji_shi_select_item,set_ji_shi_select_item] = useState<string>()
     const [npc_comp,update] = useCompWithSystem("npc")
-
+    const [extra_price,set_extra_price] = useState<number>(100)
+    const [PlayerGold,PlayerGoldUpdate] = useCompWithPlayer("PlayerGold",Players.GetLocalPlayer())
 
 
     useEffect(()=>{
@@ -139,17 +140,26 @@ export const Shop = () =>{
                 </>
             }
             case "modules_npc_ji_shi_role":{
-
+                const golds = Object.entries(PlayerGold ?? {})
                 return  <Motion key={"Shop_item" + "jishi"} defaultStyle={{width:0,height:0}} style={{
                     width: spring(500),
-                    height: spring(800),
+                    height: spring(1000),
                 }}> 
                 {(style:any)=>
                 <>
                 <Panel style={{flowChildren:"right-wrap",width:style.width.toFixed(4) + "px",height:style.height.toFixed(4) + "px",backgroundColor:"rgba(0,0,0,0.7)",align:"center center",marginLeft:"900px"}}>
+                    <Label style={{width:"100%",color:"white",textShadow:"0px 0px 0px 2.0 #333333b0",fontSize:"25px"}} text={"接受服务器价格的浮动范围为(百分比%)"}/>
+                    <Panel style={{flowChildren:"right-wrap"}}>
+                        {golds.map(([gold_name,gold_num])=>{
+                            if(gold_name.includes("gold")){
+                                return <Label key={gold_name +"gold"} style={{color:"white",textShadow:"2px 2px 8px 3.0 #333333b0",fontSize:"22px",marginLeft:"20px"}} text={`#${gold_name}:${gold_num}`}/>
+                            }
+                        })}
+                    </Panel>
+                    <TextEntry text='100' ontextentrychange={(p)=>{set_extra_price(parseInt(p.text))}} textmode={"numeric"} style={{width:"100%",color:"yellow"}}/>
                     {Object.keys(dota_tems).map((key:any)=>{
                          if(dota_tems[key as keyof typeof dota_tems].shopNpc == "modules_npc_ji_shi_role"){
-                            return <JiShiItem npc_comp={npc_comp as npc<any>} onwed={cur_onwed_items.includes(ji_shi_select_item ?? "")} selectfn={set_ji_shi_select_item} key={dota_tems[key as keyof typeof dota_tems]._name + "jishiitem"} item_data={dota_tems[key as keyof typeof dota_tems]}/>
+                            return <JiShiItem extra_price={extra_price ?? 0} npc_comp={npc_comp as npc<any>} onwed={cur_onwed_items.includes(ji_shi_select_item ?? "")} selectfn={set_ji_shi_select_item} key={dota_tems[key as keyof typeof dota_tems]._name + "jishiitem" } item_data={dota_tems[key as keyof typeof dota_tems]}/>
                          }
                     })}
                 </Panel>
@@ -163,7 +173,6 @@ export const Shop = () =>{
             case "modules_npc_ma_fu_role":{
                 const cur = Object.values(ye_wai).filter(elm=>elm.parent == ui_state?.CurrentScene.parent_scene)
                 let ye_wai_children = cur.find(elm=>elm.name == ye_wai_state)?.child
-
                 return  <>
                         <Panel className='mask' style={{backgroundImage:"url('file://{images}/custom_game/map/big_map/32.png')",backgroundPosition:`${imgpxy.x}% ${imgpxy.y}%`,backgroundSize:"500% 500%",marginLeft:"-300px",align:"center center",width:"900px",height:"600px",borderRadius:"15px",opacity:"0.9"}}>
                     <Panel  hittest={true} style={{borderRadius:"50px",x:imgpxy.x + "%",y:imgpxy.y + "%",width:"64px",height:"64px",backgroundColor:"white"}}>
@@ -186,7 +195,7 @@ export const Shop = () =>{
             }
         }
         return <></>
-    },[ui_state?.CurrentScene?.scene_name,ye_wai_state,ji_shi_select_item,update,npc_comp])
+    },[PlayerGold,PlayerGoldUpdate,ui_state?.CurrentScene?.scene_name,ye_wai_state,ji_shi_select_item,update,npc_comp,extra_price])
 
     return <Motion key={"Shop" + state} defaultStyle={main_style[last_state]} style={{
         width: spring(main_style[state].width),
@@ -207,7 +216,7 @@ export const Shop = () =>{
 /**
  * 集市上的商品
  */
-const JiShiItem = ({npc_comp,item_data,selectfn,onwed}:{npc_comp:npc<any>,onwed:boolean,item_data:typeof dota_tems[keyof typeof dota_tems],selectfn:(elm:string)=>void}) =>{
+const JiShiItem = ({extra_price,npc_comp,item_data,selectfn,onwed}:{extra_price:number,npc_comp:npc<any>,onwed:boolean,item_data:typeof dota_tems[keyof typeof dota_tems],selectfn:(elm:string)=>void}) =>{
  
     const click = () =>{
         selectfn(item_data._name)
@@ -221,23 +230,36 @@ const JiShiItem = ({npc_comp,item_data,selectfn,onwed}:{npc_comp:npc<any>,onwed:
             title:`需要买进多少个${item_data._name}?`,
             type:"ji_shi_buy_item",
             uuid:Math.random().toFixed(9),
-            data:{item_name:item_data._name}
+            data:{price:cost() * (extra_price) / 100,item_name:item_data._name,npc_name:npc_comp.npc_name,city_name:npc_comp.city},
+            call_back:(input:any)=> {GameUI.CustomUIConfig().EventBus?.emit("OkPanel",{
+                title:`买入总价是${Math.ceil(input * cost() * (extra_price) / 100)},当前接受价格浮动为${extra_price}%?`,
+                type:"ji_shi_buy_item",
+                uuid:Math.random().toFixed(6),
+                data:{total:input * cost() * (extra_price) / 100,price:cost() * (extra_price) / 100,item_name:item_data._name,npc_name:npc_comp.npc_name,city_name:npc_comp.city,count:input},
+            })}
         })
     }
 
     const sell = () =>{
         const uuid = Math.random().toFixed(6)
         GameEvents.SendCustomGameEventToServer("c2s_number_input_ok_register",{uuid})
+        $.Msg({price:cost(),item_name:item_data._name,npc_name:npc_comp.npc_name,city_name:npc_comp.city})
         GameUI.CustomUIConfig().EventBus?.emit("OkNumberInputPanel",{
             title:`需要卖出多少个${item_data._name}?`,
             type:"ji_shi_sell_item",
             uuid:Math.random().toFixed(9),
-            data:{item_name:item_data._name}
+            data:{price:cost(),item_name:item_data._name,npc_name:npc_comp.npc_name,city_name:npc_comp.city},
+            call_back:(input:any)=> {GameUI.CustomUIConfig().EventBus?.emit("OkPanel",{
+                title:`出售总价是${Math.ceil(input * cost() * (extra_price) / 100)},当前接受价格浮动为${extra_price}%?`,
+                type:"ji_shi_sell_item",
+                uuid:Math.random().toFixed(6),
+                data:{total:input * cost() * (extra_price) / 100,price:cost() * ( extra_price) / 100,item_name:item_data._name,npc_name:npc_comp.npc_name,city_name:npc_comp.city,count:input},
+            })}
         })
     }    
     
     const cost = () =>{
-        return npc_comp?.ui_data?.[item_data._name] ?? "读取中"
+        return npc_comp?.ui_data?.[item_data._name]?.toFixed(3) ?? "读取中"
     }
 
     const count = () =>{

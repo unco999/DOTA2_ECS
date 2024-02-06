@@ -1,7 +1,5 @@
 import { BaseModifier, registerModifier } from "../../../utils/dota_ts_adapter";
 import { reloadable } from "../../../utils/tstl-utils";
-import { CurrentScene } from "../../component/role";
-import { scene, tag } from "../../component/tag";
 
 @reloadable
 @registerModifier()
@@ -29,9 +27,9 @@ export class collision_modifier extends BaseModifier{
                   })
                   const id = CustomGameEventManager.RegisterListener(uuid,(_,panel_event)=>{
                       if(panel_event.click == "ok" ){
-                          const cur_scene_comp = GameRules.QSet.is_select_role.first.get(CurrentScene)
+                          const cur_scene_comp = GameRules.QSet.is_select_role.first.get(c.role.CurrentScene)
                           cur_scene_comp.scene_name = near_npc.GetName()
-                          cur_scene_comp.scene_type = scene.NPC
+                          cur_scene_comp.scene_type = c.tag.scene.NPC
                           GameRules.world.dispatch(new GameRules.event.OpenNpcUiEvent(
                                near_npc.GetName(),
                           ))

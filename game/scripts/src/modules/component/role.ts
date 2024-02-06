@@ -1,22 +1,9 @@
-import { doc, to_client_event, weak, clear_event, cache_remove, compose, NUMMAX, deep_print, replace$2obj, http, to_debug, NONE, get_entity, to_player_net_table } from "../../fp";
+import { doc, to_client_event, weak, clear_event, cache_remove, compose, NUMMAX, deep_print, replace$2obj, http, to_debug, NONE, get_entity, to_player_net_table, to_save } from "../../fp";
 import { Entity } from "../../lib/ecs/Entity";
-import { PLAYER } from "./base";
-import { scene } from "./tag";
 
 
 
 
-
-@clear_event(to_client_event("player",true),cache_remove)
-@doc.watch("none",to_client_event("player"),to_debug())
-export class Move {
-    constructor(
-        public x: number,
-        public y: number,
-    ){
-
-    }
-}
 
 
 @clear_event(surrounding_maps_send("remove"),cache_remove)
@@ -31,7 +18,7 @@ export class SurroundingMaps{
 
 
 //周围地图的客户端解析方式
-function surrounding_maps_send(remove?:"remove"){
+export function surrounding_maps_send(remove?:"remove"){
     return (instance:SurroundingMaps) => {
         let obj = {maps_ent:{}};
         for(let key in getmetatable(instance.maps_ent) ?? instance.maps_ent){
@@ -43,29 +30,14 @@ function surrounding_maps_send(remove?:"remove"){
                 obj.maps_ent[key][comp.constructor.name] = comp
             })
         }
-        const player_id = GameRules.world.getEntityById(instance["$$$$entity"]).get(PLAYER).PlayerID
+        const player_id = GameRules.world.getEntityById(instance["$$$$entity"]).get(c.base.PLAYER).PlayerID
         CustomGameEventManager.Send_ServerToAllClients(instance.constructor.name + player_id + "player",remove == "remove" ? {} : obj)
     }
 }
 
-/**进入地下城的标识 */
-export const Dungeon = "Dungeon"
-
-/**遇怪的标识 */
-export const MoveToCreep = "MoveToCreep"
-
-/**无法操作地图的标识 */
-export const NoMap = "NoMap"
-
-
-export const In3DScene = "In3DScene"
-
-
-/**玩家角色插槽entity */
-export const PlayerRoleSlot = "PlayerRoleSlot"
 
 /**成长属性 */
-@doc.watch("none",to_client_event("player"))
+@doc.watch("none",to_client_event("player"),to_save())
 export class GrowUp{
     constructor(
         public strength_up?:number, //力量成长
@@ -88,7 +60,7 @@ export class GrowUp{
 
 
 /**玩家的角色插槽 */
-@doc.watch("deep",to_client_event("player"),to_debug())
+@doc.watch("deep",to_client_event("player"),to_debug(),to_save())
 export class RoleSlot{
     constructor(
         public slot1?:{hero_name:string,origin_name:string,uuid:string},
@@ -107,7 +79,7 @@ export class RoleSlot{
 
 
 /**role信息 比如在哪里出生 有什么特性之类的*/
-@doc.watch("none",to_debug())
+@doc.watch("none",to_debug(),to_save())
 export class RoleInfo{
     constructor(
         //出生地图
@@ -118,7 +90,6 @@ export class RoleInfo{
         public create_time:string,
         //是否已经死亡
         public is_dead:boolean,
-
     ){
 
     }
@@ -140,16 +111,16 @@ export class HeroAttribute{
      }
 }
 
-@doc.watch("none",to_debug())
+@doc.watch("none",to_client_event("player"),to_debug(),to_save())
 export class PlayerGold{
     constructor(
-        gold_1:number,
-        gold_2:number,
-        gold_3:number,
-        gold_4:number,
-        gold_5:number,
-        gold_6:number,
-        novice_gold:number
+        public gold_1:number,
+        public gold_2:number,
+        public gold_3:number,
+        public gold_4:number,
+        public gold_5:number,
+        public gold_6:number,
+        public novice_gold:number
     ){
 
     }
@@ -163,6 +134,7 @@ export class PlayerGold{
 @doc.watch("deep",
 to_debug(),
 to_client_event("player"),
+to_save(),
 http("both","mongodb-atlas","dota-test","comp","game_state_main=>game_comp_loading_http"),
 (context:RoleWorldMapData)=>{
     if(context.cur_to_map_landmark.schedule == 100){
@@ -197,7 +169,7 @@ export class CurrentScene{
     constructor(
         public parent_scene:string,
         public scene_name:string,
-        public scene_type:scene,
+        public scene_type:any,
     ){
     }
 }
@@ -206,7 +178,7 @@ export class CurrentScene{
  * 当前兽王开启的传送点
  */
 @doc.watch("deep",to_client_event("player"),to_debug())
-export class BeastKingMovePoint{
+ class BeastKingMovePoint{
     constructor(
         public points:{name:string,boolean:number}[]
     ){

@@ -15,6 +15,7 @@ import { CreateMap } from './create_map';
 import { CreateHero } from './create_hero';
 import { useXstate } from '../hooks/useXstate';
 import { Login } from '../hud/script';
+import { Loading } from '../base';
 
 const Main = () =>{
     const [last_state,set_last_state] = useState<keyof typeof main_style>("spawn")
@@ -103,7 +104,7 @@ const CanSelectRole = ({index,role_data}:{index:number,role_data:WAIT_TYPE<RoleS
     
 
     return <Panel style={{width:"300px",height:"500px",flowChildren:'down',x:(index - 1) * 459 + 160 + "px",y:"230px",borderRadius:"15px"}}>
-        {data?.wait == "wait" &&  <Login tile='读取中' fontSize={22} ok={false}/>}
+        {data?.wait == "wait" &&  <Loading offsety={-120}/>}
         {data && <DOTAHeroMovie heroname={data?.hero_name} style={{marginTop:"20px",borderRadius:"15px",horizontalAlign:"center"}}/>}
     </Panel>
 }
@@ -122,7 +123,7 @@ const SelectPanel = ({index,role_data}:{index:number,role_data:WAIT_TYPE<RoleSlo
             title:"是否确定删除角色?",
             type:"remove_role",
             uuid:Math.random().toFixed(6),
-            data:{uuid:role_data?.[("slot" + index) as keyof typeof role_data]?.uuid,slot:index}
+            data:{uuid:role_data?.[("slot" + index) as keyof typeof role_data]?.uuid,slot:index},
         })
     }
 

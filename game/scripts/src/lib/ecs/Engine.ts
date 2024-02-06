@@ -4,7 +4,7 @@ import {Class} from '../utils/Class';
 import {Query} from './Query';
 import {Subscription} from './Subscription';
 import {Signal} from '../utils/Signal';
-import { cache_remove_all, comp_decorator_clear_container } from '../../fp';
+import { cache_remove_all} from '../../fp';
 
 /**
  * Engine represents game state, and provides entities update loop on top of systems.
@@ -96,7 +96,7 @@ export class Engine {
   public removeEntity(entity: Entity): Engine {
     if (!this._entityMap.has(entity.id)) return this;
     entity.getComponents().forEach((comp:Class<any>) => {
-         comp_decorator_clear_container.get(comp.constructor.name)?.forEach((fn)=>fn(comp))
+         container.comp_decorator_clear_container.get(comp.constructor.name)?.forEach((fn)=>fn(comp))
     });
     const index = this._entities.indexOf(entity);
     this._entities.splice(index, 1);

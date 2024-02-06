@@ -1,12 +1,10 @@
-import { create_city_road_wfc, deep_print, to_client_event, to_client_event_container, to_debug } from '../fp';
+import { _replace$2obj, create_city_road_wfc, deep_print, to_client_event, to_debug } from '../fp';
 import { OpenAPI } from '../server/core/OpenAPI';
 import { request } from '../server/core/request';
 import { reloadable } from '../utils/tstl-utils';
 import * as map_test_json from "../modules/map_json/test.json"
 import * as qiang from "../modules/map_json/qiang.json"
-import { MarkCache, PLAYER } from './component/base';
-import { http_buy } from './systems/base';
-import { CurCityInfo } from './component/city';
+import { http_base } from './systems/base';
 
 let cache = new Map()
 
@@ -64,19 +62,18 @@ export class Debug {
         }
 
         if(cmd == "test"){
-            GameRules.QSet.player_query.entities.forEach(elm=>{
-                print(elm.get(PLAYER))
-            })
+
             // http_buy(
             //     "qing_xue_cheng",
             //     "modules_npc_ji_shi_role",
             //     GameRules.QSet.is_select_role.first,
-            //     "item_tian_hui_sui_pian_count",
-            //     50
+            //     "item_tian_hui_sui_pian",
+            //     5,
+            //     5,
             // )
         }
         if(cmd == "reload"){
-            to_client_event_container.forEach(val=>{
+            container.to_client_event_container.forEach(val=>{
                 to_client_event("player")(val)
                 to_debug()(val)
             })
@@ -348,6 +345,27 @@ export class Debug {
                 // item.LaunchLoot(false,200,0.75,hero.GetOrigin().__add(vec),hero)
             })
         }
+
+        if(cmd == "cache"){
+            const cache = GameRules.world.entities.map(ent=>{
+                print(ent)
+                return ent.getComponents().map(elm=>{
+                    if(container.to_save_container.has(elm.constructor.name)){
+                        return Object.assign(_replace$2obj(elm),{$$$$class_name:elm.constructor.name})
+                    }
+                })
+            })
+            DeepPrintTable(cache)
+            const json_str = JSON.encode(cache)
+            // print(json_str)
+            const http = CreateHTTPRequest("POST","http://localhost:3123/")
+            http.SetHTTPRequestRawPostBody("application/json",json_str)
+            http.Send((res)=>{})
+        }
+
+
+
+
         if(cmd == "testbuild"){
             try{
                 create_city_road_wfc("snow_01").then(elm=>{
@@ -401,7 +419,6 @@ export class Debug {
 
             prop_dynamic.SetEntityName("modules_npc_" + args[1])
         }
-
         if(cmd == "http"){
             print("触发这个")
             const path = args[0];

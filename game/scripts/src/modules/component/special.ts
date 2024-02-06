@@ -42,7 +42,7 @@ export class SystemProgress{
     }
 }
 
-@doc.watch("none",)
+@doc.watch("none")
 export class OkPanel{
     constructor(
         public title:string,

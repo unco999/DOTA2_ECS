@@ -103,14 +103,14 @@ module.exports = {
 
                 // if filename is not set, it will use the name of the entry
                 { import: './dungeon/layout.xml', type: 'Hud' },
-                { import: './system/layout.xml', type: 'Hud' },
+                { import: './nav/layout.xml', type: 'Hud' },
+                { import: './system/script.ts' },
                 { import: './character_select/layout.xml', type: 'Hud' },
                 { import: './big_world/layout.xml', type: 'Hud' },
                 { import: './npc/layout.xml', type: 'Hud' },
                 { import: './hud/layout.xml', type: 'Hud' },
 
-            ],
-        }),
+            ]}),
         // use ignore plugin to ignore less files changes
         new WatchIgnorePlugin({ paths: [/\.less$/] }),
     ],

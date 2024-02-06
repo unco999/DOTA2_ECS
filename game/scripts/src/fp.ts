@@ -1,7 +1,6 @@
 import { Entity } from "./lib/ecs/Entity"
 import { Class } from "./lib/utils/Class"
 import { WFC } from "./lib/wfc/wfc2D"
-import { PLAYER, HERO, MarkCache } from "./modules/component/base"
 import type {  SystemProgress,  OkPanel } from "./modules/component/special"
 
 import * as snow_01 from "./modules/map_json/snow_01.json"
@@ -10,9 +9,6 @@ import * as zi_luo_lan_json from "./modules/map_json/zi_luo_lan_01.json"
 import * as kuangdong from "./modules/map_json/kuang_dong_01.json"
 import * as yan_shi from "./modules/map_json/yan_shi_01.json"
 import * as ban_xue from "./modules/map_json/ban_xue_01.json"
-import { LinkedComponent } from "./lib/ecs/LinkedComponent"
-import { request } from "./server/core/request"
-import { OpenAPI } from "./server/core/OpenAPI"
 
 
 /**这里的key是城市的名字 */
@@ -22,17 +18,6 @@ const tileset_modules_type = {
     "zi_luo_lan_dang_an_guan":ban_xue,
     "ni_ao_er_de_de_bi_lu":yan_shi
 }
-
-
-export const comp_container:Set<string> = new Set()
-
-//装饰器容器
-export const comp_decorator_clear_container:Map<string,Function[]> = new Map()
-
-
-export const to_client_event_container:Set<InstanceType<any>> = new Set()
-
-export const to_debug_container:Map<string,Class<any>> = new Map()
 
 export const NONE = {none:"none"} as any
 export const WAIT = {wait:"wait"} as any
@@ -47,25 +32,6 @@ export const BOOLEAN_WAIT = (val:boolean,get?:(instance:any)=>boolean) => ({wait
 export const TABLE_WAIT = (val:AnyTable,get?:(instance:any)=>AnyTable) => ({wait:"wait",init:val,url:get}) as any
 
 
-interface DotaHttpContainerData {
-    dataSource:string,
-    database:string,
-    collection:string,
-    stage:string,
-    instance:InstanceType<any>
-}
-
-interface SystemHttoContainerData extends DotaHttpContainerData{
-    system_key:(instance:InstanceType<any>) => Promise<MONGODB_SYSTEM_KEY>
-}
-
-
-export const http_comp_decorator_container:Map<string,DotaHttpContainerData> = new Map()
-export const http_comp_decorator_container_with_init:Map<string,DotaHttpContainerData> = new Map()
-export const http_with_user_container:Map<string,DotaHttpContainerData> = new Map();
-export const http_with_system_container:Map<string,SystemHttoContainerData> = new Map();
-
-export const is_has_http_comp:Map<string,DotaHttpContainerData> = new Map()
 
 
 export function cache_remove(context:InstanceType<any>){
@@ -76,7 +42,7 @@ export function cache_remove(context:InstanceType<any>){
 
 export function clear_event(...fns:((contenxt:InstanceType<any>)=>void)[]){
     return (target:any) =>{
-        comp_decorator_clear_container.set(target.name,fns)
+        container.comp_decorator_clear_container.set(target.name,fns)
         return target
     }
 }
@@ -106,16 +72,24 @@ export function tableWatch(callback:Function[],context?:InstanceType<any>){
     return (parrent,oldkey,value) => {
         const mt = {
             __metatable:value,
-            __index : value,
-            __newindex : function (this:any,k, v){
+            __index : function(k){
+                print("tableWatch访问的k",k,value)
+                if( typeof value[k] != 'object'){
+                    return value[k]
+                }
+                print("tableWatchtableWatchtype(value) == 'table'","返回的代理")
+                return {[k]:{}}
+            },
+            __newindex : function (k,val){
               const oldVal = value[k]
-              rawset(value, k, v)
-              if (oldVal != v){
-                    callback?.forEach(f=>f(context))
-                    print(`[watch] ${context['$$$$entity']} table change [${tostring(k)} = ${v}] oldvalue[${oldVal}]`) 
-                  }
+              value[k] = val
+              print("tableWatch访问的k深度值检测到了",k)
+               print(this?.constructor?.name)
+              if (oldVal != val){
+                 callback?.forEach(f=>f(context))
+                }
               }
-          }  
+        }
           parrent[oldkey] = setmetatable({},mt)
     }
 }
@@ -125,88 +99,99 @@ export function has(obj:any,key:string|number){
 }
 
 export class doc{
-    static watch<T extends new (...args: ConstructorParameters<T>) => InstanceType<T>>(mode:"deep"|"none",...fns:((comp:InstanceType<T>,remove_tag?:boolean)=>void)[]) {
-        return (target: T) => {
-            const constructor = target.prototype.____constructor as (this:void,...args) => any
-            target.prototype.____constructor = unco_new
-            
-            function unco_new(this:InstanceType<T>,...args:any) {
-                constructor(this,...args)
-                const cache_key = ecsGetKV(this)
-                const contenxt = this;
-                let link:string|undefined = undefined
-                for(let [key,value] of cache_key){
     
-                    const newkey = comp_container.has(target.name) ? key  : "$$$$" + tostring(key)
-                    if(type(value) == 'table'){
-                        mode == "deep" && traverseObject(value,(e)=> !has(e,"entindex"),tableWatch(fns,this))
-                        const mt = {
-                          __metatable:value,
-                          __index : value,
-                          __newindex : function (k, v){
-                            const oldVal = value[k]
-                            rawset(value, k, v)
-                            if (oldVal != v){
-                                  print(`[watch] ${this['$$$$entity']} table change [${tostring(k)} = ${v}] oldvalue[${oldVal}]`) 
-                                  fns?.forEach(f=>f(this))
-                                }
+ static watch<T extends new (...args: ConstructorParameters<T>) => InstanceType<T>>(mode:"deep"|"none",...fns:((comp:InstanceType<T>,remove_tag?:boolean)=>void)[]) {
+    return (target: T) => {
+        const constructor = target.prototype.____constructor as (this:void,...args) => any
+        target.prototype.____constructor = unco_new
+        
+        function unco_new(this:InstanceType<T>,...args:any) {
+            constructor(this,...args)
+            const cache_key = ecsGetKV(this)
+            const contenxt = this;
+            for(let [key,value] of cache_key){
+                const newkey = container.comp_container.has(target.name) ? key  : "$$$$" + tostring(key)
+                if(type(value) == 'table'){
+                    const mt = {
+                      __metatable:value,
+                      __index : function(k){
+                        if( typeof value[k] != 'object'){
+                            return value[k]
+                        }
+                        return setmetatable({[k]:{}},{__newindex:function(deepk,deepv){
+                            print(`一层${key} 二层${k} 三层${deepk} ${deepv}`)
+                            rawset(value[k],deepk,deepv)
+                            fns.forEach(f=>f(contenxt))
+                            return value[k][deepk]
+                        }})
+                    },
+                      __newindex : function (k, v){
+                        const oldVal = value[k]
+                        rawset(value, k, v)
+                        if (oldVal != v){
+                              print(`[watch] ${contenxt['$$$$entity']} table change [${tostring(k)} = ${v}] oldvalue[${oldVal}]`) 
+                              fns?.forEach(f=>f(contenxt))
                             }
-                        }  
-                        rawset(this as any,newkey,setmetatable({},mt))
-                    }
-                    else{
-                        rawset(this as any,newkey,value)
+                        }
                     }  
-                    if(!comp_container.has(target.name)){
-                        print("删除的key是",link,target.name,key)
-                        this[key] = null
-                    }
+                    rawset(this as any,newkey,setmetatable({},mt))
                 }
-                GameRules.enquence_delay_call(()=>{
-                    if(this["$$$$entity"]){
-                        fns.forEach(f=>f(this))
-                        return false
-                    }else{
-                        return true
-                    }
-                })
-                if(comp_container.has(target.name)) return; 
-                    cache_key.forEach(([key,value])=>{
-                    Object.defineProperty(this,key,{
-                        "set":function(v){
-                            if(mode == "deep" && typeof v == 'object') {
-                                traverseObject(v,(e)=> !has(e,"entindex"),tableWatch(fns,v))
-                                const mt = {
-                                    __metatable:v,
-                                    __index : function(k){
-                                        if( typeof v[k] != 'object'){
-                                            return v[k]
-                                        }
-                                        return {[k]:{}}
-                                    },
-                                    __newindex : function (k,val){
-                                      const oldVal = value[k]
-                                      v[k] = val
-                                      if (oldVal != val){
-                                            fns?.forEach(f=>f(contenxt))
-                                          }
-                                      }
-                                }
-                                this["$$$$" + key] = setmetatable({},mt)
-                                fns.forEach(f=>f(this))
-                                return
-                            }
-                            this["$$$$" + key] = v
-                            fns.forEach(f=>f(this))
-                        },
-                        "get":function(){
-                            return this["$$$$" + key]
-                        },
-                    })
-                })
-                comp_container.add(target.name)
+                else{
+                    rawset(this as any,newkey,value)
+                }  
+                if(!container.comp_container.has(target.name)){
+                    this[key] = null
+                }
             }
+            Timers.CreateTimer(()=>{
+               if(this["$$$$entity"]){
+                 fns.forEach(f=>f(this))
+                 return
+                }
+                return 0.01
+            })
+            if(container.comp_container.has(target.name)) return; 
+            const context = this
+                cache_key.forEach(([key,value])=>{
+                Object.defineProperty(this,key,{
+                    "set":function(v){
+                        if(mode == "deep" && typeof v == 'object') {
+                            const mt = {
+                                __metatable:v,
+                                __index : function(k){
+                                    print("取值",k,v[k])
+                                    if( typeof v[k] != 'object'){
+                                        return v[k]
+                                    }
+                                    return setmetatable({[k]:{}},{__newindex:function(deepk,deepv){
+                                        rawset(v[k],deepk,deepv)
+                                        fns.forEach(f=>f(context))
+                                        return v[k][deepk]
+                                    }})
+                                },
+                                __newindex : function (k,val){
+                                  const oldVal = value[k]
+                                  v[k] = val
+                                  if (oldVal != val){
+                                        fns?.forEach(f=>f(context))
+                                      }
+                                  }
+                            }
+                            this["$$$$" + key] = setmetatable({},mt)
+                            fns.forEach(f=>f(this))
+                            return
+                        }
+                        this["$$$$" + key] = v
+                        fns.forEach(f=>f(this))
+                    },
+                    "get":function(){
+                        return this["$$$$" + key]
+                    },
+                })
+            })
+            container.comp_container.add(target.name)
         }
+    }
     }
 }
 
@@ -215,23 +200,35 @@ export class doc{
  * 延迟一帧执行
  */
 export function enquence_delay_call(){
-    const cur:Function[] = []
+    const cur:Map<string,Function> = new Map()
     Timers.CreateTimer(()=>{
-        const fn = cur.pop()
-        if(fn){
-            fn()
+        const fns = cur.keys().next().value as string
+        if(fns){
+            cur.get(fns)();
+            cur.delete(fns)
+        }else{
+            return GameRules.GetGameFrameTime() * 3
         }
         return GameRules.GetGameFrameTime()
-    },this)
-    return (fn:Function) =>{
-        cur.push(fn)
+    })
+    return (fn:Function,name?:string) =>{
+        cur.set(name??DoUniqueString("fn"),fn)
+    }
+}
+
+export function to_save(){
+    return (instance)=>{
+        if(!container.to_save_container.has(instance.constructor.name)){
+            print("添加了to_save")
+            container.to_save_container.add(instance.constructor.name)
+        }
     }
 }
 
 export function to_debug(){
     return (instance)=>{
-        if(!to_debug_container.has(instance.constructor.name)){
-            to_debug_container.set(instance.constructor.name,getmetatable(instance).constructor as any)
+        if(!container.to_debug_container.has(instance.constructor.name)){
+            container.to_debug_container.set(instance.constructor.name,getmetatable(instance).constructor as any)
         }
         if(getmetatable(instance)){
             if(getmetatable(getmetatable(instance))?.constructor?.name == "LinkedComponent"){
@@ -314,25 +311,25 @@ export function to_debug(){
  */
 export function http(mode:"init"|"update"|'both' = "both",dataSource:string,database:string,collection:string,stage:string,system_key?:(instance:InstanceType<any>) => Promise<MONGODB_SYSTEM_KEY>){
     return (instance:InstanceType<any>) => {
-        if(is_has_http_comp.has(instance.constructor.name)){
+        GameRules.enquence_delay_call(()=>{
+        if(container.is_has_http_comp.has(instance.constructor.name)){
             return;
         }
-        if(collection == "user" && !http_with_user_container.has(instance.constructor.name)){
-            print("进入了withuser",instance.constructor.name)
-            http_with_user_container.set(instance.constructor.name,{dataSource,database,collection,stage,instance})
+        if(collection == "user" && !container.http_with_user_container.has(instance.constructor.name)){
+            container.http_with_user_container.set(instance.constructor.name,{dataSource,database,collection,stage,instance})
             return;
         }
-        if(collection == "system" && !http_with_user_container.has(instance.constructor.name)){
-            print("进入了system",instance.constructor.name)
-            http_with_system_container.set(instance.constructor.name,{dataSource,database,collection,stage,instance,system_key})
+        if(collection == "system" && !container.http_with_user_container.has(instance.constructor.name)){
+            container.http_with_system_container.set(instance.constructor.name,{dataSource,database,collection,stage,instance,system_key})
             return;
         }
-        http_comp_decorator_container.set(instance.constructor.name,{dataSource,database,collection,stage,instance})
+        container.http_comp_decorator_container.set(instance.constructor.name,{dataSource,database,collection,stage,instance})
         if(mode == "init" || mode == "both"){
-            http_comp_decorator_container_with_init.set(instance.constructor.name,{dataSource,database,collection,stage,instance})
+            container.http_comp_decorator_container_with_init.set(instance.constructor.name,{dataSource,database,collection,stage,instance})
         }
         return instance
      }
+    ,instance.constructor.name +"http")}
 }
 
 
@@ -363,7 +360,7 @@ export function _replace$2obj(instance:object){
     let obj = {}
     //@ts-ignore
     for(let key in instance){
-        if(key.includes("__index") || key.includes("next")||key.includes("____constructor")||key.includes("constructor")) continue
+        if(  key.includes("next")||key.includes("____constructor")||key.includes("constructor")) continue
         obj[key.replace("$$$$","")] = typeof instance[key] == 'object' ? getmetatable(instance[key]) ?? instance[key] : instance[key]
     }
     return obj
@@ -381,7 +378,7 @@ export function SatisfyFn<T>(predicate:(T:T)=>boolean,...fns:((T:T)=>void)[]){
 
 export function to_player_net_table<T>(){
     return (instance:T) => {
-        const player_cmp:PLAYER = GameRules.world.getEntityById(instance['$$$$entity'])?.get(PLAYER)
+        const player_cmp = GameRules.world.getEntityById(instance['$$$$entity'])?.get(c.base.PLAYER)
         print("检车传递啊哈收到",instance['$$$$entity'])
         if(player_cmp == null) return;
         const cache = CustomNetTables.GetTableValue("player_comps","player" + player_cmp.PlayerID)
@@ -406,8 +403,8 @@ export function to_system_net_table<T>(){
 export function to_client_event<T>(owner:"player"|"hero"|"system"|"player_hero",is_clear:boolean = false){
     return (instance:T) => {
         GameRules.enquence_delay_call(()=>{
-            if(!to_client_event_container.has(instance)){
-                to_client_event_container.add(instance)
+            if(!container.to_client_event_container.has(instance)){
+                container.to_client_event_container.add(instance)
             }
             const send_obj = Object.assign({},_replace$2obj(instance as object));
             if(owner == "system" ){
@@ -415,7 +412,7 @@ export function to_client_event<T>(owner:"player"|"hero"|"system"|"player_hero",
                 return;
             }
             if(owner == "player" ){
-                const player_cmp:PLAYER = GameRules.world.getEntityById(instance['$$$$entity'])?.get(PLAYER)
+                const player_cmp = GameRules.world.getEntityById(instance['$$$$entity'])?.get(c.base.PLAYER)
                 if(player_cmp == null) return;
                 print("收到改变",instance.constructor.name)
                 player_cmp && (send_obj["$$$$player_id"] = player_cmp.PlayerID);
@@ -424,22 +421,22 @@ export function to_client_event<T>(owner:"player"|"hero"|"system"|"player_hero",
                 return;
             }
             if(owner == "hero"){
-                const hero_cmp:HERO = GameRules.world.getEntityById(instance['$$$$entity'])?.get(HERO)
+                const hero_cmp = GameRules.world.getEntityById(instance['$$$$entity'])?.get(c.base.HERO)
                 if(hero_cmp == null) return;
                 hero_cmp && (send_obj["$$$$hero_idx"] = hero_cmp.hero_idx);
                 CustomGameEventManager.Send_ServerToAllClients(instance.constructor.name + hero_cmp.hero_idx + "hero",is_clear ? {} :send_obj);
                 return;
             }
             if(owner == "player_hero"){
-                const player_cmp:PLAYER = GameRules.world.getEntityById(instance['$$$$entity'])?.get(PLAYER)
+                const player_cmp = GameRules.world.getEntityById(instance['$$$$entity'])?.get(c.base.PLAYER)
                 if(player_cmp == null) return;
                 player_cmp && (send_obj["$$$$player_id"] = player_cmp.PlayerID);
-                const hero_cmp:HERO = GameRules.world.getEntityById(instance['$$$$entity'])?.get(HERO)
+                const hero_cmp = GameRules.world.getEntityById(instance['$$$$entity'])?.get(c.base.HERO)
                 hero_cmp && (send_obj["$$$$hero_idx"] = hero_cmp.hero_idx);
                 CustomGameEventManager.Send_ServerToAllClients(instance.constructor.name + player_cmp.PlayerID + hero_cmp.hero_idx + "player_hero",is_clear ? {} :send_obj);
                 return;
             }
-        })
+        },instance.constructor.name + "to_client_event")
     }
 }
 
@@ -561,7 +558,7 @@ export async function create_npc_with_static(city_name:string){
 }
 
 
-export async function create_with_static_table(city_name:string,progress:SystemProgress,map_cache:MarkCache){
+export async function create_with_static_table(city_name:string,progress:SystemProgress,map_cache:InstanceType<typeof c.base.MarkCache>){
     try{
     let i = 0
     for (let y = 0; y < 8; y++) {
@@ -740,70 +737,3 @@ _G['TriggerOkPanel'] = TriggerOkPanel
 
 export const NUMMAX = math.huge
 
-
-
- const a = {
-     "_id": { "$oid": "65bc517bb7ddc84df4822726" },
-     "city": "qing_xue_cheng",
-     "npc_name": "modules_npc_ji_shi_role",
-     "sell_list": {
-       "item_yuan_chu_yi_shi": { "$numberInt": "10" },
-       "item_lei_yuan_su": { "$numberInt": "10" },
-       "item_an_yuan_su": { "$numberInt": "10" },
-       "item_bian_ti_mo_fang": { "$numberInt": "10" },
-       "item_tian_hui_sui_pian": { "$numberInt": "10" },
-       "item_ye_yan_sui_pian": { "$numberInt": "10" },
-       "item_ruo_he_li_jin_gu_shi": { "$numberInt": "10" },
-       "item_qiang_he_li_jin_gu_shi": { "$numberInt": "10" },
-       "item_dian_ci_li_jin_gu_shi": { "$numberInt": "10" },
-       "item_yuan_gu_wu_zhi_sui_pian": { "$numberInt": "10" },
-       "item_dian_kuang_zhi_yue_sui_pian": { "$numberInt": "10" },
-       "item_zhen_shi_bao_shi": { "$numberInt": "10" },
-       "item_huan_qiang_fen_mo": { "$numberInt": "10" },
-       "item_guai_shou_he_xin": { "$numberInt": "10" },
-       "item_hong_se_cao_yao": { "$numberInt": "10" },
-       "item_wei_luo_di_xi_ya_sheng_ming_zhi_shi": { "$numberInt": "10" },
-       "item_zi_se_cao_yao": { "$numberInt": "10" },
-       "item_sai_li_meng_ni_de_yue_shi": { "$numberInt": "10" },
-       "item_ni_ta_sha_ye_zhi_shi": { "$numberInt": "10" },
-       "item_quan_neng_shen_de_zhu_fu": { "$numberInt": "10" },
-       "item_si_kui_ao_ke_de_nu_huo": { "$numberInt": "10" },
-       "item_xu_kong_jing_hua": { "$numberInt": "10" },
-       "item_huang_se_cao_yao": { "$numberInt": "10" },
-       "item_lv_se_cao_yao": { "$numberInt": "10" },
-       "item_long_zu_zhi_xue": { "$numberInt": "10" },
-       "item_bing_yuan_su": { "$numberInt": "10" },
-       "item_yin_li_sui_pian": { "$numberInt": "10" },
-       "item_huo_yuan_su": { "$numberInt": "10" },
-       "item_chao_xi_zhi_li": { "$numberInt": "10" },
-       "item_yuan_chu_yi_shi_count": { "$numberInt": "10" },
-       "item_lei_yuan_su_count": { "$numberInt": "10" },
-       "item_an_yuan_su_count": { "$numberInt": "10" },
-       "item_bian_ti_mo_fang_count": { "$numberInt": "10" },
-       "item_tian_hui_sui_pian_count": { "$numberInt": "10" },
-       "item_ye_yan_sui_pian_count": { "$numberInt": "10" },
-       "item_ruo_he_li_jin_gu_shi_count": { "$numberInt": "10" },
-       "item_qiang_he_li_jin_gu_shi_count": { "$numberInt": "10" },
-       "item_dian_ci_li_jin_gu_shi_count": { "$numberInt": "10" },
-       "item_yuan_gu_wu_zhi_sui_pian_count": { "$numberInt": "10" },
-       "item_dian_kuang_zhi_yue_sui_pian_count": { "$numberInt": "10" },
-       "item_zhen_shi_bao_shi_count": { "$numberInt": "10" },
-       "item_huan_qiang_fen_mo_count": { "$numberInt": "10" },
-       "item_guai_shou_he_xin_count": { "$numberInt": "10" },
-       "item_hong_se_cao_yao_count": { "$numberInt": "10" },
-       "item_wei_luo_di_xi_ya_sheng_ming_zhi_shi_count": { "$numberInt": "10" },
-       "item_zi_se_cao_yao_count": { "$numberInt": "10" },
-       "item_sai_li_meng_ni_de_yue_shi_count": { "$numberInt": "10" },
-       "item_ni_ta_sha_ye_zhi_shi_count": { "$numberInt": "10" },
-       "item_quan_neng_shen_de_zhu_fu_count": { "$numberInt": "10" },
-       "item_si_kui_ao_ke_de_nu_huo_count": { "$numberInt": "10" },
-       "item_xu_kong_jing_hua_count": { "$numberInt": "10" },
-       "item_huang_se_cao_yao_count": { "$numberInt": "10" },
-       "item_lv_se_cao_yao_count": { "$numberInt": "10" },
-       "item_long_zu_zhi_xue_count": { "$numberInt": "10" },
-       "item_bing_yuan_su_count": { "$numberInt": "10" },
-       "item_yin_li_sui_pian_count": { "$numberInt": "10" },
-       "item_huo_yuan_su_count": { "$numberInt": "10" },
-       "item_chao_xi_zhi_li_count": { "$numberInt": "10" },
-     }
-}

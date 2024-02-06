@@ -35,6 +35,7 @@ export interface LocalEvent {
         type:string;
         uuid:string;
         data:any;
+        call_back?:(input:any)=>void
     }
 
     create_role:{}

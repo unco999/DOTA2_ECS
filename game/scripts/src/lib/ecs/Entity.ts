@@ -4,7 +4,6 @@ import {Signal} from '../utils/Signal';
 import {isTag, Tag} from './Tag';
 import {ILinkedComponent, isLinkedComponent} from './LinkedComponent';
 import {LinkedComponentList} from './LinkedComponentList';
-import { PLAYER } from '../../modules/component/base';
 
 /**
  * Entity readonly interface
@@ -540,7 +539,7 @@ export class Entity implements ReadonlyEntity {
     if (!this._tags.has(tag)) {
       this._tags.add(tag);
       this.dispatchOnComponentAdded(tag);
-      const player_id = GameRules.world?.getEntityById(this.id)?.get(PLAYER)?.PlayerID
+      const player_id = GameRules.world?.getEntityById(this.id)?.get(c.base.PLAYER)?.PlayerID
       if(player_id == null){
          print("添加了系统tag",tag.toString())
          const obj = CustomNetTables.GetTableValue("system_tag",tag.toString())
@@ -787,7 +786,7 @@ export class Entity implements ReadonlyEntity {
     if (this._tags.has(tag)) {
       this._tags.delete(tag);
       this.dispatchOnComponentRemoved(tag);
-      const player_id = GameRules.world?.getEntityById(this.id)?.get(PLAYER)?.PlayerID
+      const player_id = GameRules.world?.getEntityById(this.id)?.get(c.base.PLAYER)?.PlayerID
       if(player_id == null){
         const obj = CustomNetTables.GetTableValue("system_tag",tag.toString())
         CustomNetTables.SetTableValue("system_tag",tag.toString(), obj ? Object.assign(obj,{[tag]:0}) : {[tag]:0})

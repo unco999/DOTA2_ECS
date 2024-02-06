@@ -1,6 +1,8 @@
 import { Entity } from "../../lib/ecs/Entity";
 import { LinkedComponent } from "../../lib/ecs/LinkedComponent";
 import * as wolrd_map_json from "../../json/game_big_world_map.json"
+import { doc, to_save } from "../../fp";
+
 
 export class MapBaseBlock{
     constructor(
@@ -37,7 +39,7 @@ export class CurDungeonConfig{
     }
 }
 
-
+@doc.watch("none",to_save())
 /**
  * 世界地图基础数据
  */

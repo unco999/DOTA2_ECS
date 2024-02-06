@@ -1,8 +1,8 @@
-import { doc, http, to_client_event, to_debug } from "../../fp";
+import { doc, http, to_client_event, to_debug, to_save } from "../../fp";
 import { LinkedComponent } from "../../lib/ecs/LinkedComponent";
 import { HERO } from "./base";
 
-@doc.watch("none",to_debug(),
+@doc.watch("deep",to_debug(),to_save(),
 to_client_event("system"))
 export class npc<T> extends LinkedComponent{
     constructor(

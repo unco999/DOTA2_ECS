@@ -1,39 +1,25 @@
 import { QueryBuilder } from "../../lib/ecs/Query";
-import { HERO, MarkCache, PLAYER } from "../component/base";
-import { MapCacheResouce } from "../component/map";
-import { npc } from "../component/npc";
-import { Dungeon, Move, MoveToCreep } from "../component/role";
-import { Progress } from "../component/special";
 
 export namespace Qset{
 
     export const player_query = new QueryBuilder()
-    .contains(PLAYER)
+    .contains(c.base.PLAYER)
     .build();
 
     export const map_cache = new QueryBuilder()
-    .contains(MapCacheResouce)
+    .contains(c.map.MapCacheResouce)
     .build();
 
-    export const dungeon_player_move_entity = new QueryBuilder()
-    .contains(Dungeon)
-    .contains(PLAYER)
-    .contains(Move)
-    .build()
 
 
     export const progress_query = new QueryBuilder()
-    .contains(Progress)
+    .contains(c.special.Progress)
     .build()
 
-
-    export const map_hit_creep_tag = new QueryBuilder()
-    .contains(MoveToCreep)
-    .build()
 
 
     export const with_hero_query = new QueryBuilder()
-    .contains(HERO)
+    .contains(c.base.HERO)
     .build()
 
     export const is_select_role = new QueryBuilder()
@@ -49,7 +35,7 @@ export namespace Qset{
     .build()
 
     export const Cache = new QueryBuilder()
-    .contains(MarkCache)
+    .contains(c.base.MarkCache)
     .build()
 
     export const is_cur_deleta_cache = new QueryBuilder()
@@ -61,7 +47,7 @@ export namespace Qset{
     .build()
 
     export const has_npc = new QueryBuilder()
-    .contains(npc)
+    .contains(c.npc.npc)
     .build()
 
     export const cur_in_city_map_ent = new QueryBuilder()

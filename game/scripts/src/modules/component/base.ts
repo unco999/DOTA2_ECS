@@ -1,8 +1,8 @@
+import { doc, to_save } from "../../fp";
 import { Entity } from "../../lib/ecs/Entity";
 import { LinkedComponent } from "../../lib/ecs/LinkedComponent";
 
-
-
+@doc.watch("none",to_save())
 export class PLAYER{
     constructor(
         public steam_id:string,
@@ -12,6 +12,7 @@ export class PLAYER{
     }
 }
 
+@doc.watch("none",to_save())
 export class HERO{
     constructor(
        public name:string,
@@ -35,7 +36,6 @@ export class UiCache{
     ){}
 }
 
-
 //实体关联组件
 export class Link extends LinkedComponent{
     constructor(
@@ -46,6 +46,8 @@ export class Link extends LinkedComponent{
     }
 }
 
+
+@doc.watch("none",to_save())
 export class State extends LinkedComponent{
     constructor(
         public state:XstateID

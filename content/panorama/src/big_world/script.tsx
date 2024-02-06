@@ -43,6 +43,8 @@ export const BigMapMain = () =>{
 
     const [hero_data,hero_update] = useCompWithPlayer("RoleWorldMapData",Players.GetLocalPlayer())
 
+
+
     const cur_data = useMemo(()=>{
         if(!check(hero_data?.cur_map_index)){
             return [0,0]
@@ -343,6 +345,7 @@ const MapMask = ({x,y,mask_name,is_can_move}:{x:number,y:number,mask_name:string
         </>
 }
  
+
 render(
 <>
 <BigMapMain/>

@@ -1,48 +1,13 @@
-import { $Log, NONE, NUM_WAIT, PickArrayNumString2D, STRING_WAIT, TABLE_WAIT, WAIT, deep_print, http_comp_decorator_container_with_init, http_with_user_container, to_debug, to_debug_container } from "../../fp";
+import { $Log, NONE, NUM_WAIT, PickArrayNumString2D, STRING_WAIT, TABLE_WAIT, WAIT, deep_print,  to_debug  } from "../../fp";
 import { Entity } from "../../lib/ecs/Entity";
 import { QueryBuilder } from "../../lib/ecs/Query";
 import { System } from "../../lib/ecs/System";
 import { OpenAPI } from "../../server/core/OpenAPI";
 import { request } from "../../server/core/request";
-import { HERO, Link, PLAYER, Pair, State, UiCache } from "../component/base";
-import { MapCacheResouce } from "../component/map";
-import { CurrentScene, Dungeon, GrowUp, Move, PlayerGold, RoleInfo, RoleSlot, RoleWorldMapData, SurroundingMaps } from "../component/role";
-import { Progress } from "../component/special";
 import { back_main_xstate, back_xstate, next_xstate, spawn_xstate } from "./xstate";
 import * as map_json from "../../json/game_big_world_map_init_city.json"
-import { scene } from "../component/tag";
 
 
-
-export class PlayerDungeon extends System{
-
-    player_in_dungeon_init(){
-        const Qset = GameRules.QSet;
-
-
-        const map_cache_data = Qset.map_cache.first.get(MapCacheResouce).map_data;
-
-        const cur_cache_data = PickArrayNumString2D(map_cache_data,0,0,8,4);
-
-
-        const move_comp  =Qset.player_query.first.get(Move)
-        move_comp.x = 0
-        move_comp.y = 0
-        const surrounding_maps = new SurroundingMaps(cur_cache_data)
-        Qset.player_query.first.add(surrounding_maps)
-
-    }
-
-    public onAddedToEngine(): void {
-        Timers.CreateTimer(10,()=>{
-            this.engine.dispatch(new GameRules.event.BuildSystemEvent("build_dungeon_map"))
-        },this)
-
-        this.engine.subscribe(GameRules.event.MapEvent,(event)=>{
-            this.player_in_dungeon_init()
-        })
-    }
-}
 
 
 class ProgressSystem extends System{
@@ -74,7 +39,7 @@ export const unco_gamestate_enum = {
 export class game_loop_system extends System{
 
     public start(){
-        this.sharedConfig.add(new UiCache({}));
+        this.sharedConfig.add(new c.base.UiCache({}));
         const game_state_main = spawn_xstate("game_state_main",{
             id:"game_state_main",
             initial:"none",
@@ -393,27 +358,27 @@ export class game_loop_system extends System{
         next_xstate(main_ui_id)
         
 
-        this.sharedConfig.appendComponent(new State(
+        this.sharedConfig.appendComponent(new c.base.State(
             main_ui_id
         ))
 
-        this.sharedConfig.appendComponent(new State(
+        this.sharedConfig.appendComponent(new c.base.State(
             ui_main_role_id
         ))
 
-        this.sharedConfig.appendComponent(new State(
+        this.sharedConfig.appendComponent(new c.base.State(
             game_state_main
         ))
 
-        this.sharedConfig.appendComponent(new State(
+        this.sharedConfig.appendComponent(new c.base.State(
             ui_main_map
         ))
 
-        this.sharedConfig.appendComponent(new State(
+        this.sharedConfig.appendComponent(new c.base.State(
             ui_tileset_map
         ))
 
-        this.sharedConfig.addComponent(new State(
+        this.sharedConfig.addComponent(new c.base.State(
             ui_city
         ))
     }
@@ -440,13 +405,11 @@ export class game_init_system extends System{
             const test_entity = new Entity(); 
             this.engine.addEntity(test_entity);
             
-            const move = new Move(12,33);
             print("steamid_",PlayerResource.GetSteamID(Player.GetPlayerID()))
             
-            test_entity.add(new PLAYER(PlayerResource.GetSteamID(Player.GetPlayerID()).ToHexString(),Player.GetPlayerID()))
-                       .add(move)
-                       .add(new RoleSlot(WAIT,WAIT,WAIT,WAIT))
-                       .add(new PlayerGold(WAIT,WAIT,WAIT,WAIT,WAIT,WAIT,WAIT))
+            test_entity.add(new c.base.PLAYER(PlayerResource.GetSteamID(Player.GetPlayerID()).ToHexString(),Player.GetPlayerID()))
+                       .add(new c.role.RoleSlot(WAIT,WAIT,WAIT,WAIT))
+                       .add(new c.role.PlayerGold(WAIT,WAIT,WAIT,WAIT,WAIT,WAIT,WAIT))
 
             let login = await request(OpenAPI,{
                         method:"POST",
@@ -459,7 +422,7 @@ export class game_init_system extends System{
            print("login")
            
            DeepPrintTable(login)
-           const roleslot = test_entity.get(RoleSlot)
+           const roleslot = test_entity.get(c.role.RoleSlot)
            roleslot.slot1 = login?.result['RoleSlot']?.[1] ?? NONE
            roleslot.slot2 = login?.result['RoleSlot']?.[2] ?? NONE
            roleslot.slot3 = login?.result['RoleSlot']?.[3] ?? NONE
@@ -470,18 +433,18 @@ export class game_init_system extends System{
                 }
                 const role_ent = new Entity()
                 
-                test_entity.append(new Link("slot" + i,role_ent))
+                test_entity.append(new c.base.Link("slot" + i,role_ent))
 
-                role_ent.add(new CurrentScene("default","default",scene.大地图))
+                role_ent.add(new c.role.CurrentScene("default","default",c.tag.scene.大地图))
                 this.engine.addEntity(role_ent)
                 role_ent
-                    .add(test_entity.get(PLAYER))
-                    .add(new RoleInfo(
+                    .add(test_entity.get(c.base.PLAYER))
+                    .add(new c.role.RoleInfo(
                         login.result?.['RoleInfo']?.[i].born_map,
                         login.result?.['RoleInfo']?.[i].born_hero,
                         login.result?.['RoleInfo']?.[i].create_time,
                         login.result?.['RoleInfo']?.[i].is_dead))
-                    .add(new PlayerGold(
+                    .add(new c.role.PlayerGold(
                         login.result?.['PlayerGold']?.[i].gold_1,
                         login.result?.['PlayerGold']?.[i].gold_2,
                         login.result?.['PlayerGold']?.[i].gold_3,
@@ -550,7 +513,7 @@ export class remove_role_system extends System{
     public onAddedToEngine(): void {
         this.engine.subscribe(GameRules.event.OkEvent,(event)=>{
             if(event.type == "remove_role" && event.click == "ok"){
-            const steam_id = GameRules.QSet.player_query.find(p=>p.get(PLAYER)?.PlayerID == event.PlayerID)?.get(PLAYER)?.steam_id
+            const steam_id = GameRules.QSet.player_query.find(p=>p.get(c.base.PLAYER)?.PlayerID == event.PlayerID)?.get(c.base.PLAYER)?.steam_id
 
 
             request(OpenAPI,{
@@ -574,13 +537,13 @@ export class remove_role_system extends System{
                         }
                     }
                 }}).then(val=>{
-                    const player_ent = GameRules.QSet.player_query.find(p=>p.get(PLAYER)?.PlayerID == event.PlayerID)
-                    player_ent.get(RoleSlot)["slot" + event.data.slot] = NONE
+                    const player_ent = GameRules.QSet.player_query.find(p=>p.get(c.base.PLAYER)?.PlayerID == event.PlayerID)
+                    player_ent.get(c.role.RoleSlot)["slot" + event.data.slot] = NONE
                     print("slot" + event.data.slot,"被删除了")
                     //把玩家的RoleSlot全部向前移动到头 确保没有空位
                     for(let i = event.data.slot ; i < 4 ; i++){
-                        if(player_ent.get(RoleSlot)["slot" + (i + 1)] == null){ return }
-                        player_ent.get(RoleSlot)["slot" + i] = player_ent.get(RoleSlot)["slot" + (i + 1)]
+                        if(player_ent.get(c.role.RoleSlot)["slot" + (i + 1)] == null){ return }
+                        player_ent.get(c.role.RoleSlot)["slot" + i] = player_ent.get(c.role.RoleSlot)["slot" + (i + 1)]
                     }
 
                     CustomGameEventManager.Send_ServerToPlayer(PlayerResource.GetPlayer(event.PlayerID),"LargePopupBox",{tag_name:"删除角色成功",player_id:event.PlayerID})
@@ -594,7 +557,7 @@ export class role_in_game_ok_system extends System{
     public load(event:InstanceType<typeof GameRules.event.OkEvent>){
         //让UI进入下一个阶段
         next_xstate("ui_main")
-        const player_ent = GameRules.QSet.player_query.find(p=>p.get(PLAYER)?.PlayerID == event.PlayerID)
+        const player_ent = GameRules.QSet.player_query.find(p=>p.get(c.base.PLAYER)?.PlayerID == event.PlayerID)
         const select_uuid = event.data.uuid;
         const select_slot = event.data.slot;
         print("查找问题",player_ent)
@@ -602,19 +565,46 @@ export class role_in_game_ok_system extends System{
             Warning("没找到适配角色 uuid 不存在 或者select_index不存在")
         }
 
-        player_ent.iterate(Link,(comp)=>{
+        player_ent.iterate(c.base.Link,(comp)=>{
             if(comp.type == "slot" + select_slot){
                 print(`[ecs]:${"slot" + select_slot}的玩家插槽被选择`)
                 const select_ent = comp.entity;
-                select_ent.add(player_ent.get(PLAYER))
+                select_ent.add(player_ent.get(c.base.PLAYER))
+                const inventory_comp = new c.quipment.Inventory({} as any)
+                inventory_comp.slots.slot_0 = {ecs_entity_index:-1,dota_entity:-1 as EntityIndex}
+                inventory_comp.slots.slot_1 = {ecs_entity_index:-1,dota_entity:-1 as EntityIndex}
+                inventory_comp.slots.slot_2 = {ecs_entity_index:-1,dota_entity:-1 as EntityIndex}
+                inventory_comp.slots.slot_3 = {ecs_entity_index:-1,dota_entity:-1 as EntityIndex}
+                inventory_comp.slots.slot_4 = {ecs_entity_index:-1,dota_entity:-1 as EntityIndex}
+                inventory_comp.slots.slot_5 = {ecs_entity_index:-1,dota_entity:-1 as EntityIndex}
+                inventory_comp.slots.slot_6 = {ecs_entity_index:-1,dota_entity:-1 as EntityIndex}
+                inventory_comp.slots.slot_7 = {ecs_entity_index:-1,dota_entity:-1 as EntityIndex}
+                inventory_comp.slots.slot_8 = {ecs_entity_index:-1,dota_entity:-1 as EntityIndex}
+
+                const equipmentState = new c.quipment.EquipmentState(
+                    {ecs_entity_index:-1,dota_entity:-1 as EntityIndex,type:c.quipment.EQUIPMENT_TYPE.Headwear},
+                    {ecs_entity_index:-1,dota_entity:-1 as EntityIndex,type:c.quipment.EQUIPMENT_TYPE.Weapon},
+                    {ecs_entity_index:-1,dota_entity:-1 as EntityIndex,type:c.quipment.EQUIPMENT_TYPE.Clothes},
+                    {ecs_entity_index:-1,dota_entity:-1 as EntityIndex,type:c.quipment.EQUIPMENT_TYPE.Necklace},
+                    {ecs_entity_index:-1,dota_entity:-1 as EntityIndex,type:c.quipment.EQUIPMENT_TYPE.Back},
+                    {ecs_entity_index:-1,dota_entity:-1 as EntityIndex,type:c.quipment.EQUIPMENT_TYPE.Shoulder},
+                    {ecs_entity_index:-1,dota_entity:-1 as EntityIndex,type:c.quipment.EQUIPMENT_TYPE.Hand},
+                    {ecs_entity_index:-1,dota_entity:-1 as EntityIndex,type:c.quipment.EQUIPMENT_TYPE.Hand},
+                    {ecs_entity_index:-1,dota_entity:-1 as EntityIndex,type:c.quipment.EQUIPMENT_TYPE.Ring},
+                    {ecs_entity_index:-1,dota_entity:-1 as EntityIndex,type:c.quipment.EQUIPMENT_TYPE.Ring},
+                )
+
+
+                select_ent.add(inventory_comp)
+                select_ent.add(equipmentState)
                 select_ent.addTag(GameRules.tag.is_game_select_role)
-                select_ent.add(new RoleWorldMapData(
+                select_ent.add(new c.role.RoleWorldMapData(
                     STRING_WAIT("",(instance:RoleWorldMapData)=>{
                     //初始化 如果没有这个表 那么我们读取创造角色时候的地图
-                    return select_ent.get(RoleInfo)?.born_map
+                    return select_ent.get(c.role.RoleInfo)?.born_map
                 }),STRING_WAIT("",(instance:any)=>{
                     //初始化 如果单位没有初始化城市 那么这个就用json数据表里的记载来初始化角色位置
-                    return map_json[select_ent.get(RoleInfo)?.born_map as keyof typeof map_json].create_role_init_map_mark
+                    return map_json[select_ent.get(c.role.RoleInfo)?.born_map as keyof typeof map_json].create_role_init_map_mark
                 }),TABLE_WAIT({},()=>{
                     return {map_index:"none",landmark_index:"none",schedule:0}
                 })))
@@ -623,7 +613,7 @@ export class role_in_game_ok_system extends System{
         })
         next_xstate("game_state_main")
         Timers.CreateTimer(()=>{
-            if( http_comp_decorator_container_with_init.size == 0 ){
+            if( container.http_comp_decorator_container_with_init.size == 0 ){
                 next_xstate("game_state_main")
                 next_xstate("ui_main")
                 return
@@ -645,7 +635,7 @@ export class ui_system extends System{
     public onAddedToEngine(): void {
         this.engine.subscribe(GameRules.event.OkEvent,(event)=>{
             if(event.click == "ok"){
-                 const cache = this.sharedConfig.get(UiCache)
+                 const cache = this.sharedConfig.get(c.base.UiCache)
                  if(cache.ui_cache.OkPanel == null){
                      cache.ui_cache.OkPanel = {}
                  }
@@ -729,7 +719,7 @@ export class create_role_system extends System{
             return
        }
 
-       const steam_id = GameRules.QSet.player_query.find(p=>p.get(PLAYER)?.PlayerID == PlayerID)?.get(PLAYER)?.steam_id
+       const steam_id = GameRules.QSet.player_query.find(p=>p.get(c.base.PLAYER)?.PlayerID == PlayerID)?.get(c.base.PLAYER)?.steam_id
 
        const grow_up = {} as any
 
@@ -737,7 +727,7 @@ export class create_role_system extends System{
           grow_up[key] = attribute_table[key].val
        })
     
-       const uicache = this.sharedConfig.get(UiCache)
+       const uicache = this.sharedConfig.get(c.base.UiCache)
        const slot = uicache.ui_cache["OkPanel"]['slot']
        
 
@@ -763,23 +753,23 @@ export class create_role_system extends System{
         }
     }).then(res=>{
         try{
-            const player_ent = GameRules.QSet.player_query.find(p=>p.get(PLAYER)?.PlayerID == PlayerID)
+            const player_ent = GameRules.QSet.player_query.find(p=>p.get(c.base.PLAYER)?.PlayerID == PlayerID)
 
-            player_ent.get(RoleSlot)["slot" + slot] = {hero_name,origin_name:origin_hero_name,uuid}
+            player_ent.get(c.role.RoleSlot)["slot" + slot] = {hero_name,origin_name:origin_hero_name,uuid}
 
             const role_ent = new Entity()
 
-            role_ent.add(player_ent.get(PLAYER));
+            role_ent.add(player_ent.get(c.base.PLAYER));
 
-            role_ent.add(new RoleInfo(data.map_name,hero_name,GetSystemDate(),false))
+            role_ent.add(new c.role.RoleInfo(data.map_name,hero_name,GetSystemDate(),false))
 
-            const grow_up_comp = new GrowUp(grow_up.strength_up,grow_up.intelligence_up,grow_up.dexterity_up,grow_up.attack_damage_up,grow_up.magic_resistance_up,grow_up.flame_attack_up,grow_up.ice_attack_up,grow_up.lightning_attack_up,grow_up.shadow_attack_up,grow_up.fire_resistance_up,grow_up.frost_resistance_up,grow_up.lightning_resistance_up,grow_up.storm_resistance_up,uuid)
+            const grow_up_comp = new c.role.GrowUp(grow_up.strength_up,grow_up.intelligence_up,grow_up.dexterity_up,grow_up.attack_damage_up,grow_up.magic_resistance_up,grow_up.flame_attack_up,grow_up.ice_attack_up,grow_up.lightning_attack_up,grow_up.shadow_attack_up,grow_up.fire_resistance_up,grow_up.frost_resistance_up,grow_up.lightning_resistance_up,grow_up.storm_resistance_up,uuid)
            
             role_ent.add(grow_up_comp)
             
             CustomGameEventManager.Send_ServerToPlayer(PlayerResource.GetPlayer(PlayerID),"LargePopupBox",{tag_name:"成功创建角色",player_id:PlayerID})
            
-            const player_gold_comp = new PlayerGold(0,0,0,0,0,0,300);
+            const player_gold_comp = new c.role.PlayerGold(0,0,0,0,0,0,300);
 
             role_ent.add(player_gold_comp)
 
@@ -849,7 +839,7 @@ export class unco_debug_system extends System{
         CustomGameEventManager.RegisterListener("c2s_debug_comp_change_value",(_,event)=>{
             const ent = this.engine.getEntityById(event.entity)
             if(ent){
-                const comp = ent.get( to_debug_container.get(event.comp_name) ) as InstanceType<any>
+                const comp = ent.get( container.to_debug_container.get(event.comp_name) ) as InstanceType<any>
                 const slice = event.key.split("::")
                 const [k1,k2,k3,k4,k5] = slice
 
@@ -902,18 +892,22 @@ export class unco_debug_system extends System{
                     }
                 
                     if(event.op == "set"){
-                        if(comp[k1]?.[k2]?.[k3]?.[k4]?.[k5]){
-                            print("存在")
-                            comp[k1][k2][k3][k4][k5] = event.data
-                        }else if(comp[k1]?.[k2]?.[k3]?.[k4]){
-                            comp[k1][k2][k3][k4]= event.data
-                        }else if(comp[k1]?.[k2]?.[k3]){
-                            comp[k1][k2][k3]= event.data
-                        }else if(comp[k1]?.[k2]){
-                            comp[k1][k2] = event.data
-                        }else if(comp[k1]){
-                            comp[k1]= event.data
-                        }
+                        slice.reduce((pre,cur,index)=>{
+                            print("index",index)
+                            print("slice.length - 1",slice.length - 1)
+                            if(index == slice.length - 1){
+                                print("最后一个值得",cur)
+                                if(comp[cur] == null){
+                                    comp[cur] = 0
+                                }
+                                const try_num = parseFloat(event.data)
+                                comp[cur] = isNaN(try_num) ? event.data : try_num
+                                return
+                            }
+                            if(typeof comp[cur] == "object"){
+                                return comp[cur]
+                            }
+                        },k1)
                     }
                 }
             }

@@ -83,3 +83,8 @@ export const Kline = ({data,tile}:{data:number[],tile:string}) =>{
 
 
 
+export const Loading = ({offsetx,offsety}:{offsetx?:number,offsety?:number}) =>{
+    return <Panel style={{marginLeft:offsetx ? offsetx + "px" : "0px",marginTop:offsety ? offsety + "px" : "0px",maxWidth:"100%",height:"100%",align:"center center"}}>
+       <Movie key={Math.random()} src="s2r://panorama/videos/loading.webm" style={{maxHeight:"50%",align:"center center"}}  repeat={true} autoplay="onload"/>
+    </Panel>
+}

@@ -1,6 +1,5 @@
 import { weak } from "../../fp";
 import { Entity } from "../../lib/ecs/Entity";
-import { RoleWorldMapData } from "../component/role";
 
 
 export namespace event{

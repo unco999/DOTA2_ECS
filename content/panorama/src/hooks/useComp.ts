@@ -5,47 +5,52 @@ import { onLocalEvent } from "../utils/event-bus";
 
 export function useCompWithPlayer<T extends keyof compc_map>(compName:T,PlayerID:PlayerID):[compc_map[T],number] {
     const [comp,change_comp] = useState<compc_map[T]>();
-    const last_update_time = useRef<number>(0)
+    const [last_update_time,set_last_update_time] = useState<number>(0)
 
     useEffect(()=>{
-         if(last_update_time.current == 0 && GameUI.CustomUIConfig().comp_data_with_date_time_cache[compName] ){
+         if(last_update_time == 0 && GameUI.CustomUIConfig().comp_data_with_date_time_cache?.[compName] ){
              change_comp(GameUI.CustomUIConfig().comp_data_with_date_time_cache[compName] as compc_map[T])
          }
-    },[])
+    },[last_update_time])
 
     useLayoutEffect(()=>{
         const id = GameEvents.Subscribe(compName + PlayerID + "player",(data)=>{
             change_comp(data as compc_map[T])
-            last_update_time.current =  new Date().getTime()
-            GameUI.CustomUIConfig().comp_data_with_date_time_cache[compName] = data as compc_map[T]
+            set_last_update_time(new Date().getTime())
+            $.Schedule(Game.GetGameFrameTime(),()=>{Game.GetGameFrameTime()
+                GameUI.CustomUIConfig().comp_data_with_date_time_cache[compName] = data as compc_map[T]
+            })
         })
         return ()=>GameEvents.Unsubscribe(id)
     },[])
 
 
-    return [comp!,last_update_time.current];
+    return [comp!,last_update_time];
 }
 
 export function useCompWithSystem<T extends keyof compc_map,V extends Partial<compc_map[T]>>(compName:keyof compc_map,deep?:V,defualt?:compc_map[T]) {
     let [comp,change_comp] = useState<compc_map[T]>();
-    const last_update_time = useRef<number>(0)
+    const [last_update_time,set_last_update_time] = useState<number>(0)
 
     useEffect(()=>{
-        if(last_update_time.current == 0 && GameUI.CustomUIConfig().comp_data_with_date_time_cache[compName] ){
+        if(last_update_time == 0 && GameUI.CustomUIConfig().comp_data_with_date_time_cache?.[compName] ){
+            $.Msg("超级",GameUI.CustomUIConfig().comp_data_with_date_time_cache)
             change_comp(GameUI.CustomUIConfig().comp_data_with_date_time_cache[compName] as compc_map[T])
         }
-   },[])
+   },[last_update_time])
 
     useLayoutEffect(()=>{
         const id = GameEvents.Subscribe(compName,(data)=>{
             change_comp(data as compc_map[T])
-            last_update_time.current =  new Date().getTime()
-            GameUI.CustomUIConfig().comp_data_with_date_time_cache[compName] = data as compc_map[T]
+            set_last_update_time(new Date().getTime())
+            $.Schedule($.FrameTime(),()=>{
+                GameUI.CustomUIConfig().comp_data_with_date_time_cache[compName] = data as compc_map[T]
+            })
         })
         return ()=>GameEvents.Unsubscribe(id)
     },[])
 
-    return [comp!,last_update_time.current];
+    return [comp!,last_update_time];
 }
 
 export function useCompWithHeroAndPlayer<T extends keyof compc_map,V extends Partial<compc_map[T]>>(compName:keyof compc_map,PlayerID:PlayerID,hero_idx:EntityIndex,deep?:V,defualt?:compc_map[T]):compc_map[T] | undefined {
