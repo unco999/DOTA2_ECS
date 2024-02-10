@@ -5,13 +5,90 @@ import { render, useGameEvent, useNetTableKey } from 'react-panorama-x';
 import { useXNetTableKey } from '../hooks/useXNetTable';
 import { onLocalEvent, useLocalEvent } from '../utils/event-bus';
 import { useCompWithPlayer } from '../hooks/useComp';
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useMemo, useRef, useState } from 'react';
 //@ts-ignore
 import {Motion, spring} from "@serprex/react-motion"
 import { pop_tag } from '../config';
 import { LocalEvent } from '../def/local_event_def';
+import { luaToJsArray } from '../base';
+
+const main_style= {
+    "init": {
+        opacity: 0,
+        scale:5,
+    },
+    "spawn":{
+        opacity: 1,
+        scale:1,
+    },
+}
+
+const BigTileWolrd = () =>{
+        
+    const [last_state,set_last_state] = useState<keyof typeof main_style>("init")
+    const [state,setState] = useState<keyof typeof main_style>("init")
+    const text = useRef<string>("测试代码")
+    const [position,set_position] = useState<[number,number,number]>([0,0,0])
+
+    useLocalEvent("game_start",()=>{
+        const player = Players.GetLocalPlayer()
+        const hero = Players.GetPlayerHeroEntityIndex(player)
+        const position = Entities.GetAbsOrigin(hero)
+        set_position(position)
+    })
+
+    useEffect(()=>{
+        const player = Players.GetLocalPlayer()
+        const hero = Players.GetPlayerHeroEntityIndex(player)
+        if(hero == -1){
+            return;
+        }
+        const position = Entities.GetAbsOrigin(hero)
+        if(position){
+            set_position(position)
+        }
+    },[])
+
+    useGameEvent("s2c_big_world_tile",(event)=>{
+        const _pos = luaToJsArray(event.position) as [number,number,number]
+        set_position(_pos)
+        text.current = event.tile
+        next_state("spawn")
+    },[])
 
 
+
+    /**更换状态只能用这个接口 */
+    const next_state = (key:keyof typeof main_style) => {
+        set_last_state(state)
+        setState(key)
+    }
+
+
+     useEffect(()=>{
+        next_state("spawn")
+    },[])
+
+    return <Motion key={position[0] + position[1] + position[2] + "bigworldtile"} defaultStyle={main_style[last_state]} style={{
+        opacity: spring(main_style[state].opacity),
+        scale: spring(main_style[state].scale),
+    }}> 
+        {(style:any) => 
+        <Panel hittest={false} style={{width:"100%",height:"100%"}}>
+            <Label ref={p=>$.Schedule(1,()=>next_state("init"))} key={position[0] + position[1] + position[2] + "bigworldtile"} text={text.current} style={{
+            fontSize:"100px"
+            ,color:"white",
+            textShadow:"2px 2px 8px 3.0 #333333b0",
+            preTransformScale2d:style.scale.toFixed(6),
+            opacity:style.opacity.toFixed(6),
+            align:"left top",
+            x:Game.WorldToScreenX(position[0],position[1],position[2]) / Game.GetScreenWidth() * 1920 - 200 + "px",
+            y:Game.WorldToScreenY(position[0],position[1],position[2]) / Game.GetScreenHeight() * 1080 - 100 + "px"
+        }} html={true}/>
+        </Panel>
+        }
+    </Motion>
+}
 
 
 const LargePopupBox: FC = () => {
@@ -460,6 +537,7 @@ const OkNumberInputPanel: FC = () => {
    
 render(
 <>
+<BigTileWolrd/>
 <Progress/>
 <LargePopupBox />
 <SystemProgress/>

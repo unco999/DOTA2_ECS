@@ -23,7 +23,6 @@ export class Progress{
 @clear_event(cache_remove)
 @doc.watch("none",to_system_net_table(),SatisfyFn<SystemProgress>((e)=>e.cur == e.max && e.is_over == false,(comp:SystemProgress)=>
 {
-    print("我已经发送了系统进度条事件",comp.type)
     comp.is_over = true;
     GameRules.world.dispatch(new GameRules.event.ProgressEvent(comp.type,comp.uuid,comp.data))
 }   

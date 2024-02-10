@@ -1,4 +1,4 @@
-import { NONE, WAIT, deep_print, get_entity, replace$2obj } from "../../fp";
+import { NONE, WAIT, get_entity, _replace$2obj } from "../../fp";
 import { System } from "../../lib/ecs/System";
 import { OpenAPI } from "../../server/core/OpenAPI";
 import { request } from "../../server/core/request";
@@ -115,7 +115,7 @@ export class steam_id_http_init_system extends System {
                                 if(val && comp_name == val?.instance?.constructor?.name){
                                     print("该comp",data[key]["_id"],"<id")
                                     val.instance["_id"] = data[key]["_id"]
-                                    for(let raw_key in replace$2obj(val.instance)){
+                                    for(let raw_key in _replace$2obj(val.instance)){
                                         print("当前原始值",raw_key)
                                         if(data[key][raw_key] != null){
                                             val.instance[raw_key] = data[key][raw_key]
@@ -129,7 +129,7 @@ export class steam_id_http_init_system extends System {
                         let null_record_comp = new Set<any>()
     
                         for (let [_,val] of container.http_comp_decorator_container_with_init){
-                            const new_table = replace$2obj(val.instance)
+                            const new_table = _replace$2obj(val.instance)
                             for(let key in new_table){
                                 if(typeof val.instance[key] == "object" && val.instance[key].wait == "wait"){
                                     null_record_comp.add(val.instance)
@@ -203,7 +203,7 @@ export class steam_id_http_init_system extends System {
     update_mongodb(instance_list:Set<any>){
         let new_list = []
         for(let elm of instance_list){
-            new_list.push(replace$2obj({steam_id:get_entity(elm).get(c.base.PLAYER).steam_id,"#comp":elm.constructor.name,...elm}))
+            new_list.push(_replace$2obj({steam_id:get_entity(elm).get(c.base.PLAYER).steam_id,"#comp":elm.constructor.name,...elm}))
         }
         return new_list
     }

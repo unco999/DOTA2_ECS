@@ -109,9 +109,8 @@ module.exports = {
                 { import: './big_world/layout.xml', type: 'Hud' },
                 { import: './npc/layout.xml', type: 'Hud' },
                 { import: './hud/layout.xml', type: 'Hud' },
-
             ]}),
         // use ignore plugin to ignore less files changes
-        new WatchIgnorePlugin({ paths: [/\.less$/] }),
+        new WatchIgnorePlugin({ paths: [/\.less$/] }), 
     ],
 };

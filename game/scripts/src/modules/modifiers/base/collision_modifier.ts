@@ -38,7 +38,7 @@ export class collision_modifier extends BaseModifier{
                   })
             }
             if(collision.length > 0){
-                _m.SetAbsOrigin(_m.GetAbsOrigin().__sub(_m.GetForwardVector().__mul(50)))
+                _m.SetAbsOrigin(_m.GetAbsOrigin().__sub(_m.GetForwardVector().__mul(10)))
                 _m.Stop()
             }
         }

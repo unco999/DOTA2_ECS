@@ -77,7 +77,7 @@ const Debug = () =>{
 
     return   <Panel ref={p=>main.current = p!} style={{flowChildren:"right-wrap",zIndex:100,width:"100%",height:"100%",backgroundColor:"rgba(0,0,0,0.9)"}}>
            <TextEntry ontextentrychange={p=>val.current = p.text} text='请输入字符串'/>
-           {data.map((elm:any,index:any)=><Comp key={"comp_debug" + elm.comp_name + elm.entity + elm.$_update_time } index={elm.comp_name + elm.entity } className={elm.comp_name} entity={elm.entity} table={elm.data}/>)}
+           {data.map((elm:any,index:any)=><Comp key={"comp_debug" + elm.comp_name + elm.entity + elm.$_update_time + Math.random() } index={elm.comp_name + elm.entity } className={elm.comp_name} entity={elm.entity} table={elm.data}/>)}
         </Panel> 
 } 
 
@@ -126,7 +126,7 @@ const Comp = ({className,entity,table,index}:{className:string,entity:number,tab
     return  <>
             <Panel hittest={true} onactivate={toggle} style={{width:"16px",height:"16px",backgroundColor:"yellow",borderRadius:"10px"}}/>
             <Label style={{flowChildren:"down"}}  text={`<font color='#7FFF00'>[${state ? "close" : "open"}]<font>  <font color='#FFF8DC'>` + "[" + className + "]<font>" + `<font color='#E9967A'>` + "[eid=" + entity + "]<font>"} html={true}>
-               {state && <Label key={"convertJsonToHtml"+state} style={{borderRadius:"20px",backgroundColor:"#FFB6C102"}} text={convertJsonToHtml(table)} html={true}/>}
+               {state && <Label key={"convertJsonToHtml"+state} style={{"overflow":"scroll",borderRadius:"20px",backgroundColor:"#FFB6C102"}} text={convertJsonToHtml(table)} html={true}/>}
             </Label>
             </>
 

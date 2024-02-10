@@ -24,7 +24,6 @@ export namespace http_base{
        const hero = PlayerResource.GetPlayer(player_idx).GetAssignedHero()
        
        if(!player_gold_comp){
-           print("buy not find player_gold_comp")
            return
        }
        const city_with_gold_string = gold_json[buy_city as keyof typeof gold_json] 
@@ -48,18 +47,14 @@ export namespace http_base{
        try{
            item_num_data = item_num_data.map(elm=>parseInt(elm.toString()))
            if(item_num_data.some(elm=>isNaN(elm))){
-               print("http transaction error num is NaN")
                return false
            }
        }catch(err){
-           print("http transaction error num is convert error")
-           print(err)
            return false
        }
    
        if(type == "buy"){   // city_ent.iterate(c.npc.npc,(npc_comp)=>{
            const [count,total,price] = item_num_data
-           print("33333")
               request(OpenAPI,{
                   method:"POST",
                   url:"/data/v1/action/updateOne",
@@ -88,7 +83,6 @@ export namespace http_base{
                       ],                
                  }}).then((elm:any)=>{
                   if(elm.modifiedCount == 1){
-                      print("啊是多久啊斯柯达设计的撒赖扩大就爱上恐龙的")
                       player_gold_comp[op_gold] -= total;
                       CustomGameEventManager.Send_ServerToPlayer(PlayerResource.GetPlayer(player_idx),"LargePopupBox",{tag_name:"购买成功...",player_id:player_idx});
                       GameRules.enquence_delay_call(()=>{
@@ -96,7 +90,6 @@ export namespace http_base{
                       })
                       return true
                   }else{
-                    print("错误错误错误错误错误错误")
                       CustomGameEventManager.Send_ServerToPlayer(PlayerResource.GetPlayer(player_idx),"LargePopupBox",{tag_name:"购买失败,库存不足或价格不合适...",player_id:player_idx});
                       return
                   }

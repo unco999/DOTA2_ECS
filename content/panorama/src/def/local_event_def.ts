@@ -50,6 +50,7 @@ export interface LocalEvent {
 
     next_shop:string
     back_shop:string
+    game_start:string
 
     in_shop:{}
 }

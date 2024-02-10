@@ -244,7 +244,7 @@ export class Entity implements ReadonlyEntity {
    * The signal dispatches if component was removed from the entity. Works for every linked component as well.
    */
   public readonly onComponentRemoved: Signal<ComponentUpdateHandler> = new Signal();
- c
+ 
   public readonly onInvalidationRequested: Signal<(entity: Entity) => void> = new Signal();
 
 

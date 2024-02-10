@@ -1,12 +1,16 @@
-import { _replace$2obj, create_city_road_wfc, deep_print, to_client_event, to_debug } from '../fp';
+import { TRACE, _replace$2obj, create_city_road_wfc, sigmoid, to_client_event, to_debug } from '../fp';
 import { OpenAPI } from '../server/core/OpenAPI';
 import { request } from '../server/core/request';
 import { reloadable } from '../utils/tstl-utils';
 import * as map_test_json from "../modules/map_json/test.json"
 import * as qiang from "../modules/map_json/qiang.json"
 import { http_base } from './systems/base';
+import { attribute_modifier } from './modifiers/base/attribute_modifier';
+import { matrix} from '../lib/math/martrix';
+import { rubic_box } from './systems/rubic_box';
 
 let cache = new Map()
+
 
 @reloadable
 export class Debug {
@@ -58,7 +62,6 @@ export class Debug {
 
         if (cmd == "huishou") {
             collectgarbage("collect");
-            print("当前使用内存",collectgarbage("count"))
         }
 
         if(cmd == "test"){
@@ -71,6 +74,9 @@ export class Debug {
             //     5,
             //     5,
             // )
+        }
+        if(cmd == "ecsitem"){
+            c.quipment.testCreateRandomItem(args[0])
         }
         if(cmd == "reload"){
             container.to_client_event_container.forEach(val=>{
@@ -123,7 +129,6 @@ export class Debug {
             
         }
         if(cmd == "skin"){
-            print(cache.size)
             cache.forEach((elm:CBaseModelEntity)=>{
                 if(elm.GetClassname()?.includes("prop_dynamic"))
                 elm?.SetSkin?.(Number(args[0]))
@@ -140,7 +145,6 @@ export class Debug {
             const center_t = {}
             const center = Entities.FindAllByName("tileset_*_center") 
             center.forEach(elm=>{
-                print(elm.GetName())
                 center_t[elm.GetName()] =  elm.GetOrigin()
             })
 
@@ -363,6 +367,13 @@ export class Debug {
             http.Send((res)=>{})
         }
 
+        if(cmd == "mat"){
+            let g = matrix.mul(rubic_box.item_ruo_he_li_jin_gu_shi,rubic_box.item_yuan_chu_yi_shi)
+            print("cao")
+            g = matrix.replace(g,sigmoid())
+            DeepPrintTable(g)
+            // const a = 4 ~ 5
+        }
 
 
 
@@ -384,7 +395,25 @@ export class Debug {
             cache.clear()
         }
         if(cmd == "a"){
-            
+            //@ts-ignore
+            print(ModifierFunction['ON_ATTACKED'])
+        }
+        if(cmd == "log"){
+            GameRules.enquence_delay_call(()=>{
+                print("延迟调用1")
+            },undefined,1000)
+            GameRules.enquence_delay_call(()=>{
+                print("延迟调用2")
+            },undefined,2000)
+            GameRules.enquence_delay_call(()=>{
+                print("延迟调用3")
+            },undefined,3000)
+            GameRules.enquence_delay_call(()=>{
+                print("延迟调用4") 
+            },undefined,4000)
+            GameRules.enquence_delay_call(()=>{                                                                                                                                                                                                                                                                                                
+                print("延迟调用5")
+            },undefined,5000)
         }
         if(cmd == "staticbuild"){
             // const a = new generator_mark_build()
@@ -449,4 +478,3 @@ export class Debug {
         }
     }
 }
-

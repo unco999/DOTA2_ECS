@@ -54,6 +54,9 @@ export namespace Qset{
     .contains(GameRules.tag.is_cur_in_city_map_ent)
     .build()
 
+    export const cur_is_euqipments_ent = new QueryBuilder()
+    .contains(GameRules.tag.is_cur_euqipment_tag)
+    .build()
 }
 
 

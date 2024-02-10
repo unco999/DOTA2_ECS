@@ -84,7 +84,7 @@ declare type compc_map = {
     npc: npc<any>
     PlayerGold: PlayerGold
     Inventory:Inventory
-    EquipmentState:EquipmentState
+    EquipmentState:EquipmentStateExntendsComps
 }
 
 declare interface CustomGameEventDeclarations {
@@ -92,6 +92,8 @@ declare interface CustomGameEventDeclarations {
         tag_name: string;
         player_id: PlayerID
     };
+
+    s2c_big_world_tile:{position:[number,number,number],tile:string}
 
     c2s_test_event: {};
     s2c_comp_send: CompSend;
@@ -110,6 +112,7 @@ declare interface CustomGameEventDeclarations {
         data: any;
     }
     c2s_equit_item: { slot: number, item_entindex: EntityIndex }
+    c2s_equit_down_item: { slot: number, item_entindex: EntityIndex }
     shop_exit: {}
     [key: string]: any
 }
@@ -266,6 +269,8 @@ declare type npc_sell_list = {
     item_zi_se_cao_yao_count?: number;
 };
 
+declare type Matrix = number[][]
+
 declare interface Inventory {
     slots: { slot_1: { dota_entity: any; ecs_entity_index: number; }; slot_2: { dota_entity: any; ecs_entity_index: number; }; slot_3: { dota_entity: any; ecs_entity_index: number; }; slot_4: { dota_entity: any; ecs_entity_index: number; }; slot_5: { dota_entity: any; ecs_entity_index: number; }; slot_6: { dota_entity: any; ecs_entity_index: number; }; slot_7: { dota_entity: any; ecs_entity_index: number; }; slot_8: { dota_entity: any; ecs_entity_index: number; }; slot_9: { dota_entity: any; ecs_entity_index: number; }; };
 }
@@ -281,4 +286,17 @@ declare interface EquipmentState {
     slot_7?: { type: number; dota_entity: any; ecs_entity_index: number; };
     slot_8?: { type: number; dota_entity: any; ecs_entity_index: number; };
     slot_9?: { type: number; dota_entity: any; ecs_entity_index: number; };
+}
+
+declare interface EquipmentStateExntendsComps extends EquipmentState{
+    slot_0_comps?:Record<number,Record<string,any>>,
+    slot_1_comps?:Record<number,Record<string,any>>,
+    slot_2_comps?:Record<number,Record<string,any>>,
+    slot_3_comps?:Record<number,Record<string,any>>,
+    slot_4_comps?:Record<number,Record<string,any>>,
+    slot_5_comps?:Record<number,Record<string,any>>,
+    slot_6_comps?:Record<number,Record<string,any>>,
+    slot_7_comps?:Record<number,Record<string,any>>,
+    slot_8_comps?:Record<number,Record<string,any>>,
+    slot_9_comps?:Record<number,Record<string,any>>,
 }

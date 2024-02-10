@@ -88,3 +88,15 @@ export const Loading = ({offsetx,offsety}:{offsetx?:number,offsety?:number}) =>{
        <Movie key={Math.random()} src="s2r://panorama/videos/loading.webm" style={{maxHeight:"50%",align:"center center"}}  repeat={true} autoplay="onload"/>
     </Panel>
 }
+
+export const luaToJsArray = (items:any) =>{
+    const list = []
+    for(let key in items){
+        if(!isNaN(Number(key))){
+            list.push(items[key])
+        }
+    }
+    return list
+}
+
+$.Msg("测试",GameUI.CustomUIConfig().comp_data_with_date_time_cache)

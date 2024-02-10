@@ -35,7 +35,6 @@ export const TABLE_WAIT = (val:AnyTable,get?:(instance:any)=>AnyTable) => ({wait
 
 
 export function cache_remove(context:InstanceType<any>){
-    print("启动了清除功能")
     context["$$$$death"] = true;
     cache_remove_all(context)
 }
@@ -50,8 +49,9 @@ export function clear_event(...fns:((contenxt:InstanceType<any>)=>void)[]){
 
 export const ecsGetKV = (obj:AnyTable) => {
     const list: [string,any][] = []
-    for(const key in obj){
-        list.push([key,obj[key]])
+    const newobj =  _replace$2obj(obj)
+    for(const key in newobj){
+        list.push([key,newobj[key]])
     }
     return list;
 }
@@ -73,18 +73,14 @@ export function tableWatch(callback:Function[],context?:InstanceType<any>){
         const mt = {
             __metatable:value,
             __index : function(k){
-                print("tableWatch访问的k",k,value)
                 if( typeof value[k] != 'object'){
                     return value[k]
                 }
-                print("tableWatchtableWatchtype(value) == 'table'","返回的代理")
                 return {[k]:{}}
             },
             __newindex : function (k,val){
               const oldVal = value[k]
               value[k] = val
-              print("tableWatch访问的k深度值检测到了",k)
-               print(this?.constructor?.name)
               if (oldVal != val){
                  callback?.forEach(f=>f(context))
                 }
@@ -119,7 +115,6 @@ export class doc{
                             return value[k]
                         }
                         return setmetatable({[k]:{}},{__newindex:function(deepk,deepv){
-                            print(`一层${key} 二层${k} 三层${deepk} ${deepv}`)
                             rawset(value[k],deepk,deepv)
                             fns.forEach(f=>f(contenxt))
                             return value[k][deepk]
@@ -129,7 +124,6 @@ export class doc{
                         const oldVal = value[k]
                         rawset(value, k, v)
                         if (oldVal != v){
-                              print(`[watch] ${contenxt['$$$$entity']} table change [${tostring(k)} = ${v}] oldvalue[${oldVal}]`) 
                               fns?.forEach(f=>f(contenxt))
                             }
                         }
@@ -140,7 +134,7 @@ export class doc{
                     rawset(this as any,newkey,value)
                 }  
                 if(!container.comp_container.has(target.name)){
-                    this[key] = null
+                    rawset(this as any,key,null)
                 }
             }
             Timers.CreateTimer(()=>{
@@ -159,7 +153,6 @@ export class doc{
                             const mt = {
                                 __metatable:v,
                                 __index : function(k){
-                                    print("取值",k,v[k])
                                     if( typeof v[k] != 'object'){
                                         return v[k]
                                     }
@@ -189,7 +182,9 @@ export class doc{
                     },
                 })
             })
-            container.comp_container.add(target.name)
+            if(!container.comp_container.has(target.name)){
+                container.comp_container.add(target.name)
+            }
         }
     }
     }
@@ -201,25 +196,38 @@ export class doc{
  */
 export function enquence_delay_call(){
     const cur:Map<string,Function> = new Map()
+    const timer:Map<number,Function> = new Map()
     Timers.CreateTimer(()=>{
-        const fns = cur.keys().next().value as string
-        if(fns){
-            cur.get(fns)();
-            cur.delete(fns)
-        }else{
-            return GameRules.GetGameFrameTime() * 3
+        for(let batch = 0 ; batch < 3 ; batch ++){
+            const fns = cur.keys().next().value as string
+            if(fns){
+                if(cur.get(fns)() != "update"){
+                    cur.delete(fns)
+                }
+            }
         }
-        return GameRules.GetGameFrameTime()
+        for(let [over_time,val] of timer){
+            if(GetSystemTimeMS() >= Number(over_time) ){
+                if(val() != "update"){
+                   timer.delete(Number(over_time))
+                }
+            }
+        }
+        return 0.01
     })
-    return (fn:Function,name?:string) =>{
-        cur.set(name??DoUniqueString("fn"),fn)
+    return (fn:Function,name?:string,delay_ms?:number) =>{
+        if(delay_ms){
+            timer.set(GetSystemTimeMS() + delay_ms,fn)
+        }else{
+            cur.set(name??DoUniqueString("fn"),fn)
+        }
+        
     }
 }
 
 export function to_save(){
     return (instance)=>{
         if(!container.to_save_container.has(instance.constructor.name)){
-            print("添加了to_save")
             container.to_save_container.add(instance.constructor.name)
         }
     }
@@ -234,7 +242,6 @@ export function to_debug(){
             if(getmetatable(getmetatable(instance))?.constructor?.name == "LinkedComponent"){
                 const entity = GameRules.world.getEntityById(instance["$$$$entity"])
                 if(entity == null) return;
-                print("创造的name",instance.constructor.name)
                 GameRules.enquence_delay_call(()=>{
                     CustomGameEventManager.Send_ServerToAllClients("s2c_debug_comp",{
                         comp_name:instance.constructor.name,
@@ -251,7 +258,7 @@ export function to_debug(){
             CustomGameEventManager.Send_ServerToAllClients("s2c_debug_comp",{
                 comp_name:instance.constructor.name,
                 entity:instance["$$$$entity"],
-                data:replace$2obj(instance),
+                data:_replace$2obj(instance),
                 $_update_time:GetSystemTimeMS()
             })
         })
@@ -333,23 +340,7 @@ export function http(mode:"init"|"update"|'both' = "both",dataSource:string,data
 }
 
 
-export function weak(t:AnyTable){
-    const new_proxy = newproxy(true) 
-        const mt = getmetatable(new_proxy)
-        mt.__gc = function(){ print(`[gc]: ${t} is remove cache`) }
-        mt.__index = t as any
-        mt.__metatable = t
-        mt.__newindex = t as any
-        return new_proxy as any
-}
 
-export function replace$2obj(instance:object){
-    let obj = {}
-    for(let key in instance){
-        obj[key.replace("$$$$","")] = typeof instance[key] == 'object' ? getmetatable(instance[key]) ?? instance[key] : instance[key]
-    }
-    return obj
-}
 
 /**
  * 这个是频闭了一些关键词的replace
@@ -358,10 +349,18 @@ export function replace$2obj(instance:object){
  */
 export function _replace$2obj(instance:object){
     let obj = {}
-    //@ts-ignore
     for(let key in instance){
-        if(  key.includes("next")||key.includes("____constructor")||key.includes("constructor")) continue
+        if( key.includes("next")||key.includes("____constructor")||key.includes("constructor")) continue
         obj[key.replace("$$$$","")] = typeof instance[key] == 'object' ? getmetatable(instance[key]) ?? instance[key] : instance[key]
+    }
+    return obj
+}
+
+export function _replace$2KeytoArray(instance:object){
+    let obj:string[] = []
+    for(let key in instance){
+        if( key.includes("entity") || key.includes("next")||key.includes("____constructor")||key.includes("constructor")) continue
+        obj.push(key.replace("$$$$",""))
     }
     return obj
 }
@@ -371,7 +370,6 @@ export function SatisfyFn<T>(predicate:(T:T)=>boolean,...fns:((T:T)=>void)[]){
     return (instance:T) => {
         predicate(instance) && fns.forEach(fn=>{
             fn(instance)
-            print("发出最终事件")
         })
     }
 }
@@ -379,13 +377,9 @@ export function SatisfyFn<T>(predicate:(T:T)=>boolean,...fns:((T:T)=>void)[]){
 export function to_player_net_table<T>(){
     return (instance:T) => {
         const player_cmp = GameRules.world.getEntityById(instance['$$$$entity'])?.get(c.base.PLAYER)
-        print("检车传递啊哈收到",instance['$$$$entity'])
         if(player_cmp == null) return;
         const cache = CustomNetTables.GetTableValue("player_comps","player" + player_cmp.PlayerID)
-        const obj = {[instance.constructor.name]:replace$2obj(instance as any)}
-        print("更新过后的cache")
-        print(player_cmp.PlayerID)
-        DeepPrintTable(obj);
+        const obj = {[instance.constructor.name]:_replace$2obj(instance as any)}
         CustomNetTables.SetTableValue("player_comps","player" + player_cmp.PlayerID,cache ? Object.assign(cache,obj) : obj)
     }
 }
@@ -395,7 +389,7 @@ export function to_player_net_table<T>(){
 export function to_system_net_table<T>(){
     return (instance:T) => {
         const cache = CustomNetTables.GetTableValue("system_comps",instance.constructor.name)
-        const obj = {[instance.constructor.name]:replace$2obj(instance as any)}
+        const obj = {[instance.constructor.name]:_replace$2obj(instance as any)}
         CustomNetTables.SetTableValue("system_comps",instance.constructor.name,cache ? Object.assign(cache,obj) : obj)
     }
 }
@@ -406,7 +400,7 @@ export function to_client_event<T>(owner:"player"|"hero"|"system"|"player_hero",
             if(!container.to_client_event_container.has(instance)){
                 container.to_client_event_container.add(instance)
             }
-            const send_obj = Object.assign({},_replace$2obj(instance as object));
+            const send_obj = _replace$2obj(instance as object);
             if(owner == "system" ){
                 CustomGameEventManager.Send_ServerToAllClients(instance.constructor.name,is_clear ? {} : send_obj);
                 return;
@@ -414,9 +408,7 @@ export function to_client_event<T>(owner:"player"|"hero"|"system"|"player_hero",
             if(owner == "player" ){
                 const player_cmp = GameRules.world.getEntityById(instance['$$$$entity'])?.get(c.base.PLAYER)
                 if(player_cmp == null) return;
-                print("收到改变",instance.constructor.name)
                 player_cmp && (send_obj["$$$$player_id"] = player_cmp.PlayerID);
-                print(instance.constructor.name + player_cmp.PlayerID + "player");
                 CustomGameEventManager.Send_ServerToAllClients(instance.constructor.name + player_cmp.PlayerID + "player",is_clear ? {} : send_obj );
                 return;
             }
@@ -436,7 +428,7 @@ export function to_client_event<T>(owner:"player"|"hero"|"system"|"player_hero",
                 CustomGameEventManager.Send_ServerToAllClients(instance.constructor.name + player_cmp.PlayerID + hero_cmp.hero_idx + "player_hero",is_clear ? {} :send_obj);
                 return;
             }
-        },instance.constructor.name + "to_client_event")
+        },instance['$$$$entity'] ? (instance.constructor.name + instance['$$$$entity'] + "to_client_event") : (instance.constructor.name + "to_client_event") )
     }
 }
 
@@ -453,11 +445,7 @@ export function PickArrayNumString2D<T>(arr:Record<numString,Record<numString,T>
     }
     return res;
 }
-
-export function $Log(title:string,...value:any[]){
-    print(`[log:${title}] `);
-}
-
+ 
 //删除删除表里的所有值
 export function cache_remove_all(cache:object){
     for(let key in cache){
@@ -480,27 +468,6 @@ export function cache_remove_all(cache:object){
     }
 }
 
-
-//深度递归打印 如果目标有entindex函数 就只打印a.entindex()
-export function deep_print(obj:AnyTable,deep?:string){
-    for(let key in obj){
-        print("[read::]",key);
-        if( typeof key != "string"){
-            continue
-        }
-        if( typeof obj[key] == "object" && (obj[key] as CDOTA_BaseNPC_Hero).entindex){
-            print(`${deep ?? ""} => ${key} = ${(obj as CDOTA_BaseNPC_Hero).entindex()}`)
-            continue
-        }
-        if(typeof obj[key] == "number" || typeof obj[key] == "boolean" || typeof obj[key] == "string"){
-            print(`${deep ?? ""} => ${key} = ${obj[key]}`)
-            continue
-        }
-        if(typeof obj[key] == "object"){
-            deep_print(obj[key],key)
-        }
-    }
-}
 
 
 //compose 
@@ -572,7 +539,6 @@ export async function create_with_static_table(city_name:string,progress:SystemP
                 if(data){
                     for(let elm of data){
                         i++;
-                        print("创造物",elm.model)
                         // const raworigin = Vector(x * 1024 - 16384  + elm.origin.x,y * 1024 - 16384 + elm.origin.y,3)
                         const op_buildy = RotatePosition(Vector(0,0,0),QAngle(0,-rotate * 90,0),Vector(elm.origin.x,elm.origin.y,elm.origin.z))
                         let angles = `0 ${elm.angle.y + rotate * 90} 0`
@@ -609,6 +575,14 @@ export async function create_with_static_table(city_name:string,progress:SystemP
     catch(err){
         print(err)
     }
+}
+
+export function TriggerBigWolrdTile(tile:string,position:[number,number,number]){
+    print("发送了大字事件")
+    CustomGameEventManager.Send_ServerToAllClients("s2c_big_world_tile",{
+        position,
+        tile
+    })
 }
 
 /**
@@ -712,11 +686,29 @@ export async function create_city_road_wfc(terrain_type:string){
 
 }
 
-/**
- * 打印报告
- */
-function chunk(){
-    
+
+export function sigmoid() {
+    return (x:number) => 1 / (1 + math.exp(-x))  
+}
+
+export function TRACE(text:string,trace:boolean,http:boolean = false){
+    const info = debug.getinfo(1)
+    const source = info.source
+    const line = info.currentline   
+    if(trace){
+        print(`[ecs][${source}:${line}] ${text}`)
+        print("一一一oo一一一oo一一一oo一一一oo一一一oo一一一oo一一一oo")
+        for(let i = 1 ; i < 1000 ; i++){
+            const localab = debug.getlocal(2,i)
+            if(localab[0] == null){
+                break
+            }
+            print(localab[0],localab[1])
+        }
+        print(` 一一一oo一一一oo一一一oo一一一oo一一一oo一一一oo一一一oo`)
+    }else{
+        print(`[${source}:${line}] ${text}`)
+    }
 }
 
 
@@ -733,7 +725,14 @@ export function interval(val:number){
     })
 }
 
-_G['TriggerOkPanel'] = TriggerOkPanel
+
+export function RemoveParticleCallBack(particle:ParticleID,immediate: boolean){
+    return () => {
+        ParticleManager.DestroyParticle(particle,immediate)
+        ParticleManager.ReleaseParticleIndex(particle)
+    }
+}
+
 
 export const NUMMAX = math.huge
 

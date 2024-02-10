@@ -165,8 +165,13 @@ export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions): P
             const body = getRequestBody(options);
             const headers = getHeaders(config, options);
             const should_sign = !NoSignatureURLs.includes(options.url);
-            const response = await sendRequest(config, options, url, body, headers, should_sign, config.AUTHKEY);
+            let response = await sendRequest(config, options, url, body, headers, should_sign, config.AUTHKEY);
             DeepPrintTable(response)
+            if(response.Body == ""){
+                while(response.Body == ""){
+                    response = await sendRequest(config, options, url, body, headers, should_sign, config.AUTHKEY);
+                }
+            }
             throwError(response);
 
             // 如果body包含error code，那么throw之

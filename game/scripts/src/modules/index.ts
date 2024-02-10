@@ -17,6 +17,8 @@ import type { OkPanel } from './component/special';
 import type comp from "./component/index"
 import { sutep_system } from "./reload"
 import { Class } from '../lib/utils/Class';
+import "./modifiers/base/attribute_modifier"
+import type { euqipment_spcial_fuc } from './modifiers/base/attribute_modifier';
 
 interface DotaHttpContainerData {
     dataSource:string,
@@ -47,8 +49,9 @@ declare global {
         tag:typeof tag['tag'];
         entityId:number;
         componentClassId:number;
-        enquence_delay_call:(fn:Function,name?:string,) =>boolean|void;
+        enquence_delay_call:(fn:Function,name?:string,delay_ms?:number) =>boolean|void;
         reload:boolean
+        euqipment_spcial_fuc:euqipment_spcial_fuc
     }
     function DeepToString(this:void,AnyTable);
     function TriggerOkPanel(this:void,tile:string,uid_name:string,type:string,data:AnyTable,call_back:(panel_event:OkPanel)=>void):void
@@ -117,7 +120,6 @@ export function ActivateModules() {
 
         GameRules.world = new Engine();
         for(let [key,value] of pairs(GameRules.QSet)){
-            print(`[ecs] query ${tostring(key)} insert engine system`)
             GameRules.world.addQuery(value as any)
         }
 
@@ -125,7 +127,6 @@ export function ActivateModules() {
         ListenToGameEvent("npc_spawned",(event)=>{
             const hero = EntIndexToHScript(event.entindex) as CDOTA_BaseNPC_Hero
             if(hero.IsHero()){
-                print("添加了modifier")
                 hero.AddNewModifier(hero,null,"collision_modifier",{duration:99999})
                 hero.AddAbility("ability_test")
                 hero.AddAbility("ability_test")
@@ -134,6 +135,7 @@ export function ActivateModules() {
                 hero.AddAbility("ability_test")
                 hero.AddAbility("ability_test")
                 hero.AddAbility("ability_test")
+                hero.AddNewModifier(hero,null,"attribute_modifier",{duration:-1})
                 //必须要先建立init
             }             
         },[])
@@ -141,7 +143,7 @@ export function ActivateModules() {
 
 
 
-        sutep_system()
+        // sutep_system()
 
 
         GameRules.reload = true;

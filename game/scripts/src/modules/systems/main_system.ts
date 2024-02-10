@@ -1,4 +1,4 @@
-import { $Log, NONE, NUM_WAIT, PickArrayNumString2D, STRING_WAIT, TABLE_WAIT, WAIT, deep_print,  to_debug  } from "../../fp";
+import {  NONE, NUM_WAIT, PickArrayNumString2D, STRING_WAIT, TABLE_WAIT, WAIT,  to_debug  } from "../../fp";
 import { Entity } from "../../lib/ecs/Entity";
 import { QueryBuilder } from "../../lib/ecs/Query";
 import { System } from "../../lib/ecs/System";
@@ -594,10 +594,36 @@ export class role_in_game_ok_system extends System{
                     {ecs_entity_index:-1,dota_entity:-1 as EntityIndex,type:c.quipment.EQUIPMENT_TYPE.Ring},
                 )
 
+                const allModifierAndAttributeComps = new c.role.AllModifierAndAttributeComps(
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    []
+                )
 
+                const PlayerID = player_ent.get(c.base.PLAYER).PlayerID
+                const hero = PlayerResource.GetPlayer(PlayerID).GetAssignedHero()
+
+                const hero_comp = new c.base.HERO(hero.GetUnitName(),hero.entindex())
+                select_ent.add(hero_comp)
                 select_ent.add(inventory_comp)
                 select_ent.add(equipmentState)
                 select_ent.addTag(GameRules.tag.is_game_select_role)
+                select_ent.add(allModifierAndAttributeComps)
                 select_ent.add(new c.role.RoleWorldMapData(
                     STRING_WAIT("",(instance:RoleWorldMapData)=>{
                     //初始化 如果没有这个表 那么我们读取创造角色时候的地图

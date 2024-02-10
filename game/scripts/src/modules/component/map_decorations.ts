@@ -1,4 +1,4 @@
-import { weak, clear_event, to_client_event, cache_remove, doc } from "../../fp";
+import {  clear_event, to_client_event, cache_remove, doc } from "../../fp";
 
 export class Creep {
     constructor(

@@ -1,4 +1,4 @@
-import { doc, to_client_event, weak, clear_event, cache_remove, compose, NUMMAX, deep_print, replace$2obj, http, to_debug, NONE, get_entity, to_player_net_table, to_save } from "../../fp";
+import { doc, to_client_event, clear_event, cache_remove, compose, NUMMAX, http, to_debug, NONE, get_entity, to_player_net_table, to_save } from "../../fp";
 import { Entity } from "../../lib/ecs/Entity";
 
 
@@ -185,3 +185,35 @@ export class CurrentScene{
 
     }
 }
+
+
+/**
+ * 角色属性与modifier属性总和的组件
+ */
+@doc.watch("none",to_debug())
+export class AllModifierAndAttributeComps{
+    constructor(
+        public a:number,
+        public b:number,
+        public c:number,
+        public d:number,
+        public e:number,
+        public f:number,
+        public g:number,
+        public h:number,
+        public i:number,
+        public j:number,
+        public k:number,
+        public l:number,
+        public m:number,
+        public n:number,
+        public o:number,
+        public p:number,
+        public q:number,
+        public special:SPECIAL
+    ){
+
+    }
+}
+
+export type SPECIAL = {raw_modifier_function_name:string,enum_modifier_function:number,call_fuc:string[],AbilityValues:Record<string,Record<string,number>>}[]

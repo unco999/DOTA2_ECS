@@ -10,7 +10,8 @@ export const tag = {
     delete_cache:"delete_cache",//删除缓存
     is_in_shop:"is_in_shop",//是否在商店中
     is_in_kuang_dong:"is_in_kuang_dong",//是否在矿洞中
-    is_cur_in_city_map_ent:"is_cur_in_city"//当前被进入的城市实体 或者说mark
+    is_cur_in_city_map_ent:"is_cur_in_city",//当前被进入的城市实体 或者说mark
+    is_cur_euqipment_tag:"is_cur_euqipment_tag"
 }
 
 export enum scene {

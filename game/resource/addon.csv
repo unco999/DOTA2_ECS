@@ -59,3 +59,20 @@ xian_ji_zhi_yuan_san_ceng,献祭之渊三层
 xian_ji_zhi_yuan_si_ceng,献祭之渊四层
 xian_ji_zhi_yuan_wu_ceng,献祭之渊五层
 xian_ji_zhi_yuan_wu_xian,献祭之渊深层
+a,asd,<img src="s2r://panorama/images/hud/reborn/icon_damage.psd"><font color="#33CCFF">※物理攻击※<font>,
+b,asd,<img src="s2r://panorama/images/hud/reborn/icon_damage.psd"><font color="0033FF">※魔法攻击※<font>,
+c,asd,<img src="s2r://panorama/images/hud/reborn/icon_damage.psd"><font color="0066FF">※攻击速度※<font>,
+d,asd,<img src="s2r://panorama/images/hud/reborn/icon_damage.psd"><font color="0099FF">※移动速度※<font>,
+e,asd,<img src="s2r://panorama/images/hud/reborn/icon_damage.psd"><font color="00CCFF">※魔法恢复※<font>,
+f,asd,<img src="s2r://panorama/images/hud/reborn/icon_damage.psd"><font color="3333FF">※护甲※<font>,
+g,asd,<img src="s2r://panorama/images/hud/reborn/icon_damage.psd"><font color="3366FF">※物理抗性※<font>,
+h,asd,<img src="s2r://panorama/images/hud/reborn/icon_damage.psd"><font color="3399FF">※魔法抗性※<font>,
+i,asd,<img src="s2r://panorama/images/hud/reborn/icon_damage.psd"><font color="33CCFF">※状态抗性※<font>,
+j,asd,<img src="s2r://panorama/images/hud/reborn/icon_damage.psd"><font color="6666FF">※闪避※<font>,
+k,asd,<img src="s2r://panorama/images/hud/reborn/icon_damage.psd"><font color="6699FF">※生命恢复※<font>,
+l,asd,<img src="s2r://panorama/images/hud/reborn/icon_death.psd"><font color="66CCFF">※暴击率※<font>,
+m,asd,<img src="s2r://panorama/images/hud/reborn/icon_damage.psd"><font color="9999FF">※暴击加深※<font>,
+n,asd,<img src="s2r://panorama/images/hud/reborn/icon_damage.psd"><font color="99CCFF">※耐久度※<font>,
+o,asd,<img src="s2r://panorama/images/hud/reborn/icon_damage.psd"><font color="CCCCFF">※打造师※<font>,
+aa,asd,<font color="3366FF"><br><br>[连锁闪电] 攻击有(<font color="red">trigger_probability%</font>)概率释放闪电伤害400范围内的敌人最高弹射(<font color="red">trigger_max_count</font>)次 每次伤害递减 最高伤害(<font color="red">trigger_damage</font>)点(天赋元素雷电会增幅),
+ab,asd,<font color="3366FF"><br><br>[冰冻攻击] 攻击有(<font color="red">trigger_probability%</font>)概率释放冰霜的力量冻结敌人 降低敌人10%的整体速度 最高伤害(<font color="red">damage</font>)点(元素冰霜会增幅),

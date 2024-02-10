@@ -1,8 +1,20 @@
-import { weak } from "../../fp";
 import { Entity } from "../../lib/ecs/Entity";
 
 
 export namespace event{
+
+    /**
+     * 在装备卸载之前发送的事件
+     */
+    export class EquipmentEvent{
+        public constructor(
+            public readonly equipment_entity:Entity,
+            public readonly Hero_idx:EntityIndex,
+            public readonly type:"up"|"down", 
+        ){
+
+        }
+    }
 
     export class BuildSystemEvent{
         public constructor(
