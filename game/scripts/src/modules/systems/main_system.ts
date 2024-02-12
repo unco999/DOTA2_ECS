@@ -595,23 +595,7 @@ export class role_in_game_ok_system extends System{
                 )
 
                 const allModifierAndAttributeComps = new c.role.AllModifierAndAttributeComps(
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
+                    {},
                     []
                 )
 

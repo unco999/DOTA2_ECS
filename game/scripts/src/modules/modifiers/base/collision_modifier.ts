@@ -7,9 +7,11 @@ export class collision_modifier extends BaseModifier{
 
 
     DeclareFunctions(): ModifierFunction[] {
-        return [ModifierFunction.ON_UNIT_MOVED]
+        return [ModifierFunction.ON_UNIT_MOVED,ModifierFunction.PREATTACK_BONUS_DAMAGE_TARGET]
     }
 
+
+    
     OnUnitMoved(event: ModifierUnitEvent): void {
         if(event.unit == this.GetParent()){
             const _m = this.GetParent()

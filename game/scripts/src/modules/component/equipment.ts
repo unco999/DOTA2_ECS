@@ -1,6 +1,7 @@
 import { _replace$2obj, doc, to_client_event, to_debug } from "../../fp";
 import { Entity } from "../../lib/ecs/Entity";
 import * as equipmen_json from "../../json/equipment.json" 
+import { FN } from "../attribute/FN";
 
 
 
@@ -90,7 +91,7 @@ export class EquipmentType{
 }
 
 
-
+type sequence = number
 @doc.watch("deep",to_client_event("player"),to_debug())
 /**
  * 一件装备的所有属性都在这个组件里面
@@ -101,9 +102,7 @@ export class EquipMentAttribute{
         public texture_index:string,
         public base_attribute:string[],
         public state_attribute:string[],
-        public special_attribute:string[],
-        /**特殊值的属性槽 对应的是special_attribute里面的某个值 然后里面那层是他所有需要传入触发函数的kv*/
-        public special_args_slot_attribute:Record<string,Record<string,number|string | any>>
+        public speicel_attribute:Record<sequence,记载>[],
     ){
 
     }
@@ -136,24 +135,10 @@ export function testCreateRandomItem(dota_item_name:string){
     const state_attribute = filter_attribute.filter(key=>equipmen_json[key as keyof typeof equipmen_json].type == 2)
                                             .map(key=> equipmen_json[key as keyof typeof equipmen_json].attribute_sign + RandomInt(50,100))
     
-    const special_attribute = filter_attribute.filter(key=>equipmen_json[key as keyof typeof equipmen_json].type == 1)
-                                             .map(key=> equipmen_json[key as keyof typeof equipmen_json].attribute_sign)
+    const special_list:Record<number,记载>[] = []
 
-    const special_args_slot_attribute = {} 
-    
-    filter_attribute.filter(key=>equipmen_json[key as keyof typeof equipmen_json].type == 1)
-    .forEach(raw_key=>{
-        Object.entries(equipmen_json[raw_key as keyof typeof equipmen_json].AbilityValues).forEach(([key,val])=>{
-            const sign = equipmen_json[raw_key as keyof typeof equipmen_json].attribute_sign
-            if(special_args_slot_attribute[sign] == null){
-                special_args_slot_attribute[sign] = {}
-            }
-            const [min,max] = val.split(" ")
-            if(!isNaN(Number(min))){
-                special_args_slot_attribute[sign][key] = RandomInt(Number(min),Number(max))
-            }else{
-                special_args_slot_attribute[sign][key] = val
-            }})})
+    special_list.push(FN.test())
+            
                                             
 
     
@@ -162,8 +147,7 @@ export function testCreateRandomItem(dota_item_name:string){
         `owl_${RandomInt(1,35)}`,
         base_attribute,
         state_attribute,
-        special_attribute,
-        special_args_slot_attribute
+        special_list
     )
 
 

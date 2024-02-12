@@ -85,16 +85,16 @@ export class attribute_modifier extends BaseModifier{
     }
 
     /**把记载表变成可以执行的函数 */
-    private _flattening(comp:AllModifierAndAttributeComps){
-        const special = comp?.special
-        print("elll")
-        DeepPrintTable(special)
+    private _flattening(comp:AllModifierAndAttributeComps['special']){
+        DeepPrintTable(comp)
+        const special = comp
+        print("all")
+        DeepPrintTable(getmetatable(special))
         if(special == null) return
         const all_call_map:Map<number,{fuc:(this:void,args1:any,arg2,arg3,arg4)=>void,ModifierFunctionName:string}> = new Map()
         special.forEach(elm=>{
             const equiment_spcial_args = {}
             Object.values(elm.AbilityValues).forEach(elm=>Object.assign(equiment_spcial_args,elm))
-            
             const link_maigc_fuc = this._flattening_fuc(elm.call_fuc)
             if(all_call_map.has(elm.enum_modifier_function)){
                 const last_function = all_call_map.get(elm.enum_modifier_function).fuc
@@ -125,7 +125,7 @@ export class attribute_modifier extends BaseModifier{
         let all_call_map:Map<number,{fuc:Function,ModifierFunctionName:string}>;
         const call_map_to_modifier_name_array = []
         if(role_ent){
-            const all_attribute = role_ent.get(c.role.AllModifierAndAttributeComps)
+            const all_attribute = role_ent.get(c.role.AllModifierAndAttributeComps).attribute
             _replace$2KeytoArray(all_attribute).forEach(key=>{
                 const json_deep = Object.values(euqipment_json).find(elm=>elm.attribute_sign == key)
                 if(json_deep){
@@ -136,8 +136,24 @@ export class attribute_modifier extends BaseModifier{
                 }
             })
 
-            all_call_map = this._flattening(_replace$2obj(all_attribute) as AllModifierAndAttributeComps)
+            const all_attributes = role_ent.get(c.role.AllModifierAndAttributeComps)
+            all_call_map = this._flattening(all_attributes.special)
             
+            if(all_call_map == undefined || all_call_map.size == 0) {
+                return [ModifierFunction.ATTACKSPEED_BONUS_CONSTANT,
+                    ModifierFunction.PREATTACK_BONUS_DAMAGE,
+                    ModifierFunction.MOVESPEED_BONUS_CONSTANT,  
+                    ModifierFunction.MANA_REGEN_CONSTANT,
+                    ModifierFunction.PHYSICAL_ARMOR_BONUS,
+                    ModifierFunction.IGNORE_PHYSICAL_ARMOR,
+                    ModifierFunction.STATUS_RESISTANCE,
+                    ModifierFunction.MAGICAL_RESISTANCE_BONUS,
+                    ModifierFunction.EXTRA_HEALTH_BONUS,
+                    ModifierFunction.HEALTH_REGEN_CONSTANT,
+                    ModifierFunction.EXTRA_MANA_BONUS,
+                    ModifierFunction.MISS_PERCENTAGE,
+                    ,...call_map_to_modifier_name_array]
+            };
             for(const [key,val] of all_call_map){
                 print("equipment is special regisger on modifier event",key)
                 this[val.ModifierFunctionName] = val.fuc.bind(this)

@@ -186,31 +186,50 @@ export class CurrentScene{
     }
 }
 
+export class TempModifierAttribute{
+    constructor(
+        Attribute:Record<string,number>
+    ){
+
+    }
+}
+
+/**
+ * 角色技能状态相关记载
+ */
+export class RoleSpellState{
+    constructor(
+        /**角色释放技能历史几率 */
+        public spell_history:Record<string,number>,
+        /**最后一个释放的技能 */
+        public last_spell:{name:string,cdota_entity_index:EntityIndex,element:ABILITY_ELEMENT},
+    ){
+
+    }
+}
+
+
+
+/**
+ * 角色临时增加属性与modifier属性总和的组件
+ */
+export class TempAllModifierAndAttributeComps{
+    constructor(
+        public attribute:Record<string,number>,
+        public special:SPECIAL  
+    ){
+
+    }
+}
+
 
 /**
  * 角色属性与modifier属性总和的组件
  */
-@doc.watch("none",to_debug())
 export class AllModifierAndAttributeComps{
     constructor(
-        public a:number,
-        public b:number,
-        public c:number,
-        public d:number,
-        public e:number,
-        public f:number,
-        public g:number,
-        public h:number,
-        public i:number,
-        public j:number,
-        public k:number,
-        public l:number,
-        public m:number,
-        public n:number,
-        public o:number,
-        public p:number,
-        public q:number,
-        public special:SPECIAL
+        public attribute:Record<string,number>,
+        public special:SPECIAL  
     ){
 
     }

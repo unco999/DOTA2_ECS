@@ -9,8 +9,8 @@
 	"npc_kv_generator_test" {
 		"Cost" "1"
 		"BaseClass" "npc_dota_creature"
-		"Model" "models/heroes/earthshaker/earthshaker.vmdl"
-		"ModelScale" "0.8500"
+		"Model" "models/heroes/centaur/diretide_centaur.vmdl"
+		"ModelScale" "2"
 		"Creature" {
 			"AttachWearables" {
 				"1" { "ItemDef" "123" }
@@ -31,11 +31,9 @@
 		"HealthBarOffset" "200"
 		"MovementSpeed" "310"
 		"MovementTurnRate" "0.9000"
-		"MovementCapabilities" "DOTA_UNIT_CAP_MOVE_GROUND"
-		"AttackCapabilities" "DOTA_UNIT_CAP_MELEE_ATTACK"
-		"ArmorPhysical" "5"
+		"ArmorPhysical" "0"
 		"MagicalResistance" "0"
-		"StatusHealth" "500"
+		"StatusHealth" "999999"
 		"StatusHealthRegen" "0"
 		"StatusMana" "100"
 		"StatusManaRegen" "0"

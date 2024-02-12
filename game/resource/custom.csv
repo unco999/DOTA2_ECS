@@ -1,0 +1,47 @@
+Tokens,English,SChinese
+a000007_name,如果 敌方的血量高于x 则
+a000007_description,屠魔
+a000023_name,攻击中目标 则
+a000023_description,火之
+a000002_name,释放法术魔法消耗是否超过x
+a000002_description,超载奥法
+a000008_name,如果 敌方的血量低于x 则
+a000008_description,猎杀
+a000019_name,百分之x几率触发
+a000019_description,混沌
+a000015_name,转换我力量的百分之X给
+a000015_description,化力
+a000009_name,如果 敌方的魔法高于x 则
+a000009_description,敌法
+a000020_name,普通伤害增加
+a000020_description,挥斩之
+a000003_name,如果 上一个技能是释放的雷元素 则
+a000003_description,雷之
+a000016_name,转换我敏捷的百分之X给
+a000016_description,刺客
+a000004_name,如果 上一个技能是释放的火元素 则
+a000004_description,火之
+a000011_name,如果 我方的血量高于x 则
+a000011_description,巨人
+a000017_name,转换我智力的百分之X给
+a000017_description,智者
+a000005_name,如果 上一个技能是释放的水元素 则
+a000005_description,水之
+a000001_name,释放法术魔法消耗是否低于x
+a000001_description,奥法节流
+a000012_name,如果 我方的血量低于x 则
+a000012_description,暴怒
+a000022_name,施法 则
+a000022_description,施法之
+a000021_name,暴击率
+a000021_description,暴击之
+a000006_name,如果 上一个技能释放的是暗元素 则
+a000006_description,暗之
+a000010_name,如果 敌方的魔法低于x 则
+a000010_description,控法
+a000013_name,如果 我方的魔法值高于x 则
+a000013_description,魔法师
+a000018_name,那么我们增加x点临时力量给自身
+a000018_description,强壮
+a000014_name,如果 我方的魔法值低于x 则
+a000014_description,回春

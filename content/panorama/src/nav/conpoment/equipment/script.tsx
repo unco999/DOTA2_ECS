@@ -3,6 +3,7 @@ import { isValidElement, useEffect, useMemo, useRef, useState } from "react"
 import {Motion, spring} from "@serprex/react-motion"
 import { render, useGameEvent } from "react-panorama-x"
 import { useCompWithPlayer } from "../../../hooks/useComp"
+import { luaToJsArray } from "../../../base"
 
 
 
@@ -50,24 +51,12 @@ const get_base_attribute_html = (tile:string,num:number) => `<li>${$.Localize("#
 
 const get_item_level_html = (level:number) => `  <h2><font color="#CCCCFF">※物品等级※</font><img src="s2r://panorama/images/icon_star_shadow_hi.psd"><img src="s2r://panorama/images/icon_star_shadow_hi.psd"><img src="s2r://panorama/images/icon_star_shadow_hi.psd"><h2><br>`
 
-const get_special_attribute_thml = (has_special_attribute_table:any,kv:any) => `
-   ${Object.values(has_special_attribute_table).map((sign:any)=>{
-        let raw = $.Localize("#" + sign) 
-            const attributeies = kv[sign]
-            if(attributeies){
-                for(let key in attributeies){
-                    raw = raw.replace(key,(attributeies[key] as string).toString())
-                }
-            }
-        return raw
-   }).join()}
-`
+
 const get_state_attribute_html = (tile:string,val:number|string) => `
 <li><font color='#00CCFF'>${$.Localize("#"+tile)}<font color="#99CCFF">[<font color="#66CCFF">${typeof val == "number" ? `${val}/100` : val}</font>]</font></li>`
 
 
 export const EquipmentSlot = ({item_data,slot_type,slot_index,x,y,entity_id}:{entity_id:AbilityEntityIndex,slot_type:EQUIPMENT_TYPE,slot_index:number,item_data:any,x:string,y:string}) =>{
-
 
     /**直接序列化成可以显示到装备栏上的thml字符串 */
     const serialization = ()=>{
@@ -82,11 +71,28 @@ export const EquipmentSlot = ({item_data,slot_type,slot_index,x,y,entity_id}:{en
                 item_name = deep_data["item_name"] as string
                 let base_attribute = deep_data["base_attribute"] as Record<string,string>
                 let state_attribute = deep_data["state_attribute"] as Record<string,string>
-                let special_attribute = deep_data['special_attribute'] as Record<string,string>
-                let special_args_slot_attribute = deep_data['special_args_slot_attribute'] as Record<string,string>
-                
-                $.Msg("客户端special_args_slot_attribute",special_args_slot_attribute)
-                $.Msg("客户端special_attribute",special_attribute)
+                let special;
+                let special_name:string[] = [];
+                let special_description:string[] = [];
+                if(deep_data?.speicel_attribute){
+                     special = luaToJsArray(deep_data?.speicel_attribute) as Record<number,记载>[]
+                     special.forEach(elm=>{
+                        const sign_spcial = luaToJsArray(elm)
+                        const name = sign_spcial.map((elm:记载)=> $.Localize("#" + elm.标识 +"_name")).join("")
+                        const description = sign_spcial.map((elm:记载)=> $.Localize("#" + elm.标识 +"_description")).join("") 
+                        special_name.push(name)
+                        special_description.push(description)
+                    })
+                }
+                let special_last_output = ""
+
+                special_last_output += special_name.length > 0 ? `
+                    <br><br><li><font color='#00CCFF'>※特殊属性※</font></li><br>
+                ` : ""
+
+                for(let i = 0 ; i < special_name.length ; i++){
+                    special_last_output += `<font color="#99CCFF">[${special_name[i]}]<font color="#66CCFF">${special_description[i]}`
+                }
 
                 /**首先是物品等级 */
                 // desc += get_item_level_html(3) 
@@ -105,10 +111,7 @@ export const EquipmentSlot = ({item_data,slot_type,slot_index,x,y,entity_id}:{en
                     return get_base_attribute_html(sign,num)
                 }).join("<br>")
                 /**然后是特殊技能属性 */
-                const special = get_special_attribute_thml(special_attribute,special_args_slot_attribute)
-                desc += special == "" ? `<br><br><li><font color='#00CCFF'>※特殊属性※</font></li><br>` : ""
-                desc += get_special_attribute_thml(special_attribute,special_args_slot_attribute)
-                //todo 这个是属性组件
+                desc += special_last_output
             }
         }
         return {desc,item_name,texture_index}

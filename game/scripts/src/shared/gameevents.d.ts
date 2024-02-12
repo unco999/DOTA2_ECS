@@ -1,3 +1,4 @@
+
 declare interface Compid { $$$$entity: number }
 
 declare type Comp = Record<string, any> & Compid
@@ -299,4 +300,108 @@ declare interface EquipmentStateExntendsComps extends EquipmentState{
     slot_7_comps?:Record<number,Record<string,any>>,
     slot_8_comps?:Record<number,Record<string,any>>,
     slot_9_comps?:Record<number,Record<string,any>>,
+}
+
+
+declare const enum ABILITY_ELEMENT{
+    雷元素 = 0x000001,
+    火元素 = 0x000002,
+    水元素 = 0x000004,
+    暗元素 = 0x000008,
+}
+
+/**游戏里的职业分类代号 */
+declare const enum PROFESSION{
+    圣职者,
+    战士,
+    法师,
+    弓箭手
+}
+
+declare const enum EQUIPMENT_LEVEL{
+    白色 = "a",
+    粉色 = "b",
+    蓝色 = "c",
+    绿色 = "d",
+    橙色 = "e",
+    红色 = "f",
+}
+
+declare const enum EQUIPMENT_FRACTION{
+    白色 = 50,
+    粉色 = 100,
+    蓝色 = 200,
+    绿色 = 500,
+    橙色 = 900,
+    红色 = 2000,
+}
+
+declare const enum ATTRIBUTE{
+    白色 = "a",
+    粉色 = "b",
+    蓝色 = "c",
+    绿色 = "d",
+    橙色 = "e",
+    红色 = "f",
+}
+
+declare const enum ATTRIBUTE{
+   物理攻击 = "a",
+   魔法攻击 = "b",
+   攻击速度 = "c",
+   移动速度 = "d",
+   魔法恢复 = "e",
+   护甲 = "f",
+   物理抗性 = "g",
+   魔法抗性 = "h",
+   状态抗性 = "i",
+   闪避 = "j",
+   生命恢复 = "k",
+   暴击率 = "l",
+   暴击加深 = "m",
+   魔法值 = "p",
+   生命值 = "q",
+   力量 = "r",
+   敏捷 = "s",
+   智力 = "t",
+}
+
+declare interface 记载{
+    消费分数:number,
+    输入:数据流类型,
+    输出:数据流类型,
+    标识:string,
+    函数:Function,
+    test:string,
+    名字:string,
+    权重:Record<PROFESSION,number>,
+}
+
+declare interface 修饰器记载 extends 记载{
+    必要前置:记载[],
+}
+
+declare interface 可连接最终输出的记载 extends 记载{
+    最终得分转换率:number
+}
+
+declare type 输入数据<T> = {
+    修饰器:any,
+    事件:T,
+    数据流:{[key in 数据流类型]: any};
+};
+
+declare type 记载序列 = Record<number,Record<number,记载>>
+
+/**
+ * 数据流导入可以有多个 但是一旦写了就是必须要传入的INPUT 不然会报错
+ */
+declare const enum 数据流类型{
+    属性字段 = 0x0000001,
+    布尔值 = 0x0000002,
+    单位 = 0x0000004,
+    技能 = 0x0000008,
+    判断数值 = 0x0000010,
+    直接单位操作 = 0x0000020,
+    无 = 0,
 }

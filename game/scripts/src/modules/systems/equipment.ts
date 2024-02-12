@@ -81,9 +81,9 @@ export class EquipmentStateUpSystem extends System{
 export class UpdateAllsAttributeSystem extends System{
 
     private _reload_allModifierAndAttributeComps(comp:AllModifierAndAttributeComps){
-        for(let key in comp){
-            if(typeof comp[key] == 'number'){
-                comp[key] = 0
+        for(let key in comp.attribute){
+            if(typeof comp.attribute[key] == 'number'){
+                comp.attribute[key] = 0
             }
         }
         comp.special = []
@@ -100,33 +100,16 @@ export class UpdateAllsAttributeSystem extends System{
             if(item_base_attribute){
                 const proxy = _replace$2obj(item_base_attribute) as typeof item_base_attribute
                 proxy.base_attribute.forEach(attribute_atomic=>{
+                    print(attribute_atomic)
                     const sign = attribute_atomic[0]
                     const num = Number(attribute_atomic.slice(1,attribute_atomic.length))
-                    all_attributes_comp[sign] += num;
+                    if(all_attributes_comp.attribute[sign] == undefined){
+                        all_attributes_comp.attribute[sign] = 0
+                    }
+                    all_attributes_comp.attribute[sign] += num;
                 })
                 print("ecs cur equipment special attribute state")
-                DeepPrintTable(proxy.special_args_slot_attribute)
-                if(proxy.special_args_slot_attribute == null) return;
-                let special_list:SPECIAL = []
-                Object.values(proxy.special_attribute).forEach(proxy_sign=>{
-                    const json_element = Object.values(equipment_json).find((elm)=>elm.attribute_sign == proxy_sign)
-                    if(json_element){
-                        special_list.push(
-                            {
-                                enum_modifier_function:json_element.dota_attribute_modifier_fuc_name,
-                                call_fuc:Object.values(json_element.call_fuc),
-                                raw_modifier_function_name:json_element.dota_attribute_modifier_name,
-                                AbilityValues:proxy.special_args_slot_attribute
-                            }
-                        )
-                    }
-                })
-
-
-                print("ecs add equipment speciel staic and dynamic data in all_attributes")
-
-
-                all_attributes_comp.special.push(...special_list)
+              
             }
         })
         TRACE("equipments",true)

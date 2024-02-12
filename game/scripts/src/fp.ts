@@ -733,6 +733,12 @@ export function RemoveParticleCallBack(particle:ParticleID,immediate: boolean){
     }
 }
 
+/**掩码是否存在 */
+export function has_mask(mask:number,flag:number){
+    return (mask & flag) == flag
+}
+
+
 
 export const NUMMAX = math.huge
 

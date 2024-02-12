@@ -8,6 +8,8 @@ import { http_base } from './systems/base';
 import { attribute_modifier } from './modifiers/base/attribute_modifier';
 import { matrix} from '../lib/math/martrix';
 import { rubic_box } from './systems/rubic_box';
+import './modifiers/base/test_modifier'
+import { FN } from './attribute/FN';
 
 let cache = new Map()
 
@@ -65,18 +67,8 @@ export class Debug {
         }
 
         if(cmd == "test"){
-
-            // http_buy(
-            //     "qing_xue_cheng",
-            //     "modules_npc_ji_shi_role",
-            //     GameRules.QSet.is_select_role.first,
-            //     "item_tian_hui_sui_pian",
-            //     5,
-            //     5,
-            // )
-        }
-        if(cmd == "ecsitem"){
-            c.quipment.testCreateRandomItem(args[0])
+            const label = FN.test()
+            const hero = PlayerResource.GetPlayer(keys.playerid).GetAssignedHero()
         }
         if(cmd == "reload"){
             container.to_client_event_container.forEach(val=>{
@@ -126,7 +118,10 @@ export class Debug {
             collectgarbage
         }
         if(cmd == "t"){
-            
+            const hero = PlayerResource.GetPlayer(keys.playerid).GetAssignedHero()
+            hero.RemoveModifierByName("testm")
+            const buff = hero.AddNewModifier(hero,null,"testm",{duration:-1})
+            buff.SendBuffRefreshToClients()
         }
         if(cmd == "skin"){
             cache.forEach((elm:CBaseModelEntity)=>{
@@ -318,6 +313,9 @@ export class Debug {
             // GameRules.ResetPlayer(keys.playerid)
             // DeepPrintTable(prop_dynamic)
         }
+        if(cmd == "ecsitem"){
+            c.quipment.testCreateRandomItem(args[0])
+        }
         if(cmd == "dropitem"){
         // request(OpenAPI,{
         //     method:"POST",
@@ -368,11 +366,10 @@ export class Debug {
         }
 
         if(cmd == "mat"){
-            let g = matrix.mul(rubic_box.item_ruo_he_li_jin_gu_shi,rubic_box.item_yuan_chu_yi_shi)
-            print("cao")
-            g = matrix.replace(g,sigmoid())
-            DeepPrintTable(g)
-            // const a = 4 ~ 5
+            const a = rubic_box.item_ruo_he_li_jin_gu_shi()
+            const b = matrix.normf(a)
+            DeepPrintTable(a) 
+            print("矩阵大小",b)
         }
 
 
@@ -399,21 +396,7 @@ export class Debug {
             print(ModifierFunction['ON_ATTACKED'])
         }
         if(cmd == "log"){
-            GameRules.enquence_delay_call(()=>{
-                print("延迟调用1")
-            },undefined,1000)
-            GameRules.enquence_delay_call(()=>{
-                print("延迟调用2")
-            },undefined,2000)
-            GameRules.enquence_delay_call(()=>{
-                print("延迟调用3")
-            },undefined,3000)
-            GameRules.enquence_delay_call(()=>{
-                print("延迟调用4") 
-            },undefined,4000)
-            GameRules.enquence_delay_call(()=>{                                                                                                                                                                                                                                                                                                
-                print("延迟调用5")
-            },undefined,5000)
+        
         }
         if(cmd == "staticbuild"){
             // const a = new generator_mark_build()
@@ -447,6 +430,20 @@ export class Debug {
             }) as CDOTA_BaseNPC_Hero
 
             prop_dynamic.SetEntityName("modules_npc_" + args[1])
+        }
+        if(cmd == "local"){
+            let csv = ""
+            const a = Object.values(FN).map((elm:any)=>{
+                if(typeof elm != 'function'){
+                    if(elm.标识 && elm.test){
+                        const line1 = `${elm.标识}_name,${elm.test}\n`
+                        const line2 = `${elm.标识}_description,${elm.名字}\n`
+                        csv += line1;
+                        csv += line2;
+                     }
+                }
+            })
+            print(csv)
         }
         if(cmd == "http"){
             print("触发这个")

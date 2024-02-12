@@ -137,13 +137,23 @@ export function ActivateModules() {
                 hero.AddAbility("ability_test")
                 hero.AddNewModifier(hero,null,"attribute_modifier",{duration:-1})
                 //必须要先建立init
-            }             
+            } 
+            if(hero.GetUnitName() == ("npc_kv_generator_test")){
+                let heath = hero.GetHealth()
+                Timers.CreateTimer(()=>{
+                    if(hero.GetHealth() != heath){
+                        DebugDrawText(hero.GetOrigin().__add(Vector(0,0,300)),(hero.GetHealth() - heath).toString(),true,10)
+                        heath = hero.GetHealth()
+                    }
+                    return 1
+                })
+            }
         },[])
 
 
 
 
-        // sutep_system()
+        sutep_system()
 
 
         GameRules.reload = true;
