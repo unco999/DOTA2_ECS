@@ -1,4 +1,4 @@
-import { _replace$2obj, doc, to_client_event, to_debug } from "../../fp";
+import { BindDota2EntityLinkEcsEntity, _replace$2obj, doc, to_client_event, to_debug } from "../../fp";
 import { Entity } from "../../lib/ecs/Entity";
 import * as equipmen_json from "../../json/equipment.json" 
 import { FN } from "../attribute/FN";
@@ -47,24 +47,22 @@ export enum EQUIPMENT_TYPE{
 // <EquipmentSlot x="23px" y="584px"  slot_index={8} slot_type={EQUIPMENT_TYPE.Ring} item_data={null}/>
 // <EquipmentSlot x="123px" y="584px" slot_index={9} slot_type={EQUIPMENT_TYPE.Ring} item_data={null}/>
 
+    // const to_custom_table = {
+    //     slot_0_comps:instance?.slot_0?.ecs_entity_index && GameRules.world.getEntityById(instance.slot_0.ecs_entity_index)?.getComponents().map(elm=>_replace$2obj(elm)),
+    //     slot_1_comps:instance?.slot_1?.ecs_entity_index && GameRules.world.getEntityById(instance.slot_1.ecs_entity_index)?.getComponents().map(elm=>_replace$2obj(elm)),
+    //     slot_2_comps:instance?.slot_2?.ecs_entity_index && GameRules.world.getEntityById(instance.slot_2.ecs_entity_index)?.getComponents().map(elm=>_replace$2obj(elm)),
+    //     slot_3_comps:instance?.slot_3?.ecs_entity_index && GameRules.world.getEntityById(instance.slot_3.ecs_entity_index)?.getComponents().map(elm=>_replace$2obj(elm)),
+    //     slot_4_comps:instance?.slot_4?.ecs_entity_index && GameRules.world.getEntityById(instance.slot_4.ecs_entity_index)?.getComponents().map(elm=>_replace$2obj(elm)),
+    //     slot_5_comps:instance?.slot_5?.ecs_entity_index && GameRules.world.getEntityById(instance.slot_5.ecs_entity_index)?.getComponents().map(elm=>_replace$2obj(elm)),
+    //     slot_6_comps:instance?.slot_6?.ecs_entity_index && GameRules.world.getEntityById(instance.slot_6.ecs_entity_index)?.getComponents().map(elm=>_replace$2obj(elm)),
+    //     slot_7_comps:instance?.slot_7?.ecs_entity_index && GameRules.world.getEntityById(instance.slot_7.ecs_entity_index)?.getComponents().map(elm=>_replace$2obj(elm)),
+    //     slot_8_comps:instance?.slot_8?.ecs_entity_index && GameRules.world.getEntityById(instance.slot_8.ecs_entity_index)?.getComponents().map(elm=>_replace$2obj(elm)),
+    //     slot_9_comps:instance?.slot_9?.ecs_entity_index && GameRules.world.getEntityById(instance.slot_9.ecs_entity_index)?.getComponents().map(elm=>_replace$2obj(elm)),
+    // }
+    // to_client_event("player")(Object.assign(instance,to_custom_table))
 
 
-
-@doc.watch("deep",to_debug(),(instance:EquipmentState)=>{
-    const to_custom_table = {
-        slot_0_comps:instance?.slot_0?.ecs_entity_index && GameRules.world.getEntityById(instance.slot_0.ecs_entity_index)?.getComponents().map(elm=>_replace$2obj(elm)),
-        slot_1_comps:instance?.slot_1?.ecs_entity_index && GameRules.world.getEntityById(instance.slot_1.ecs_entity_index)?.getComponents().map(elm=>_replace$2obj(elm)),
-        slot_2_comps:instance?.slot_2?.ecs_entity_index && GameRules.world.getEntityById(instance.slot_2.ecs_entity_index)?.getComponents().map(elm=>_replace$2obj(elm)),
-        slot_3_comps:instance?.slot_3?.ecs_entity_index && GameRules.world.getEntityById(instance.slot_3.ecs_entity_index)?.getComponents().map(elm=>_replace$2obj(elm)),
-        slot_4_comps:instance?.slot_4?.ecs_entity_index && GameRules.world.getEntityById(instance.slot_4.ecs_entity_index)?.getComponents().map(elm=>_replace$2obj(elm)),
-        slot_5_comps:instance?.slot_5?.ecs_entity_index && GameRules.world.getEntityById(instance.slot_5.ecs_entity_index)?.getComponents().map(elm=>_replace$2obj(elm)),
-        slot_6_comps:instance?.slot_6?.ecs_entity_index && GameRules.world.getEntityById(instance.slot_6.ecs_entity_index)?.getComponents().map(elm=>_replace$2obj(elm)),
-        slot_7_comps:instance?.slot_7?.ecs_entity_index && GameRules.world.getEntityById(instance.slot_7.ecs_entity_index)?.getComponents().map(elm=>_replace$2obj(elm)),
-        slot_8_comps:instance?.slot_8?.ecs_entity_index && GameRules.world.getEntityById(instance.slot_8.ecs_entity_index)?.getComponents().map(elm=>_replace$2obj(elm)),
-        slot_9_comps:instance?.slot_9?.ecs_entity_index && GameRules.world.getEntityById(instance.slot_9.ecs_entity_index)?.getComponents().map(elm=>_replace$2obj(elm)),
-    }
-    to_client_event("player")(Object.assign(instance,to_custom_table))
-})
+@doc.watch("deep",to_debug(),to_client_event("player"))
 export class EquipmentState{
     public constructor(
         public slot_0?:{type:EQUIPMENT_TYPE.Headwear,dota_entity:EntityIndex|undefined,ecs_entity_index:number},
@@ -115,6 +113,10 @@ export function testCreateRandomItem(dota_item_name:string){
     const dota_item = CreateItem(dota_item_name,null,null)
     const kv = dota_item.GetAbilityKeyValues() as any
     dota_item.Entity = new Entity() // 物品的ecs entity
+
+    BindDota2EntityLinkEcsEntity(dota_item.entindex(),dota_item.Entity.id)
+
+    dota_item.Entity.add(select_role.get(c.base.PLAYER))
     dota_item.Entity.add(new c.quipment.EquipmentType(Number(kv.euqipment_type)))
     GameRules.world.addEntity(dota_item.Entity)
     const filter_attribute = Object.keys(equipmen_json).filter(elm=>{

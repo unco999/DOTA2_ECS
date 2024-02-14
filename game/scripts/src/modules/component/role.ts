@@ -1,4 +1,4 @@
-import { doc, to_client_event, clear_event, cache_remove, compose, NUMMAX, http, to_debug, NONE, get_entity, to_player_net_table, to_save } from "../../fp";
+import { doc, to_client_event, clear_event, cache_remove, http, to_debug, NONE, get_entity, to_player_net_table, to_save } from "../../fp";
 import { Entity } from "../../lib/ecs/Entity";
 
 
@@ -216,7 +216,7 @@ export class RoleSpellState{
 export class TempAllModifierAndAttributeComps{
     constructor(
         public attribute:Record<string,number>,
-        public special:SPECIAL  
+        public special:Record<number,记载>[][]  
     ){
 
     }
@@ -229,10 +229,8 @@ export class TempAllModifierAndAttributeComps{
 export class AllModifierAndAttributeComps{
     constructor(
         public attribute:Record<string,number>,
-        public special:SPECIAL  
+        public special:Record<number,记载>[][]  
     ){
 
     }
 }
-
-export type SPECIAL = {raw_modifier_function_name:string,enum_modifier_function:number,call_fuc:string[],AbilityValues:Record<string,Record<string,number>>}[]

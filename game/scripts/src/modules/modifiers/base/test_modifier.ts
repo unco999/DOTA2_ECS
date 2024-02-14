@@ -11,9 +11,10 @@ export class testm extends BaseModifier{
 
 
     DeclareFunctions(): ModifierFunction[] {
-        return [ModifierFunction.PHYSICAL_ARMOR_BONUS,ModifierFunction.AOE_BONUS_PERCENTAGE]
+        return [ModifierFunction.ON_ABILITY_EXECUTED,ModifierFunction.AOE_BONUS_PERCENTAGE]
     }
 
+    
     GetModifierAoEBonusPercentage(...args){
         DeepPrintTable(...args)
         return 100000

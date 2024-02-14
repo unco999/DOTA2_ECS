@@ -2,7 +2,7 @@ import { isValidElement, useEffect, useMemo, useRef, useState } from "react"
 //@ts-ignore
 import {Motion, spring} from "@serprex/react-motion"
 import { render, useGameEvent } from "react-panorama-x"
-import { useCompWithPlayer } from "../../../hooks/useComp"
+import { useCompWithEntityID, useCompWithPlayer } from "../../../hooks/useComp"
 import { luaToJsArray } from "../../../base"
 
 
@@ -57,65 +57,39 @@ const get_state_attribute_html = (tile:string,val:number|string) => `
 
 
 export const EquipmentSlot = ({item_data,slot_type,slot_index,x,y,entity_id}:{entity_id:AbilityEntityIndex,slot_type:EQUIPMENT_TYPE,slot_index:number,item_data:any,x:string,y:string}) =>{
+    const [with_dota_ent_id_comps,coms_update] = useCompWithEntityID(entity_id) 
 
-    /**直接序列化成可以显示到装备栏上的thml字符串 */
-    const serialization = ()=>{
-        if(item_data == null) return
-        let desc = ""
-        let texture_index = ""
-        let item_name = ""
-        for(let key in item_data){
-            if(item_data[key as keyof typeof item_data]?.["texture_index" as keyof typeof item_data]){
-                let deep_data = item_data[key as keyof typeof item_data]
-                texture_index = deep_data["texture_index"] as string
-                item_name = deep_data["item_name"] as string
-                let base_attribute = deep_data["base_attribute"] as Record<string,string>
-                let state_attribute = deep_data["state_attribute"] as Record<string,string>
-                let special;
-                let special_name:string[] = [];
-                let special_description:string[] = [];
-                if(deep_data?.speicel_attribute){
-                     special = luaToJsArray(deep_data?.speicel_attribute) as Record<number,记载>[]
-                     special.forEach(elm=>{
-                        const sign_spcial = luaToJsArray(elm)
-                        const name = sign_spcial.map((elm:记载)=> $.Localize("#" + elm.标识 +"_name")).join("")
-                        const description = sign_spcial.map((elm:记载)=> $.Localize("#" + elm.标识 +"_description")).join("") 
-                        special_name.push(name)
-                        special_description.push(description)
-                    })
-                }
-                let special_last_output = ""
-
-                special_last_output += special_name.length > 0 ? `
-                    <br><br><li><font color='#00CCFF'>※特殊属性※</font></li><br>
-                ` : ""
-
-                for(let i = 0 ; i < special_name.length ; i++){
-                    special_last_output += `<font color="#99CCFF">[${special_name[i]}]<font color="#66CCFF">${special_description[i]}`
-                }
-
-                /**首先是物品等级 */
-                // desc += get_item_level_html(3) 
-                /**然后是物品状态*/
-                desc += `<li><font color='#00CCFF'>※状态※</font></li>`
-                desc += Object.values(state_attribute).map(elm=>{
-                    const sign = elm[0];
-                    const num = elm.slice(1,elm.length)
-                    return get_state_attribute_html(sign,num)   
-                }).join("<br>")
-                /**然后是基础属性 */
-                desc += `<br><br><li><font color='#00CCFF'>※基础属性※</font></li>`
-                desc += Object.values(base_attribute).map(elm=>{
-                    const sign = elm[0];
-                    const num = Number(elm.slice(1,elm.length))
-                    return get_base_attribute_html(sign,num)
-                }).join("<br>")
-                /**然后是特殊技能属性 */
-                desc += special_last_output
-            }
-        }
-        return {desc,item_name,texture_index}
-    }
+    // /**直接序列化成可以显示到装备栏上的thml字符串 */
+    // const serialization = ()=>{
+    //     if(item_data == null) return
+    //     let texture_index = ""
+    //     let item_name = ""
+    //     let base_attribute;
+    //     let state_attribute;
+    //     let special_name = [];
+    //     let special_description = [];
+    //     for(let key in item_data){
+    //         if(item_data[key as keyof typeof item_data]?.["texture_index" as keyof typeof item_data]){
+    //             let deep_data = item_data[key as keyof typeof item_data]
+    //             texture_index = deep_data["texture_index"] as string
+    //             item_name = deep_data["item_name"] as string
+    //             base_attribute = deep_data["base_attribute"] as Record<string,string>
+    //             state_attribute = deep_data["state_attribute"] as Record<string,string>
+    //             if(deep_data?.speicel_attribute){
+    //                  const special = luaToJsArray(deep_data?.speicel_attribute) as Record<number,记载>[]
+    //                  special.forEach(elm=>{
+    //                     const sign_spcial = luaToJsArray(elm)
+    //                     const name = sign_spcial.map((elm:记载)=> $.Localize("#" + elm.标识 +"_name")).join("")
+    //                     const description = sign_spcial.map((elm:记载)=> $.Localize("#" + elm.标识 +"_description")).join("") 
+    //                     special_name.push(name)
+    //                     special_description.push(description)
+    //                 })
+    //             }
+              
+    //         }
+    //     }
+    //     return {item_name,texture_index,base_attribute,state_attribute}
+    // }
 
     const item_name = useMemo(() =>{
         if(entity_id && entity_id != -1){
@@ -125,6 +99,7 @@ export const EquipmentSlot = ({item_data,slot_type,slot_index,x,y,entity_id}:{en
     },[item_data,item_data?.dota_entity])
 
     const EquipmentSlotDragDrop =  (panelId:any, dragCallbacks:ItemImage) => {
+        $.Msg("拖拽进来的dragCallbacks.contextEntityIndex",dragCallbacks.contextEntityIndex)
         GameEvents.SendCustomGameEventToServer("c2s_equit_item",{item_entindex:dragCallbacks.contextEntityIndex,slot:slot_index})
     }
 
@@ -141,100 +116,75 @@ export const EquipmentSlot = ({item_data,slot_type,slot_index,x,y,entity_id}:{en
     }
 
     const dbclick = () =>{
-        if(item_data == null || entity_id == null){
+        if(with_dota_ent_id_comps == null || entity_id == null){
             return
         }
         GameEvents.SendCustomGameEventToServer("c2s_equit_down_item",{item_entindex:entity_id,slot:slot_index})
     }
 
-    const onmouseover = (p:ImagePanel) =>{
-        $.Msg(item_name)
-        if(item_name == null){
-            $.Msg("没有找到名字")
+    // const onmouseover = (p:ImagePanel) =>{
+    //     $.Msg(item_name)
+    //     if(item_name == null){
+    //         $.Msg("没有找到名字")
+    //         return
+    //     }
+    //     const hudRoot = $.GetContextPanel()
+    //     .GetParent()!
+    //     .GetParent()!
+    //     .GetParent()!;
+
+    //     $.DispatchEvent( "DOTAShowAbilityTooltipForEntityIndex",
+    //         p,
+    //         item_name,
+    //         Players.GetPlayerHeroEntityIndex(Players.GetLocalPlayer())
+    //      );
+    //     const data = serialization()
+    //     $.Schedule(Game.GetGameFrameTime(), function() {
+    //         const root = hudRoot.FindChildTraverse("DOTAAbilityTooltip")
+    //         const img = root?.FindChildTraverse("Header")?.FindChildTraverse("ItemImage") as ItemImage
+    //         const name = root?.FindChildTraverse("Header")?.FindChildTraverse("AbilityName") as LabelPanel
+    //         var labelPanel1 = hudRoot.FindChildTraverse("DOTAAbilityTooltip")?.FindChildTraverse("AbilityDescriptionContainer")?.Children()[0] as LabelPanel
+    //         var labelPanel2 = hudRoot.FindChildTraverse("DOTAAbilityTooltip")?.FindChildTraverse("AbilityDescriptionContainer")?.Children()[1] as LabelPanel
+    //     if(labelPanel2){
+    //         labelPanel2.html = true;
+    //         labelPanel2.text = data?.desc ?? ""
+    //         img.SetImage(`raw://resource/flash3/images/items/${data?.texture_index}.png`)
+    //         name.text = data?.item_name ?? ""
+    //         root?.TriggerClass("TooltipContainer")
+    //     }
+    //     })
+
+    // }
+
+    const onmouseover = (elm:Panel) =>{
+        if(with_dota_ent_id_comps == null) return
+        const x = elm.GetPositionWithinWindow().x
+        const y = elm.GetPositionWithinWindow().y
+        GameUI.CustomUIConfig().EventBus?.emit("tooltipitem",{switch:true,x,y,comps:with_dota_ent_id_comps})
+    }
+
+    const onmouseout = (elm:Panel) =>{
+        if(with_dota_ent_id_comps == null) return
+        const x = elm.GetPositionWithinWindow()?.x
+        const y = elm.GetPositionWithinWindow()?.y
+        if(isFinite(x) || isFinite(y)){
+            GameUI.CustomUIConfig().EventBus?.emit("tooltipitem",{switch:false,x,y,comps:with_dota_ent_id_comps})
             return
         }
-        const hudRoot = $.GetContextPanel()
-        .GetParent()!
-        .GetParent()!
-        .GetParent()!;
-
-        $.DispatchEvent( "DOTAShowAbilityTooltipForEntityIndex",
-            p,
-            item_name,
-            Players.GetPlayerHeroEntityIndex(Players.GetLocalPlayer())
-         );
-        const data = serialization()
-        $.Schedule(Game.GetGameFrameTime(), function() {
-            const root = hudRoot.FindChildTraverse("DOTAAbilityTooltip")
-            const img = root?.FindChildTraverse("Header")?.FindChildTraverse("ItemImage") as ItemImage
-            const name = root?.FindChildTraverse("Header")?.FindChildTraverse("AbilityName") as LabelPanel
-            var labelPanel1 = hudRoot.FindChildTraverse("DOTAAbilityTooltip")?.FindChildTraverse("AbilityDescriptionContainer")?.Children()[0] as LabelPanel
-            var labelPanel2 = hudRoot.FindChildTraverse("DOTAAbilityTooltip")?.FindChildTraverse("AbilityDescriptionContainer")?.Children()[1] as LabelPanel
-        if(labelPanel2){
-            labelPanel2.html = true;
-            labelPanel2.text = data?.desc ?? ""
-            img.SetImage(`raw://resource/flash3/images/items/${data?.texture_index}.png`)
-            name.text = data?.item_name ?? ""
-            root?.TriggerClass("TooltipContainer")
-        }
-        })
-
+        GameUI.CustomUIConfig().EventBus?.emit("tooltipitem",{switch:false,x:0,y:0,comps:with_dota_ent_id_comps})
     }
 
     return <Panel ondblclick={dbclick} ref={register} draggable={true} style={{x,y,width:"89px",height:"64px",border:"1px solid white"}}>
             <Label text={slot_index} style={{color:"white",fontSize:"22px"}}/>
-            <DOTAItemImage style={{tooltipBodyPosition:'100% 200%'}} onmouseover={onmouseover} itemname={item_name}/>
+            <DOTAItemImage hittest={true} showtooltip={false} onmouseout={onmouseout} onmouseover={onmouseover} itemname={item_name}/>
     </Panel>
 }
 
 export const EquipmentMain = ({open}:{open:boolean}) =>{
     const [last_state,set_last_state] = useState<keyof typeof main_style>("init")
     const [state,setState] = useState<keyof typeof main_style>("init")
-    const [inventory_comp,inventory_update] = useCompWithPlayer("Inventory",Players.GetLocalPlayer())
-    const dota_item_panel_list = useRef<ItemImage[]>([])
-    const [dota_item_panel_list_update,set_dota_item_panel_list_update] = useState(false)
     const [equipment_comp,equipment_comp_update] = useCompWithPlayer("EquipmentState",Players.GetLocalPlayer())
 
-    useEffect(()=>{
-        if(inventory_comp?.slots == null){
-            return;
-        }
-        const hudRoot = $.GetContextPanel()
-        .GetParent()!
-        .GetParent()!
-        .GetParent()!;
-        let element = hudRoot.FindChildTraverse("inventory_list");
-        if(element){
-            const list = Array(9).fill(0).map((elm,index)=>{
-               const panel = element!.FindChildTraverse(`inventory_slot_${index - 1}`)?.FindChildTraverse("ItemImage")
-               const entity_index = inventory_comp.slots[("slot_" + index) as keyof Inventory['slots']]?.dota_entity
-               if(entity_index != -1 && entity_index != null){
-                    $.Msg("设置了var",index,",",entity_index)
-                    panel?.SetAttributeInt("entity_index",entity_index)
-               }
-               return panel
-            })
-            
-            dota_item_panel_list.current = list as ItemImage[]
-            set_dota_item_panel_list_update(v=>!v)
-        }
-    },[inventory_comp,inventory_update])
-
-
-    useEffect(()=>{
-        dota_item_panel_list.current.forEach(elm=>{
-            if(elm != null){
-                if(elm.GetAttributeInt("is_drag_register",0) != 1){
-                    elm.SetAttributeInt("is_drag_register",1)
-                    elm.SetDraggable(true)
-                    $.RegisterEventHandler( 'DragEnter', elm, ()=>{$.Msg("DragEnter")} );
-                    $.RegisterEventHandler( 'DragDrop', elm, ()=>{$.Msg("DragDrop")} );
-                    $.RegisterEventHandler( 'DragLeave', elm, ()=>{$.Msg("DragLeave")} );
-                    $.RegisterEventHandler( 'DragEnd',elm, ()=>{$.Msg("DragEnd")});
-                }
-            }
-        })
-    },[dota_item_panel_list_update])
 
      /**更换状态只能用这个接口 */
      const next_state = (key:string) => {

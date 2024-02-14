@@ -137,6 +137,7 @@ export function ActivateModules() {
                 hero.AddAbility("ability_test")
                 hero.AddNewModifier(hero,null,"attribute_modifier",{duration:-1})
                 //必须要先建立init
+        
             } 
             if(hero.GetUnitName() == ("npc_kv_generator_test")){
                 let heath = hero.GetHealth()
@@ -150,13 +151,14 @@ export function ActivateModules() {
             }
         },[])
 
+        ListenToGameEvent("game_rules_state_change",(event)=>{
+            const state = GameRules.State_Get()
+            if(state == GameState.PRE_GAME){
+                sutep_system()
+                GameRules.reload = true;
+            }
+        },this)
 
-
-
-        sutep_system()
-
-
-        GameRules.reload = true;
 
         
     }

@@ -1,12 +1,15 @@
 import { has_mask } from "../../fp";
 import { BaseModifier } from "../../utils/dota_ts_adapter";
 
+
 export namespace FN {
 
+    print("重载了FN")
     
     function 释放法术魔法消耗是否低于某个值(input:输入数据<ModifierAbilityEvent>){
         assert(input.事件.ability,"释放法术魔法消耗是否超过某个值")
-        return input.事件.ability.GetManaCost(1) < input.数据流[数据流类型.判断数值]
+        input.数据流[数据流类型.布尔值] = input.事件.ability.GetManaCost(1) < input.数据流[数据流类型.判断数值]
+        return input
     }
 
     export const 释放法术魔法消耗是否低于某个值_记载:记载 = {
@@ -27,7 +30,8 @@ export namespace FN {
 
     function 释放法术魔法消耗是否超过某个值(input:输入数据<ModifierAbilityEvent>){
         assert(input.事件.ability,"释放法术魔法消耗是否超过某个值")
-        return input.事件.ability.GetManaCost(1) > input.数据流[数据流类型.判断数值]
+        input.数据流[数据流类型.布尔值] = input.事件.ability.GetManaCost(1) > input.数据流[数据流类型.判断数值]
+        return input
     }
 
     export const 释放法术魔法消耗是否超过某个值_记载:记载 = {
@@ -50,8 +54,9 @@ export namespace FN {
         assert(input.事件.ability,"上一个技能是否释放的雷元素")
         const role = GameRules.QSet.is_select_role.first
         const ability_state_comp = role.get(c.role.RoleSpellState)
-        if(!has_mask(ability_state_comp.last_spell.element,ABILITY_ELEMENT.雷元素)) return false;
-        return true
+        const bool = !has_mask(ability_state_comp.last_spell.element,ABILITY_ELEMENT.雷元素)
+        input.数据流[数据流类型.布尔值] = bool
+        return input
     }
 
     export const 上一个技能是否释放的雷元素_记载:记载 = {
@@ -74,7 +79,8 @@ export namespace FN {
         assert(input.事件.ability,"上一个技能是否释放的雷元素")
         const role = GameRules.QSet.is_select_role.first
         const ability_state_comp = role.get(c.role.RoleSpellState)
-        if(!has_mask(ability_state_comp.last_spell.element,ABILITY_ELEMENT.火元素)) return false;
+        const bool = !has_mask(ability_state_comp.last_spell.element,ABILITY_ELEMENT.火元素)
+        input.数据流[数据流类型.布尔值] = bool
         return true
     }
 
@@ -98,8 +104,9 @@ export namespace FN {
         assert(input.事件.ability,"上一个技能是否释放的雷元素")
         const role = GameRules.QSet.is_select_role.first
         const ability_state_comp = role.get(c.role.RoleSpellState)
-        if(!has_mask(ability_state_comp.last_spell.element,ABILITY_ELEMENT.水元素)) return false;
-        return true
+        const bool = !has_mask(ability_state_comp.last_spell.element,ABILITY_ELEMENT.水元素)
+        input.数据流[数据流类型.布尔值] = bool
+        return input
     }
 
     export const 上一个技能是否释放的水元素_记载:记载 = {
@@ -122,8 +129,9 @@ export namespace FN {
         assert(input.事件.ability,"上一个技能是否释放的雷元素")
         const role = GameRules.QSet.is_select_role.first
         const ability_state_comp = role.get(c.role.RoleSpellState)
-        if(!has_mask(ability_state_comp.last_spell.element,ABILITY_ELEMENT.暗元素)) return false;
-        return true
+        const bool = !has_mask(ability_state_comp.last_spell.element,ABILITY_ELEMENT.暗元素)
+        input.数据流[数据流类型.布尔值] = bool
+        return input
     }
 
     export const 上一个技能是否释放的暗元素_记载:记载 = {
@@ -145,7 +153,8 @@ export namespace FN {
     function 敌方血量是否高于(input:输入数据<ModifierAbilityEvent>|输入数据<ModifierAttackEvent>){
         const target = input.事件.target
         assert(target,"敌方血量是否高于")
-        return target.GetHealthPercent() > input.数据流[数据流类型.判断数值]
+        input.数据流[数据流类型.布尔值] = target.GetHealthPercent() > input.数据流[数据流类型.判断数值]
+        return input
     }
 
     export const 敌方血量是否高于_记载:记载 = {
@@ -167,7 +176,8 @@ export namespace FN {
     function 敌方血量是否低于(input:输入数据<ModifierAbilityEvent>|输入数据<ModifierAttackEvent>){
         const target = input.事件.target
         assert(target,"敌方血量是否低于")
-        return target.GetHealthPercent() < input.数据流[数据流类型.判断数值]
+        input.数据流[数据流类型.布尔值] = target.GetHealthPercent() < input.数据流[数据流类型.判断数值]
+        return input
     }
 
     export const 敌方血量是否低于_记载:记载 = {
@@ -189,7 +199,8 @@ export namespace FN {
     function 敌方魔法值是否高于(input:输入数据<ModifierAbilityEvent>|输入数据<ModifierAttackEvent>){
         const target = input.事件.target
         assert(target,"敌方血量是否低于")
-        return target.GetManaPercent() > input.数据流[数据流类型.判断数值]
+        input.数据流[数据流类型.布尔值] =  target.GetManaPercent() > input.数据流[数据流类型.判断数值]
+        return input
     }
 
     export const 敌方魔法值是否高于_记载:记载 = {
@@ -211,7 +222,8 @@ export namespace FN {
     function 敌方魔法值是否低于(input:输入数据<ModifierAbilityEvent>|输入数据<ModifierAttackEvent>){
         const target = input.事件.target
         assert(target,"敌方血量是否低于")
-        return target.GetManaPercent() < input.数据流[数据流类型.判断数值]
+        input.数据流[数据流类型.布尔值] = target.GetManaPercent() < input.数据流[数据流类型.判断数值]
+        return input
     }
 
     export const 敌方魔法值是否低于_记载:记载 = {
@@ -233,7 +245,8 @@ export namespace FN {
     function 我方血量是否高于(input:输入数据<ModifierAbilityEvent>|输入数据<ModifierAttackEvent>){
         const m = input.修饰器.GetCaster()
         assert(m,"我血量是否低于")
-        return m.GetManaPercent() > input.数据流[数据流类型.判断数值]
+        input.数据流[数据流类型.布尔值] =  m.GetHealthPercent() > input.数据流[数据流类型.判断数值]
+        return input
     }
 
     export const 我方血量是否高于_记载:记载 = {
@@ -255,7 +268,8 @@ export namespace FN {
     function 我方血量是否低于(input:输入数据<ModifierAbilityEvent>|输入数据<ModifierAttackEvent>){
         const m = input.修饰器.GetCaster()
         assert(m,"我血量是否低于")
-        return m.GetManaPercent() < input.数据流[数据流类型.判断数值]
+        input.数据流[数据流类型.布尔值] = m.GetHealthPercent() < input.数据流[数据流类型.判断数值]
+        return input
     }
 
     export const 我方血量是否低于_记载:记载 = {
@@ -277,7 +291,9 @@ export namespace FN {
     function 我方魔法值是否高于(input:输入数据<ModifierAbilityEvent>|输入数据<ModifierAttackEvent>){
         const m = input.修饰器.GetCaster()
         assert(m,"我方魔法值是否高于")
-        return m.GetManaPercent() > input.数据流[数据流类型.判断数值]
+        print("重载了")
+        input.数据流[数据流类型.布尔值] = m.GetManaPercent() > (input.数据流[数据流类型.判断数值] ?? 0)
+        return input
     }
 
     export const 我方魔法值是否高于_记载:记载 = {
@@ -299,7 +315,8 @@ export namespace FN {
     function 我方魔法值是否低于(input:输入数据<ModifierAbilityEvent>|输入数据<ModifierAttackEvent>){
         const m = input.修饰器.GetCaster()
         assert(m,"我方魔法值是否低于")
-        return m.GetManaPercent() < input.数据流[数据流类型.判断数值]
+        input.数据流[数据流类型.布尔值] = m.GetManaPercent() < input.数据流[数据流类型.判断数值]
+        return input
     }
 
     export const 我方魔法值是否低于_记载:记载 = {
@@ -322,7 +339,8 @@ export namespace FN {
         const m = input.修饰器.GetCaster() as CDOTA_BaseNPC_Hero
         assert(m,"我方力量转换百分比为数值")
         const strength = m.GetStrength()
-        return strength * input.数据流[数据流类型.判断数值] / 100
+        input.数据流[数据流类型.属性字段] = strength * input.数据流[数据流类型.判断数值] / 100
+        return input
     }
 
     export const 我方力量转换百分比为数值_记载:可连接最终输出的记载 ={
@@ -346,7 +364,8 @@ export namespace FN {
         const m = input.修饰器.GetCaster() as CDOTA_BaseNPC_Hero
         assert(m,"我方力量转换百分比为数值")
         const agility = m.GetAgility()
-        return agility * input.数据流[数据流类型.判断数值] / 100
+        input.数据流[数据流类型.属性字段] =  agility * input.数据流[数据流类型.判断数值] / 100
+        return input
     }
 
     export const 我方敏捷转换百分比为数值_记载:可连接最终输出的记载 ={
@@ -370,7 +389,8 @@ export namespace FN {
         const m = input.修饰器.GetCaster() as CDOTA_BaseNPC_Hero
         assert(m,"我方力量转换百分比为数值")
         const intellect = m.GetIntellect()
-        return intellect * input.数据流[数据流类型.判断数值] / 100
+        input.数据流[数据流类型.属性字段] =   intellect * input.数据流[数据流类型.判断数值] / 100
+        return input
     }
 
     export const 我方智力转换百分比为数值_记载:可连接最终输出的记载 ={
@@ -398,6 +418,7 @@ export namespace FN {
             temp_modifier_comp.attribute[ATTRIBUTE.力量] = 0
         }
         temp_modifier_comp.attribute[ATTRIBUTE.力量] += input.数据流[数据流类型.属性字段]
+        return input
     }
 
     export const 增加临时力量_记载:可连接最终输出的记载 = {
@@ -417,8 +438,14 @@ export namespace FN {
         最终得分转换率:1.5
     }
 
-    function 几率触发(){
-
+    function 几率触发(input:输入数据<ModifierAbilityEvent>|输入数据<ModifierAttackEvent>){
+        const Percentage = input.数据流[数据流类型.判断数值]
+        if(RollPercentage(Percentage)){
+            input.数据流[数据流类型.布尔值] = true
+        }else{
+            input.数据流[数据流类型.布尔值] = false
+        }
+        return input
     }
 
     export const 几率触发_记载:可连接最终输出的记载 = {
@@ -452,7 +479,10 @@ export namespace FN {
             [PROFESSION.战士]:0.7,
             [PROFESSION.弓箭手]:0.7,
         },
-        必要前置:[]
+        必要前置:[],
+        是修饰器:true,
+        修饰器名字:"GetModifierPreAttack_BonusDamage",
+        枚举影响:ModifierFunction.PREATTACK_BONUS_DAMAGE
     }
 
     export const PREATTACK_CRITICALSTRIKE:修饰器记载 = {
@@ -469,7 +499,10 @@ export namespace FN {
             [PROFESSION.战士]:0.2,
             [PROFESSION.弓箭手]:0.6,
         },
-        必要前置:[几率触发_记载]
+        必要前置:[几率触发_记载],
+        是修饰器:true,
+        修饰器名字:"GetModifierPreAttack_CriticalStrike",
+        枚举影响:ModifierFunction.PREATTACK_CRITICALSTRIKE
     }
     
     export const ON_ABILITY_EXECUTED:修饰器记载 = {
@@ -486,7 +519,10 @@ export namespace FN {
             [PROFESSION.战士]:0.4,
             [PROFESSION.弓箭手]:0.65,
         },
-        必要前置:[几率触发_记载]
+        必要前置:[几率触发_记载],
+        是修饰器:true,
+        修饰器名字:"OnAbilityExecuted",
+        枚举影响:ModifierFunction.ON_ABILITY_EXECUTED
     }
 
     export const OnAttacked:修饰器记载 = {
@@ -503,7 +539,10 @@ export namespace FN {
             [PROFESSION.战士]:0.8,
             [PROFESSION.弓箭手]:0.7,
         },
-        必要前置:[几率触发_记载]
+        必要前置:[几率触发_记载],
+        是修饰器:true,
+        修饰器名字:"OnAttacked",
+        枚举影响:ModifierFunction.ON_ATTACKED
     }
 
     const 修饰器集合 = [

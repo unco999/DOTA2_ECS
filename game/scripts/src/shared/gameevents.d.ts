@@ -86,6 +86,7 @@ declare type compc_map = {
     PlayerGold: PlayerGold
     Inventory:Inventory
     EquipmentState:EquipmentStateExntendsComps
+    EquipMentAttribute:EquipMentAttribute
 }
 
 declare interface CustomGameEventDeclarations {
@@ -115,6 +116,8 @@ declare interface CustomGameEventDeclarations {
     c2s_equit_item: { slot: number, item_entindex: EntityIndex }
     c2s_equit_down_item: { slot: number, item_entindex: EntityIndex }
     shop_exit: {}
+    s2c_bind_dota_entity_to_ecs_entity: { dota_entity: EntityIndex, ecs_entity_id: number }
+    s2c_comp_to_event: { class_name:string, ecs_entity_index: EntityIndex, comp:Partial<compc_map[keyof compc_map]> }
     [key: string]: any
 }
 
@@ -302,6 +305,14 @@ declare interface EquipmentStateExntendsComps extends EquipmentState{
     slot_9_comps?:Record<number,Record<string,any>>,
 }
 
+declare interface EquipMentAttribute {
+    item_name: string;
+    texture_index: string;
+    base_attribute: Record<number,string>;
+    state_attribute: Record<number,string>;
+    speicel_attribute: Record<number,Record<number,记载>>;
+}
+
 
 declare const enum ABILITY_ELEMENT{
     雷元素 = 0x000001,
@@ -379,17 +390,20 @@ declare interface 记载{
 
 declare interface 修饰器记载 extends 记载{
     必要前置:记载[],
+    是修饰器:boolean,
+    修饰器名字:string,
+    枚举影响:ModifierFunction
 }
 
 declare interface 可连接最终输出的记载 extends 记载{
     最终得分转换率:number
 }
 
-declare type 输入数据<T> = {
+declare type 输入数据<T> = Partial<{
     修饰器:any,
     事件:T,
-    数据流:{[key in 数据流类型]: any};
-};
+    数据流:Partial<{[key in 数据流类型]: any}>;
+}>;
 
 declare type 记载序列 = Record<number,Record<number,记载>>
 

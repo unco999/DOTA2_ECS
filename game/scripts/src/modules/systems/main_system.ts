@@ -406,8 +406,8 @@ export class game_init_system extends System{
             this.engine.addEntity(test_entity);
             
             print("steamid_",PlayerResource.GetSteamID(Player.GetPlayerID()))
-            
-            test_entity.add(new c.base.PLAYER(PlayerResource.GetSteamID(Player.GetPlayerID()).ToHexString(),Player.GetPlayerID()))
+            const player_comp = new c.base.PLAYER(PlayerResource.GetSteamID(Player.GetPlayerID()).ToHexString(),Player.GetPlayerID())
+            test_entity.add(player_comp)
                        .add(new c.role.RoleSlot(WAIT,WAIT,WAIT,WAIT))
                        .add(new c.role.PlayerGold(WAIT,WAIT,WAIT,WAIT,WAIT,WAIT,WAIT))
 
@@ -432,6 +432,7 @@ export class game_init_system extends System{
                     continue;
                 }
                 const role_ent = new Entity()
+                role_ent.add(player_comp)
                 
                 test_entity.append(new c.base.Link("slot" + i,role_ent))
 

@@ -38,6 +38,8 @@ export interface LocalEvent {
         call_back?:(input:any)=>void
     }
 
+    tooltipitem:{switch:boolean,x:number,y:number,comps:{EquipMentAttribute:compc_map["EquipMentAttribute"]}}
+
     create_role:{}
 
     OpenCreateName:{}

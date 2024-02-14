@@ -99,4 +99,29 @@ export const luaToJsArray = (items:any) =>{
     return list
 }
 
+export const TilePanel = ({width,height,tile,children}:{tile:string,width:string,height?:string,children:JSX.Element[] | JSX.Element}) => {
+    return <Panel hittest={false}   style={{                       
+    marginTop:"10px",
+    marginBottom:"10px",
+    backgroundColor:"rgba(0,0,0,0.2)",
+    borderRadius:"3px",
+    horizontalAlign:"center",flowChildren:"down",width,height}}
+    >
+        <Image hittest={false} src="s2r://panorama/images/hud/item_tooltip_passive.psd">
+            <Label style={{color:"pink",fontSize:"15px",textShadow:"2px 2px 8px 3.0 #333333b0"}} text={tile}/>
+        </Image>
+        <Panel>
+        {children}
+        </Panel>
+    </Panel>
+}
+//锚点计算  按照传入的x和y计算剩余空间最多位置的方向 然后给panel换锚点
+export const AnchorPanel = (x:number,y:number,panel:Panel) =>{
+    const xs = x / Game.GetScreenWidth()
+    const ys = y / Game.GetScreenHeight()
+    panel.style.transformOrigin = `${xs * 100}% ${ys * 100}%`
+    panel.style.transform =`translate3d( -${xs * Game.GetScreenWidth() /10 }px, -${ys * Game.GetScreenHeight()/2}px, 0px );`
+    return panel
+}
+
 $.Msg("测试",GameUI.CustomUIConfig().comp_data_with_date_time_cache)

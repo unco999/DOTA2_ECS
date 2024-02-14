@@ -1,11 +1,11 @@
-import { TRACE, _replace$2KeytoArray, _replace$2obj, clear_event } from "../../fp";
+import { BindDota2EntityLinkEcsEntity, TRACE, _replace$2KeytoArray, _replace$2obj, clear_event } from "../../fp";
 import { Entity } from "../../lib/ecs/Entity";
 import { System } from "../../lib/ecs/System";
 import { reloadable } from "../../utils/tstl-utils";
 import {type EQUIPMENT_TYPE, type EquipmentState,type Inventory} from '../component/equipment'
 import * as item_json from "../../json/items_list_1.json" 
 import * as equipment_json from "../../json/equipment.json"
-import type { AllModifierAndAttributeComps, SPECIAL } from "../component/role";
+import type { AllModifierAndAttributeComps } from "../component/role";
 /**
  * 主要负责装备和卸载的功能
  */
@@ -65,8 +65,11 @@ export class EquipmentStateUpSystem extends System{
             const last_euqipment =  _replace$2KeytoArray(euqipment_comp).find((key,index)=>{
                 return euqipment_comp[key as keyof EquipmentState]?.dota_entity == event.item_entindex
             })
+
+            print("last_euqipment",last_euqipment)
             if(last_euqipment == null){
                 print("not find euqipment item",event.item_entindex)
+                return
             }
             euqipment_comp[last_euqipment as keyof EquipmentState].dota_entity = null
             euqipment_comp[last_euqipment as keyof EquipmentState].ecs_entity_index = null
@@ -108,6 +111,9 @@ export class UpdateAllsAttributeSystem extends System{
                     }
                     all_attributes_comp.attribute[sign] += num;
                 })
+                /**特殊词条的特殊处理 */
+                const item_speicel_array =proxy.speicel_attribute
+                all_attributes_comp.special.push(item_speicel_array)
                 print("ecs cur equipment special attribute state")
               
             }
@@ -166,6 +172,7 @@ export class InventorySytemOnAdd extends System{
         if(ecs_ent == null){
             const dota_item_ent = EntIndexToHScript(dota_item_entity_index) as CDOTA_Item
             const item_ent = new Entity()
+            BindDota2EntityLinkEcsEntity(dota_item_entity_index,item_ent.id)
             const kv = dota_item_ent.GetAbilityKeyValues() as typeof item_json["item_bian_ti_mo_fang"]
             if(kv.euqipment_type == -1){
                 return;

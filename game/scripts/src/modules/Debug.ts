@@ -436,8 +436,8 @@ export class Debug {
             const a = Object.values(FN).map((elm:any)=>{
                 if(typeof elm != 'function'){
                     if(elm.标识 && elm.test){
-                        const line1 = `${elm.标识}_name,${elm.test}\n`
-                        const line2 = `${elm.标识}_description,${elm.名字}\n`
+                        const line1 = `${elm.标识}_name,english,${elm.名字},\n`
+                        const line2 = `${elm.标识}_description,english,${elm.test},\n`
                         csv += line1;
                         csv += line2;
                      }

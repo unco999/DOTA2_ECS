@@ -1,9 +1,11 @@
 import { BaseModifier, registerModifier } from "../../../utils/dota_ts_adapter";
 import { reloadable } from "../../../utils/tstl-utils";
 import * as euqipment_json from "../../../json/equipment.json"
-import { RemoveParticleCallBack, TriggerBigWolrdTile, _replace$2KeytoArray, _replace$2obj } from "../../../fp";
+import { RemoveParticleCallBack, TRACE, TriggerBigWolrdTile, _replace$2KeytoArray, _replace$2obj, compose, flattenArray } from "../../../fp";
 import type { AllModifierAndAttributeComps } from "../../component/role";
-
+type modifier_atomic_fn = (input:输入数据<any>)=>输入数据<any>
+type modifier_atomic_head_fn = (this:BaseModifier,input:输入数据<any>)=>输入数据<any>
+type modifier_hook_name = string
 type FUC_ARGS<T extends keyof typeof euqipment_json > =  Partial<typeof euqipment_json[T]['AbilityValues']>
 @reloadable
 export class euqipment_spcial_fuc{
@@ -68,6 +70,133 @@ export class euqipment_spcial_fuc{
     }
 }
 
+/**给每个函数输入包裹需要的值 */
+function _wrap_input(event:ModifierAbilityEvent & ModifierAttackEvent,bind:BaseModifier,last_out?:{[key in 数据流类型]: any}){
+    const input:输入数据<ModifierAbilityEvent & ModifierAttackEvent> = {
+        事件:event,
+        修饰器:this,
+        数据流:last_out
+    }
+    return input
+}
+
+/**
+ * 创造一个头部函数
+ * @param this 
+ * @param instance 
+ * @param wrap_fn 
+ * @returns 
+ */
+function create_head_fn(instance:BaseModifier,wrap_fn:modifier_atomic_fn){
+    return (event)=>{
+        const init_data:输入数据<any> = {}
+        init_data.事件 = event,
+        init_data.修饰器 = instance
+        init_data.数据流 = {
+            [数据流类型.布尔值] : true,
+            [数据流类型.判断数值] : 30
+        }
+        print("检擦头部文件传入参数")
+        DeepPrintTable(init_data)
+        return wrap_fn(init_data)
+    }
+}
+
+
+
+function sequenceTofn(data:Record<number, 记载>,instance:BaseModifier){
+    let next_fn:modifier_atomic_fn;
+    let record:修饰器记载;
+    print("data的情况")
+    DeepPrintTable(data)
+    const fns = Object.values(data).filter((elm:修饰器记载)=>{
+        if(elm.是修饰器){
+            record = elm
+            return false
+        }else{
+            return true
+        }
+    }).map(elm=>elm.函数) as ((...args)=>any)[]
+
+    const fn = (events) => {
+        const init_data:输入数据<any> = {}
+        init_data.事件 = events,
+        init_data.修饰器 = instance
+        init_data.数据流 = {
+            [数据流类型.布尔值] : true,
+            [数据流类型.判断数值] : 30
+        }
+        return compose<输入数据<any>>((t)=>t.数据流?.[数据流类型.布尔值] != false,...fns)(init_data).数据流[数据流类型.属性字段]
+    }
+    
+    return {wrap:fn,record}
+}
+/**
+ * 序列转成可执行函数
+ */
+function transfromAllCompsFn(coms_obj:Record<number, 记载>[][],instance:BaseModifier){
+    const comps_to_fn_table = coms_obj.map(elm=>{
+        return elm.map(elm=>{
+            return sequenceTofn(elm,instance)
+        })
+    })
+    return comps_to_fn_table
+}
+
+/**
+ * 合并按照不同装备  装备中的不同词条  进行modifierhookname 的实际合并
+ */
+function sequenceFnMerge(input:ReturnType<typeof transfromAllCompsFn>){
+    const out:Record<modifier_hook_name,modifier_atomic_fn> = {}
+    input.forEach(euqipment_class=>{
+        euqipment_class.forEach(buffer_class=>{
+            if(out[buffer_class.record.修饰器名字]){
+                const wrap = function(input:输入数据<any>){
+                    const r = buffer_class.wrap(input)
+                    if(r.数据流[数据流类型.布尔值] == false){
+                        return
+                    }
+                    if(r.数据流[数据流类型.属性字段] != null){
+                        const target_r = out[buffer_class.record.修饰器名字](input)
+                        if(target_r.数据流[数据流类型.属性字段] !=null){
+                            return target_r.数据流[数据流类型.属性字段] + r.数据流[数据流类型.属性字段]
+                        }
+                        return r.数据流[数据流类型.属性字段]
+                    }
+
+                }
+                out[buffer_class.record.修饰器名字] = wrap
+            }else{
+                out[buffer_class.record.修饰器名字] = buffer_class.wrap
+            }
+        })
+    })
+    return out
+}
+
+
+/**
+ * 获取当前所有影响的modifier enum 枚举
+ */
+function getAllModifierEnum(coms_obj:Record<number, 记载>[][]){
+    const out = flattenArray(coms_obj
+        .map(elm=> elm.map(pickModifierHookFN)
+        .map((elm:修饰器记载)=>({hook:elm.修饰器名字,enum:elm.枚举影响}))))
+    return out       
+}
+
+/**
+ * 取出序列中的modifierhook的实际记载  并且返回删除后的数组
+ */
+function pickModifierHookFN(sequence:Record<number, 记载>){
+    let out:记载 = undefined 
+    for(let i in sequence){
+        if( (sequence[i] as 修饰器记载)?.是修饰器 ){
+            out = sequence[i]
+        }
+    }
+    return out
+}
 
 @reloadable
 @registerModifier()
@@ -84,85 +213,46 @@ export class attribute_modifier extends BaseModifier{
         })
     }
 
-    /**把记载表变成可以执行的函数 */
-    private _flattening(comp:AllModifierAndAttributeComps['special']){
-        DeepPrintTable(comp)
-        const special = comp
-        print("all")
-        DeepPrintTable(getmetatable(special))
-        if(special == null) return
-        const all_call_map:Map<number,{fuc:(this:void,args1:any,arg2,arg3,arg4)=>void,ModifierFunctionName:string}> = new Map()
-        special.forEach(elm=>{
-            const equiment_spcial_args = {}
-            Object.values(elm.AbilityValues).forEach(elm=>Object.assign(equiment_spcial_args,elm))
-            const link_maigc_fuc = this._flattening_fuc(elm.call_fuc)
-            if(all_call_map.has(elm.enum_modifier_function)){
-                const last_function = all_call_map.get(elm.enum_modifier_function).fuc
-                const create_new_func = (args1:any,args2,args3) => {
-                    link_maigc_fuc.forEach(link_fuc=>{
-                        link_fuc(equiment_spcial_args,args1,args2,args3)
-                    })
-                    last_function(equiment_spcial_args,args1,args2,args3)
-                }
-                all_call_map.set(elm.enum_modifier_function,{fuc:create_new_func,ModifierFunctionName:elm.raw_modifier_function_name})
-            }else{
-                const create_new_func = (args1:any,args2,args3) => {
-                    link_maigc_fuc.forEach(link_fuc=>{
-                        link_fuc(equiment_spcial_args,args1,args2,args3)
-                    })
-                }
-                all_call_map.set(elm.enum_modifier_function,{fuc:create_new_func,ModifierFunctionName:elm.raw_modifier_function_name})
-            }
-        })
-        return all_call_map
+
+    private _speciel_des_to_fn(special_array:AllModifierAndAttributeComps['special']){
+        const raw_seuqnce_list = transfromAllCompsFn(special_array,this)
+        const with_modifier_function_record = sequenceFnMerge(raw_seuqnce_list)
+        DeepPrintTable(with_modifier_function_record)
+        return with_modifier_function_record
     }
+
     
+
     DeclareFunctions(): ModifierFunction[] {
         if(GameRules.QSet == null){
             return;
         }
         const role_ent = GameRules.QSet.is_select_role.first
-        let all_call_map:Map<number,{fuc:Function,ModifierFunctionName:string}>;
-        const call_map_to_modifier_name_array = []
         if(role_ent){
-            const all_attribute = role_ent.get(c.role.AllModifierAndAttributeComps).attribute
-            _replace$2KeytoArray(all_attribute).forEach(key=>{
-                const json_deep = Object.values(euqipment_json).find(elm=>elm.attribute_sign == key)
-                if(json_deep){
-                    const fnc_name = json_deep.dota_attribute_modifier_name
-                    if(fnc_name != "none" && json_deep.type == 0){
-                        this[fnc_name] = () => all_attribute[json_deep.attribute_sign as keyof typeof all_attribute]
-                    }
-                }
-            })
+            // const all_attribute = role_ent.get(c.role.AllModifierAndAttributeComps).attribute
+            // _replace$2KeytoArray(all_attribute).forEach(key=>{
+            //     const json_deep = Object.values(euqipment_json).find(elm=>elm.attribute_sign == key)
+            //     if(json_deep){
+            //         const fnc_name = json_deep.dota_attribute_modifier_name
+            //         if(fnc_name != "none" && json_deep.type == 0){
+            //             this[fnc_name] = () => all_attribute[json_deep.attribute_sign as keyof typeof all_attribute]
+            //         }
+            //     }
+            // })
 
             const all_attributes = role_ent.get(c.role.AllModifierAndAttributeComps)
-            all_call_map = this._flattening(all_attributes.special)
-            
-            if(all_call_map == undefined || all_call_map.size == 0) {
-                return [ModifierFunction.ATTACKSPEED_BONUS_CONSTANT,
-                    ModifierFunction.PREATTACK_BONUS_DAMAGE,
-                    ModifierFunction.MOVESPEED_BONUS_CONSTANT,  
-                    ModifierFunction.MANA_REGEN_CONSTANT,
-                    ModifierFunction.PHYSICAL_ARMOR_BONUS,
-                    ModifierFunction.IGNORE_PHYSICAL_ARMOR,
-                    ModifierFunction.STATUS_RESISTANCE,
-                    ModifierFunction.MAGICAL_RESISTANCE_BONUS,
-                    ModifierFunction.EXTRA_HEALTH_BONUS,
-                    ModifierFunction.HEALTH_REGEN_CONSTANT,
-                    ModifierFunction.EXTRA_MANA_BONUS,
-                    ModifierFunction.MISS_PERCENTAGE,
-                    ,...call_map_to_modifier_name_array]
-            };
-            for(const [key,val] of all_call_map){
-                print("equipment is special regisger on modifier event",key)
-                this[val.ModifierFunctionName] = val.fuc.bind(this)
-                print(val.ModifierFunctionName)
-                call_map_to_modifier_name_array.push(Number(key))
-            }
-            
+            // all_call_map = this._flattening(all_attributes.special)
+            const call_table = this._speciel_des_to_fn(all_attributes.special)
 
-            return [ModifierFunction.ATTACKSPEED_BONUS_CONSTANT,
+            const cur_modifier_hook_and_enum = getAllModifierEnum(all_attributes.special)
+
+            for(let modifier_hook_name in call_table){
+                print("最终绑定的modifiname",modifier_hook_name)
+                this[modifier_hook_name] = call_table[modifier_hook_name]
+            }
+
+            return [
+                ModifierFunction.ATTACKSPEED_BONUS_CONSTANT,
                 ModifierFunction.PREATTACK_BONUS_DAMAGE,
                 ModifierFunction.MOVESPEED_BONUS_CONSTANT,  
                 ModifierFunction.MANA_REGEN_CONSTANT,
@@ -174,7 +264,8 @@ export class attribute_modifier extends BaseModifier{
                 ModifierFunction.HEALTH_REGEN_CONSTANT,
                 ModifierFunction.EXTRA_MANA_BONUS,
                 ModifierFunction.MISS_PERCENTAGE,
-                ,...call_map_to_modifier_name_array]
+                ...cur_modifier_hook_and_enum.map(elm=>elm.enum),
+                ]
         }
 
     }

@@ -394,41 +394,48 @@ export function to_system_net_table<T>(){
     }
 }
 
-export function to_client_event<T>(owner:"player"|"hero"|"system"|"player_hero",is_clear:boolean = false){
-    return (instance:T) => {
+export function to_client_event(owner:"player"|"hero"|"system"|"player_hero",is_clear:boolean = false){
+    return (instance) => {
         GameRules.enquence_delay_call(()=>{
             if(!container.to_client_event_container.has(instance)){
                 container.to_client_event_container.add(instance)
             }
-            const send_obj = _replace$2obj(instance as object);
-            if(owner == "system" ){
-                CustomGameEventManager.Send_ServerToAllClients(instance.constructor.name,is_clear ? {} : send_obj);
-                return;
-            }
-            if(owner == "player" ){
-                const player_cmp = GameRules.world.getEntityById(instance['$$$$entity'])?.get(c.base.PLAYER)
-                if(player_cmp == null) return;
-                player_cmp && (send_obj["$$$$player_id"] = player_cmp.PlayerID);
-                CustomGameEventManager.Send_ServerToAllClients(instance.constructor.name + player_cmp.PlayerID + "player",is_clear ? {} : send_obj );
-                return;
-            }
-            if(owner == "hero"){
-                const hero_cmp = GameRules.world.getEntityById(instance['$$$$entity'])?.get(c.base.HERO)
-                if(hero_cmp == null) return;
-                hero_cmp && (send_obj["$$$$hero_idx"] = hero_cmp.hero_idx);
-                CustomGameEventManager.Send_ServerToAllClients(instance.constructor.name + hero_cmp.hero_idx + "hero",is_clear ? {} :send_obj);
-                return;
-            }
-            if(owner == "player_hero"){
-                const player_cmp = GameRules.world.getEntityById(instance['$$$$entity'])?.get(c.base.PLAYER)
-                if(player_cmp == null) return;
-                player_cmp && (send_obj["$$$$player_id"] = player_cmp.PlayerID);
-                const hero_cmp = GameRules.world.getEntityById(instance['$$$$entity'])?.get(c.base.HERO)
-                hero_cmp && (send_obj["$$$$hero_idx"] = hero_cmp.hero_idx);
-                CustomGameEventManager.Send_ServerToAllClients(instance.constructor.name + player_cmp.PlayerID + hero_cmp.hero_idx + "player_hero",is_clear ? {} :send_obj);
-                return;
-            }
-        },instance['$$$$entity'] ? (instance.constructor.name + instance['$$$$entity'] + "to_client_event") : (instance.constructor.name + "to_client_event") )
+            const comp = _replace$2obj(instance)
+            const player_cmp = GameRules.world.getEntityById(instance['$$$$entity'])?.get(c.base.PLAYER)
+            player_cmp && (comp["$$$$player_id"] = player_cmp.PlayerID);
+            CustomGameEventManager.Send_ServerToAllClients("s2c_comp_to_event",{class_name:instance.constructor.name,comp,ecs_entity_index:instance['$$$$entity']})
+
+            // if(owner == "system" ){
+            //     CustomGameEventManager.Send_ServerToAllClients("s2c_comp_to_event",{comp:_replace$2obj(instance),ecs_entity_index:instance['$$$$entity']})
+            //     // CustomGameEventManager.Send_ServerToAllClients(instance.constructor.name,is_clear ? {} : send_obj);
+            //     return;
+            // }
+            // if(owner == "player" ){
+            //     const player_cmp = GameRules.world.getEntityById(instance['$$$$entity'])?.get(c.base.PLAYER)
+            //     if(player_cmp == null) return;
+            //     player_cmp && (send_obj["$$$$player_id"] = player_cmp.PlayerID);
+            //     CustomGameEventManager.Send_ServerToAllClients("s2c_comp_to_event",{comp:_replace$2obj(instance),ecs_entity_index:instance['$$$$entity']})
+            //     // CustomGameEventManager.Send_ServerToAllClients(instance.constructor.name + player_cmp.PlayerID + "player",is_clear ? {} : send_obj );
+            //     return;
+            // }
+            // if(owner == "hero"){
+            //     const hero_cmp = GameRules.world.getEntityById(instance['$$$$entity'])?.get(c.base.HERO)
+            //     if(hero_cmp == null) return;
+            //     hero_cmp && (send_obj["$$$$hero_idx"] = hero_cmp.hero_idx);
+            //     CustomGameEventManager.Send_ServerToAllClients(instance.constructor.name + hero_cmp.hero_idx + "hero",is_clear ? {} :send_obj);
+            //     return;
+            // }
+            // if(owner == "player_hero"){
+            //     const player_cmp = GameRules.world.getEntityById(instance['$$$$entity'])?.get(c.base.PLAYER)
+            //     if(player_cmp == null) return;
+            //     player_cmp && (send_obj["$$$$player_id"] = player_cmp.PlayerID);
+            //     const hero_cmp = GameRules.world.getEntityById(instance['$$$$entity'])?.get(c.base.HERO)
+            //     hero_cmp && (send_obj["$$$$hero_idx"] = hero_cmp.hero_idx);
+            //     CustomGameEventManager.Send_ServerToAllClients(instance.constructor.name + player_cmp.PlayerID + hero_cmp.hero_idx + "player_hero",is_clear ? {} :send_obj);
+            //     return;
+            // }
+        },
+        instance['$$$$entity'] ? (instance.constructor.name + tostring(instance['$$$$entity']) + "to_client_event") : (instance.constructor.name + "to_client_event") )
     }
 }
 
@@ -470,12 +477,6 @@ export function cache_remove_all(cache:object){
 
 
 
-//compose 
-export function compose<T>(...fns:((contexnt:T)=>any)[]){
-    return (x:T) => {
-        return fns.reduce((acc,fn)=> fn(acc),x)
-    }
-}
 
 export function get_entity(comp:any){
     if(comp["$$$$entity"] == null){
@@ -733,12 +734,44 @@ export function RemoveParticleCallBack(particle:ParticleID,immediate: boolean){
     }
 }
 
+
+export function BindDota2EntityLinkEcsEntity(dota_ent_index:EntityIndex,ecs_id:number){
+    print("绑定了ecs-dota之间的练习",dota_ent_index,ecs_id)
+    CustomGameEventManager.Send_ServerToAllClients("s2c_bind_dota_entity_to_ecs_entity",{
+        ecs_entity_id:ecs_id,
+        dota_entity:dota_ent_index
+    })
+}
+
 /**掩码是否存在 */
 export function has_mask(mask:number,flag:number){
     return (mask & flag) == flag
 }
 
+export function flattenArray<T>(array: T[][]): T[] {  
+    return array.reduce((acc, val) => acc.concat(val), []);  
+}  
 
 
-export const NUMMAX = math.huge
 
+export function compose<T extends 输入数据<any>>(  
+    predicate: (result: T) => boolean,  
+    ...functions: ((arg: T) => T)[]  
+  ): (arg: T) => T {  
+    if (functions.length === 0) {  
+      print('No functions to compose.');  
+    }  
+    
+    return functions.reduce((composed, fn) => {  
+      return (arg: T) => {  
+        const result = fn(arg);  
+        DeepPrintTable(result.数据流)
+        if (predicate(result)) {  
+          return result;  
+        } else {  
+           print('函数执行中止了');  
+        }  
+      };  
+    }, (arg: T) => arg); // 初始值为恒等函数  
+  }  
+    
