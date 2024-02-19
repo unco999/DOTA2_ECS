@@ -44,3 +44,13 @@ a000012_description,english,如果 我方的血量低于x 则,
 a000010_name,english,控法,
 a000010_description,english,如果 敌方的魔法低于x 则,
 a000004_name,english,火之
+
+
+a000024_description,english,则 元素发射,
+a000024_name,english,元素,
+
+a000025_description,english,创造x,
+a000025_name,english,元素,
+
+a000026_description,english,使元素分裂x次,
+a000026_name,english,分裂

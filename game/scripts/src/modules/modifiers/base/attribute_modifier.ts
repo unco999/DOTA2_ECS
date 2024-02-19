@@ -1,7 +1,7 @@
 import { BaseModifier, registerModifier } from "../../../utils/dota_ts_adapter";
 import { reloadable } from "../../../utils/tstl-utils";
 import * as euqipment_json from "../../../json/equipment.json"
-import { RemoveParticleCallBack, TRACE, TriggerBigWolrdTile, _replace$2KeytoArray, _replace$2obj, compose, flattenArray } from "../../../fp";
+import { RemoveParticleCallBack, TRACE, TriggerBigWolrdTile, _replace$2KeytoArray, _replace$2obj, compose, flattenArray, 组合函数不阻断 } from "../../../fp";
 import type { AllModifierAndAttributeComps } from "../../component/role";
 type modifier_atomic_fn = (input:输入数据<any>)=>输入数据<any>
 type modifier_atomic_head_fn = (this:BaseModifier,input:输入数据<any>)=>输入数据<any>
@@ -116,7 +116,7 @@ function sequenceTofn(data:Record<number, 记载>,instance:BaseModifier){
         }else{
             return true
         }
-    }).map(elm=>elm.函数) as ((...args)=>any)[]
+    }).map((elm:包含动态值的记载)=>elm.绑定后的函数 ?? elm.函数) as ((...args)=>any)[]
 
     const fn = (events) => {
         const init_data:输入数据<any> = {}
@@ -124,9 +124,8 @@ function sequenceTofn(data:Record<number, 记载>,instance:BaseModifier){
         init_data.修饰器 = instance
         init_data.数据流 = {
             [数据流类型.布尔值] : true,
-            [数据流类型.判断数值] : 30
         }
-        return compose<输入数据<any>>((t)=>t.数据流?.[数据流类型.布尔值] != false,...fns)(init_data).数据流[数据流类型.属性字段]
+        return compose<输入数据<any>>((t)=>t.数据流?.[数据流类型.布尔值] == true,...fns)(init_data)?.数据流?.[数据流类型.属性字段]
     }
     
     return {wrap:fn,record}
@@ -146,31 +145,37 @@ function transfromAllCompsFn(coms_obj:Record<number, 记载>[][],instance:BaseMo
 /**
  * 合并按照不同装备  装备中的不同词条  进行modifierhookname 的实际合并
  */
-function sequenceFnMerge(input:ReturnType<typeof transfromAllCompsFn>){
+function sequenceFnMerge(input:ReturnType<typeof transfromAllCompsFn>,instance:BaseModifier){
     const out:Record<modifier_hook_name,modifier_atomic_fn> = {}
+    const cache:Record<modifier_hook_name,modifier_atomic_fn[]> = {}
+
     input.forEach(euqipment_class=>{
         euqipment_class.forEach(buffer_class=>{
-            if(out[buffer_class.record.修饰器名字]){
-                const wrap = function(input:输入数据<any>){
-                    const r = buffer_class.wrap(input)
-                    if(r.数据流[数据流类型.布尔值] == false){
-                        return
-                    }
-                    if(r.数据流[数据流类型.属性字段] != null){
-                        const target_r = out[buffer_class.record.修饰器名字](input)
-                        if(target_r.数据流[数据流类型.属性字段] !=null){
-                            return target_r.数据流[数据流类型.属性字段] + r.数据流[数据流类型.属性字段]
-                        }
-                        return r.数据流[数据流类型.属性字段]
-                    }
-
-                }
-                out[buffer_class.record.修饰器名字] = wrap
-            }else{
-                out[buffer_class.record.修饰器名字] = buffer_class.wrap
-            }
+           if(cache[buffer_class.record.修饰器名字] == null){
+                cache[buffer_class.record.修饰器名字] = []
+           }
+           cache[buffer_class.record.修饰器名字].push(buffer_class.wrap)
         })
     })
+
+    for(let modifier_key in cache){
+        const fns = cache[modifier_key]
+
+        const fn = (events) => {
+            const init_data:输入数据<any> = {}
+            init_data.事件 = events,
+            init_data.修饰器 = instance
+            init_data.数据流 = {
+                [数据流类型.布尔值] : true,
+                [数据流类型.属性字段] : 0,
+            }
+            return fns.map(fn=>fn(init_data)).reduce((pre,cur)=>{
+                return pre.数据流[数据流类型.属性字段] + cur.数据流[数据流类型.属性字段]
+            },{})
+        }
+        out[modifier_key] = fn
+    }
+
     return out
 }
 
@@ -216,7 +221,7 @@ export class attribute_modifier extends BaseModifier{
 
     private _speciel_des_to_fn(special_array:AllModifierAndAttributeComps['special']){
         const raw_seuqnce_list = transfromAllCompsFn(special_array,this)
-        const with_modifier_function_record = sequenceFnMerge(raw_seuqnce_list)
+        const with_modifier_function_record = sequenceFnMerge(raw_seuqnce_list,this)
         DeepPrintTable(with_modifier_function_record)
         return with_modifier_function_record
     }

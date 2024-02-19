@@ -2,6 +2,29 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { onLocalEvent } from "../utils/event-bus";
 import { useGameEvent } from "react-panorama-x";
 
+export function useLinkComps<T extends keyof compc_map>(compsName:T,sort:(a:compc_map[T],b:compc_map[T])=>number){
+    const [comps,change_comps] = useState<compc_map[T][]>()
+    const [last_update_time,set_last_update_time] = useState<number>(0)
+    
+    useGameEvent("s2c_link_comp_to_event",()=>{
+        set_last_update_time(new Date().getTime())
+    },[])
+
+    useEffect(()=>{
+        if(GameUI.CustomUIConfig().with_link_comp_cache[compsName]){
+            const data = GameUI.CustomUIConfig().with_link_comp_cache[compsName]
+            const list:compc_map[T][] = []
+            data?.forEach(elm=>{
+                list.push(elm.comp)
+            })
+            change_comps(list.sort(sort))
+        }
+   },[last_update_time])
+
+   return [comps,last_update_time]
+}
+
+
 
 export function useCompWithEntityID(dota_entity_id:EntityIndex){
     const [comps,change_comps] = useState<any>()

@@ -1,5 +1,6 @@
 import { doc, to_client_event, clear_event, cache_remove, http, to_debug, NONE, get_entity, to_player_net_table, to_save } from "../../fp";
 import { Entity } from "../../lib/ecs/Entity";
+import { LinkedComponent } from "../../lib/ecs/LinkedComponent";
 
 
 
@@ -232,5 +233,17 @@ export class AllModifierAndAttributeComps{
         public special:Record<number,记载>[][]  
     ){
 
+    }
+}
+
+
+@doc.watch("deep",to_client_event("player"))
+export class WarehouseInventory extends LinkedComponent{
+    constructor(
+        public slot_index:number,
+        public ItemSlots:Record<number,number>,
+        public is_lock:boolean
+    ){
+        super()
     }
 }

@@ -19,7 +19,6 @@ import { sutep_system } from "./reload"
 import { Class } from '../lib/utils/Class';
 import "./modifiers/base/attribute_modifier"
 import type { euqipment_spcial_fuc } from './modifiers/base/attribute_modifier';
-
 interface DotaHttpContainerData {
     dataSource:string,
     database:string,
@@ -128,13 +127,6 @@ export function ActivateModules() {
             const hero = EntIndexToHScript(event.entindex) as CDOTA_BaseNPC_Hero
             if(hero.IsHero()){
                 hero.AddNewModifier(hero,null,"collision_modifier",{duration:99999})
-                hero.AddAbility("ability_test")
-                hero.AddAbility("ability_test")
-                hero.AddAbility("ability_test")
-                hero.AddAbility("ability_test")
-                hero.AddAbility("ability_test")
-                hero.AddAbility("ability_test")
-                hero.AddAbility("ability_test")
                 hero.AddNewModifier(hero,null,"attribute_modifier",{duration:-1})
                 //必须要先建立init
         

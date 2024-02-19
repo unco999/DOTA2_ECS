@@ -4,6 +4,7 @@ declare interface CustomUIConfig{
     /**按照entity分类的comp cache */
     //string 是comp的class name
     with_entity_comp_cache:Partial<Record<number,Record<string,any>>>,
+    with_link_comp_cache:Partial<Record<string,{uid:string,comp:any}[]>>,
     reload:boolean;
 }
 

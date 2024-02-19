@@ -555,13 +555,23 @@ export class remove_role_system extends System{
 
 export class role_in_game_ok_system extends System{
 
+    /**创造玩家仓库背包 */
+    private _create_warehouse_inventory(){
+        const role = GameRules.QSet.is_select_role.first
+        const comp = new c.role.WarehouseInventory(0,WAIT,false)
+        role.appendComponent(comp)
+        for(let i = 1 ; i <= 11 ; i++){
+            const comp = new c.role.WarehouseInventory(i,WAIT,true)
+            role.appendComponent(comp)
+        }
+    }
+
     public load(event:InstanceType<typeof GameRules.event.OkEvent>){
         //让UI进入下一个阶段
         next_xstate("ui_main")
         const player_ent = GameRules.QSet.player_query.find(p=>p.get(c.base.PLAYER)?.PlayerID == event.PlayerID)
         const select_uuid = event.data.uuid;
         const select_slot = event.data.slot;
-        print("查找问题",player_ent)
         if(select_uuid == null || select_slot == null){
             Warning("没找到适配角色 uuid 不存在 或者select_index不存在")
         }
@@ -601,7 +611,8 @@ export class role_in_game_ok_system extends System{
                 )
 
                 const PlayerID = player_ent.get(c.base.PLAYER).PlayerID
-                const hero = PlayerResource.GetPlayer(PlayerID).GetAssignedHero()
+                const hero =  HeroList.GetAllHeroes().find(hero=>hero.GetPlayerOwnerID() == PlayerID)
+
 
                 const hero_comp = new c.base.HERO(hero.GetUnitName(),hero.entindex())
                 select_ent.add(hero_comp)
@@ -619,6 +630,8 @@ export class role_in_game_ok_system extends System{
                 }),TABLE_WAIT({},()=>{
                     return {map_index:"none",landmark_index:"none",schedule:0}
                 })))
+
+                this._create_warehouse_inventory()
                 return;
             }
         })

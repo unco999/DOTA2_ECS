@@ -87,6 +87,7 @@ declare type compc_map = {
     Inventory:Inventory
     EquipmentState:EquipmentStateExntendsComps
     EquipMentAttribute:EquipMentAttribute
+    WarehouseInventory:WarehouseInventory
 }
 
 declare interface CustomGameEventDeclarations {
@@ -118,6 +119,8 @@ declare interface CustomGameEventDeclarations {
     shop_exit: {}
     s2c_bind_dota_entity_to_ecs_entity: { dota_entity: EntityIndex, ecs_entity_id: number }
     s2c_comp_to_event: { class_name:string, ecs_entity_index: EntityIndex, comp:Partial<compc_map[keyof compc_map]> }
+    s2c_link_comp_to_event: { uid:string,class_name:string, ecs_entity_index: EntityIndex, comp:Partial<compc_map[keyof compc_map]> }
+    
     [key: string]: any
 }
 
@@ -279,6 +282,12 @@ declare interface Inventory {
     slots: { slot_1: { dota_entity: any; ecs_entity_index: number; }; slot_2: { dota_entity: any; ecs_entity_index: number; }; slot_3: { dota_entity: any; ecs_entity_index: number; }; slot_4: { dota_entity: any; ecs_entity_index: number; }; slot_5: { dota_entity: any; ecs_entity_index: number; }; slot_6: { dota_entity: any; ecs_entity_index: number; }; slot_7: { dota_entity: any; ecs_entity_index: number; }; slot_8: { dota_entity: any; ecs_entity_index: number; }; slot_9: { dota_entity: any; ecs_entity_index: number; }; };
 }
 
+declare interface WarehouseInventory {
+    slot_index: number;
+    ItemSlots: any;
+    is_lock: boolean;
+}
+
 declare interface EquipmentState {
     slot_0?: { type: number; dota_entity: any; ecs_entity_index: number; };
     slot_1?: { type: number; dota_entity: any; ecs_entity_index: number; };
@@ -310,7 +319,7 @@ declare interface EquipMentAttribute {
     texture_index: string;
     base_attribute: Record<number,string>;
     state_attribute: Record<number,string>;
-    speicel_attribute: Record<number,Record<number,记载>>;
+    speicel_attribute: Record<number,Record<number,包含动态值的记载>>;
 }
 
 
@@ -386,6 +395,14 @@ declare interface 记载{
     test:string,
     名字:string,
     权重:Record<PROFESSION,number>,
+    绑定参数生成:(input:number)=>{fn:(this:ModifierAtomicBind)=>输入数据<any>,消耗得分:number,bind:ModifierAtomicBind} | undefined,
+}
+
+declare type ModifierAtomicBind = Partial<{arg1:any,arg2:any,arg3:any}>
+     
+declare interface 包含动态值的记载 extends 记载{
+    动态值:ModifierAtomicBind,
+    绑定后的函数:(this:ModifierAtomicBind,input:输入数据<any>)=>输入数据<any>
 }
 
 declare interface 修饰器记载 extends 记载{
@@ -400,7 +417,7 @@ declare interface 可连接最终输出的记载 extends 记载{
 }
 
 declare type 输入数据<T> = Partial<{
-    修饰器:any,
+    修饰器:CDOTA_Modifier_Lua,
     事件:T,
     数据流:Partial<{[key in 数据流类型]: any}>;
 }>;
@@ -413,9 +430,12 @@ declare type 记载序列 = Record<number,Record<number,记载>>
 declare const enum 数据流类型{
     属性字段 = 0x0000001,
     布尔值 = 0x0000002,
-    单位 = 0x0000004,
+    敌方 = 0x0000004,
     技能 = 0x0000008,
     判断数值 = 0x0000010,
     直接单位操作 = 0x0000020,
+    我方 = 0x0000040,
+    元素影响 = 0x0000080,
+    元素分裂 = 0x0000100,
     无 = 0,
 }

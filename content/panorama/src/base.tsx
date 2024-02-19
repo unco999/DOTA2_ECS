@@ -108,7 +108,7 @@ export const TilePanel = ({width,height,tile,children}:{tile:string,width:string
     horizontalAlign:"center",flowChildren:"down",width,height}}
     >
         <Image hittest={false} src="s2r://panorama/images/hud/item_tooltip_passive.psd">
-            <Label style={{color:"pink",fontSize:"15px",textShadow:"2px 2px 8px 3.0 #333333b0"}} text={tile}/>
+            <Label style={{color:"white",fontSize:"15px",textShadow:"2px 2px 8px 3.0 #333333b0"}} text={tile}/>
         </Image>
         <Panel>
         {children}

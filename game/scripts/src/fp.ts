@@ -396,6 +396,19 @@ export function to_system_net_table<T>(){
 
 export function to_client_event(owner:"player"|"hero"|"system"|"player_hero",is_clear:boolean = false){
     return (instance) => {
+        if(getmetatable(instance) && getmetatable(getmetatable(instance))?.constructor.name == "LinkedComponent"){
+            if(!container.to_client_event_container.has(instance)){
+                container.to_client_event_container.add(instance)
+            }
+            GameRules.enquence_delay_call(()=>{
+                const comp = _replace$2obj(instance)
+                const player_cmp = GameRules.world.getEntityById(instance['$$$$entity'])?.get(c.base.PLAYER)
+                player_cmp && (comp["$$$$player_id"] = player_cmp.PlayerID);
+                CustomGameEventManager.Send_ServerToAllClients("s2c_link_comp_to_event",{uid:comp["uid"],class_name:instance.constructor.name,comp,ecs_entity_index:instance['$$$$entity']})
+            return
+           })
+            return;
+        }   
         GameRules.enquence_delay_call(()=>{
             if(!container.to_client_event_container.has(instance)){
                 container.to_client_event_container.add(instance)
@@ -752,26 +765,89 @@ export function flattenArray<T>(array: T[][]): T[] {
     return array.reduce((acc, val) => acc.concat(val), []);  
 }  
 
-
+/**随机分配一个长度的百分比分割 */
+export function distributePercentages(length: number): number[] {  
+    // 首先，确保长度是正数  
+    if (length <= 0) {  
+        print("distributePercentages错误")
+    }  
+  
+    // 初始化一个数组来存储百分比  
+    let percentages: number[] = [];  
+  
+    // 分配剩余的百分比  
+    let remainingPercent = 100;  
+  
+    // 生成length-1个随机百分比值，确保剩余一个百分比用于最后一个元素  
+    for (let i = 0; i < length - 1; i++) {  
+        // 生成一个1到remainingPercent之间的随机整数（包括两端）  
+        const randomPercent = Math.floor(Math.random() * remainingPercent) + 1;  
+  
+        // 将这个百分比添加到数组中，并从剩余百分比中减去它  
+        percentages.push(randomPercent);  
+        remainingPercent -= randomPercent;  
+    }  
+  
+    // 添加最后一个百分比，它是剩余的所有百分比  
+    percentages.push(remainingPercent);  
+  
+    // 返回分配好的百分比数组  
+    return percentages;  
+}  
 
 export function compose<T extends 输入数据<any>>(  
     predicate: (result: T) => boolean,  
     ...functions: ((arg: T) => T)[]  
-  ): (arg: T) => T {  
+): (arg: T) => T {  
     if (functions.length === 0) {  
-      print('No functions to compose.');  
+        return (arg: T) => arg; // 返回恒等函数  
     }  
-    
-    return functions.reduce((composed, fn) => {  
-      return (arg: T) => {  
-        const result = fn(arg);  
-        DeepPrintTable(result.数据流)
-        if (predicate(result)) {  
-          return result;  
-        } else {  
-           print('函数执行中止了');  
-        }  
-      };  
+    return functions.reverse().reduce((composed, fn) => {  
+        return (arg: T) => {  
+            const result = fn(arg);  
+            if (predicate(result)) {  
+                print('predicate 通过了，执行下一个函数');  
+                return composed(result); // 将结果传递给下一个函数  
+            } else {  
+                print('predicate 未通过，中止函数链');  
+                return result; // 不执行下一个函数，直接返回当前结果  
+            }  
+        };  
     }, (arg: T) => arg); // 初始值为恒等函数  
-  }  
+}
+
+
+export function 组合函数不阻断<T extends 输入数据<any>>(  
+    predicate: (result: T) => boolean,  
+    ...functions: ((arg: T) => T)[]  
+): (arg: T) => T {  
+    if (functions.length === 0) {  
+        return (arg: T) => arg; // 返回恒等函数  
+    }  
+    return functions.reverse().reduce((composed, fn) => {  
+        return (arg: T) => {  
+            const result = fn(arg);  
+            return composed(result); // 将结果传递给下一个函数  
+        };  
+    }, (arg: T) => arg); // 初始值为恒等函数  
+}
+
+export function GenerateSplitVectors(center: Vector, forward: Vector, radius: number, splitCount: number): Vector[]  
+{  
+    const raw_forward = center.__add(forward.__mul(radius))
     
+    const list:Vector[] = []
+
+    let 累记角度 = 0;
+    for(let i = 0 ; i < splitCount ; i++){
+        if(i == 0){
+             list.push(raw_forward)
+             continue;
+        }
+        const 单双 = i % 2;
+        累记角度 += 180 / splitCount
+        const vec = RotatePosition(raw_forward,QAngle(0,((单双 == 0) ? 累记角度 : -累记角度),0),center)
+        list.push(vec)
+    }
+    return list
+}

@@ -67,8 +67,34 @@ export class Debug {
         }
 
         if(cmd == "test"){
-            const label = FN.test()
             const hero = PlayerResource.GetPlayer(keys.playerid).GetAssignedHero()
+
+            const id = ProjectileManager.CreateLinearProjectile({
+                "Ability":null,
+                "EffectName":"particles/units/heroes/hero_tidehunter/tidehunter_arm_of_the_deep_projectile.vpcf",
+                "vSpawnOrigin":hero.GetAbsOrigin(),
+                "vVelocity":hero.GetForwardVector().__mul(500),
+                "fDistance":1000,
+                "fStartRadius":100,
+                "fEndRadius":100,
+                "Source":hero,
+            })
+            GameRules.enquence_delay_call(()=>{
+                const vec = ProjectileManager.GetLinearProjectileLocation(id)
+                const find = FindUnitsInRadius(hero.GetTeamNumber(),vec,undefined,100,UnitTargetTeam.ENEMY,UnitTargetType.CREEP | UnitTargetType.HERO,UnitTargetFlags.NONE,FindOrder.ANY,false)
+                find.forEach(elm=>{
+                    ApplyDamage({
+                        attacker:hero,
+                        victim:elm,
+                        ability:null,
+                        damage:100,
+                        damage_type:DamageTypes.MAGICAL,
+                    })
+                })
+                if(ProjectileManager.IsValidProjectile(id)){
+                    return "update"
+                }
+            },undefined,333)
         }
         if(cmd == "reload"){
             container.to_client_event_container.forEach(val=>{
@@ -89,6 +115,11 @@ export class Debug {
             }else{
                 GameRules.world.sharedConfig.add("eval")
             }
+        }
+        if(cmd == "deg"){
+            const hero = PlayerResource.GetPlayer(keys.playerid).GetAssignedHero()
+            
+            print(hero.GetForwardVector())
         }
         // if(cmd == "test"){
 

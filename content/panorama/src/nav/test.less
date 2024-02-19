@@ -1,3 +1,69 @@
 Label {
     color: red;
 }
+
+.UiXElement{
+    width: 84px;
+    height: 84px;
+    background-color: aquamarine;
+    border-radius: 20px;
+}
+
+.rbxslot{
+    animation-name: scan;
+    animation-duration: 4s;
+    animation-iteration-count: 999999;
+    background-size: 200% 200%;
+    animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+    width: 84px;
+    height: 84px;
+}
+
+
+.base{
+    transition-property:opacity;
+    transition-timing-function: cubic-bezier( 0.785, 0.385, 0.555, 1.505 );
+    transition-duration: 1s;
+    &.back{
+        opacity: 0;
+    }
+    
+    &.next{
+        opacity: 0;
+    }
+    
+    &.spawn{
+        opacity: 1;
+    }
+}
+@keyframes 'scan' {
+    0% {
+        transform: translateY(0px);
+        transform: rotateZ(-11deg);
+    }
+    50%{
+        transform: translateY(11px);
+        transform: rotateZ(11deg);
+    }
+    100% {
+        transform: translateY(0px);
+        transform: rotateZ(-11deg);
+    }
+}
+
+.element{
+    transition-property:opacity;
+    transition-timing-function: cubic-bezier( 0.785, 0.385, 0.555, 1.505 );
+    transition-duration: 1s;
+    &.back{
+        opacity: 0;
+    }
+    
+    &.next{
+        opacity: 0;
+    }
+    
+    &.spawn{
+        opacity: 1;
+    }
+}

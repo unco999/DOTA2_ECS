@@ -11,6 +11,10 @@ if(GameUI.CustomUIConfig().reload == true){
         GameEvents.Unsubscribe(i as any)    
     }
 }
+for(let i = 0 ; i < 5 ; i++){
+    hudRoot.FindChildTraverse("HUDElements")?.FindChildInLayoutFile("EquipmentMain")?.RemoveAndDeleteChildren()
+    hudRoot.FindChildTraverse("HUDElements")?.FindChildInLayoutFile("EquipmentMain")?.DeleteAsync(0)
+}   
 GameEvents.Subscribe("dota_inventory_item_added",()=>ClearItemsPanelEvent())
 GameEvents.Subscribe("dota_inventory_changed",()=>ClearItemsPanelEvent())
 
@@ -24,11 +28,16 @@ const ClearItemsPanelEvent = () => {
             const x = elm.GetPositionWithinWindow().x
             const y = elm.GetPositionWithinWindow().y
             if(!isFinite(x) || !isFinite(y) ) return;
-            $.Msg("加上事件")
-            $.Msg(elm)
             if(elm == null) return;
             elm.SetPanelEvent("onmouseover",()=>{
-                GameUI.CustomUIConfig().EventBus?.emit("tooltipitem",{switch:true,x,y})
+                //@ts-ignore
+                const dota_entity_id = elm.contextEntityIndex
+                const ecs_id = GameUI.CustomUIConfig().comp_data_with_dota_entity[dota_entity_id]
+                if(ecs_id){
+                    const comps = GameUI.CustomUIConfig().with_entity_comp_cache[ecs_id]
+                    $.Msg("组件信息情况",comps)
+                    GameUI.CustomUIConfig().EventBus?.emit("tooltipitem",{switch:true,x,y,comps})
+                }
             })
             elm.SetPanelEvent("onmouseout",()=>{
                 GameUI.CustomUIConfig().EventBus?.emit("tooltipitem",{switch:false,x,y})
@@ -86,10 +95,30 @@ GameEvents.Subscribe("s2c_comp_to_event",(event)=>{
     $.Msg("收到ecs同步信息",GameUI.CustomUIConfig().with_entity_comp_cache[event.ecs_entity_index])
 })
 
+GameEvents.Subscribe("s2c_link_comp_to_event",(event)=>{
+    if(GameUI.CustomUIConfig().with_link_comp_cache[event.class_name] == null){
+        GameUI.CustomUIConfig().with_link_comp_cache[event.class_name] = [] as any
+    }
+    const cache = GameUI.CustomUIConfig().with_link_comp_cache[event.class_name]?.find(elm=>elm.uid == event.uid)
+    if(cache){
+        cache.comp = event.comp
+    }else{
+        GameUI.CustomUIConfig().with_link_comp_cache[event.class_name]?.push({uid:event.uid,comp:event.comp})
+
+    }
+})
+
+$("#EquipmentMain")?.RemoveAndDeleteChildren()
+$("#customPreview3DItems")?.RemoveAndDeleteChildren()
+const bar = hudRoot.FindChildTraverse("ButtonBar")
+bar!.style.marginTop = "800px"
+// hudRoot.FindChildTraverse("center_with_stats")!.FindChildTraverse("StatBranch")!.style.visibility = "collapse"
+
 if(!GameUI.CustomUIConfig().reload){
     GameUI.CustomUIConfig().comp_data_with_date_time_cache = {} as any
     GameUI.CustomUIConfig().comp_data_with_dota_entity = {} as any
     GameUI.CustomUIConfig().with_entity_comp_cache = {}
+    GameUI.CustomUIConfig().with_link_comp_cache = {}
     const timer = () => {$.Schedule(Game.GetGameFrameTime(),()=>{
     if(Players.GetPlayerHeroEntityIndex(Players.GetLocalPlayer()) != -1){
         GameUI.CustomUIConfig().reload = true;
@@ -105,14 +134,33 @@ if(!GameUI.CustomUIConfig().reload){
         .GetParent()!
         .GetParent()!
         .GetParent()!;
+        hudRoot.FindChildTraverse("center_with_stats")!.FindChildTraverse("StatBranch")!.style.visibility = "collapse"
+        hudRoot.FindChildTraverse("center_with_stats")!.FindChildTraverse("level_stats_frame")!.style.visibility = "collapse"
+        
+        hudRoot.FindChildTraverse("center_with_stats")!.FindChildTraverse("portraitHUD")!.SetPanelEvent("onactivate",()=>{
+            GameUI.CustomUIConfig().EventBus?.emit("open_nav")
+        })
+        
+        
+        
+        
+        
+        
         function HideHudElements(name: string) {
         var element = hudRoot.FindChildTraverse(name);
         if (element != null) {
             element.style.visibility = "collapse";
         }}
-
+        $("#EquipmentMain")?.RemoveAndDeleteChildren()
+        $("#customPreview3DItems")?.RemoveAndDeleteChildren()
+        hudRoot.FindChildTraverse("center_with_stats")!.FindChildTraverse("AghsStatusContainer")!.style.visibility = "collapse"
         const center_with_stats = hudRoot.FindChildTraverse("center_with_stats")
-        center_with_stats!.style.marginLeft = "600px"
+        const bar = hudRoot.FindChildTraverse("ButtonBar")
+        hudRoot.FindChildTraverse("center_with_stats")!.FindChildTraverse("StatBranch")!.style.visibility = "collapse"
+
+        bar!.style.marginTop = "800px"
+        // center_with_stats!.style.marginLeft = "600px"
+        // center_with_stats!.style.zIndex = 2
         
         
         // HideHudElements("quickstats");
@@ -130,6 +178,7 @@ if(!GameUI.CustomUIConfig().reload){
         HideHudElements("topbar");
         HideHudElements("shop_launcher_block")
         GameUI.CustomUIConfig().EventBus?.emit("game_start")
+
         return;
     }else{
         timer()
@@ -140,5 +189,3 @@ if(!GameUI.CustomUIConfig().reload){
 }
 
 
-  
-    

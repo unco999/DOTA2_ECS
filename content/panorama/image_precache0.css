@@ -90,6 +90,7 @@
 	background-image: url("file://{images}/custom_game/map/ye_wai/waterturn 1.png");
 	background-image: url("file://{images}/custom_game/map/ye_wai/waterturn 2.png");
 	background-image: url("file://{images}/custom_game/map/ye_wai/waterturn 3.png");
+	background-image: url("file://{images}/custom_game/ui/background.png");
 	background-image: url("file://{images}/custom_game/ui/cam.png");
 	background-image: url("file://{images}/custom_game/ui/create_role.png");
 	background-image: url("file://{images}/custom_game/ui/main_role_select.png");
@@ -102,4 +103,5 @@
 	background-image: url("file://{images}/custom_game/ui/npc/modules_npc_yao_dian_role.png");
 	background-image: url("file://{images}/custom_game/ui/npc/modules_npc_za_huo_role.png");
 	background-image: url("file://{images}/custom_game/ui/npc/modules_npc_zhen_bao_role.png");
+	background-image: url("file://{images}/custom_game/ui/rect.png");
 }

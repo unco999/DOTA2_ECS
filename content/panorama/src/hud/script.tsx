@@ -58,7 +58,7 @@ const ItemToolTip = () =>{
 
     const special_attribute_serialize = (data:Record<number, Record<number, 记载>>) => {
         const out:{name:string,description:string}[] = []
-        let special_array = luaToJsArray(data) as Record<number, 记载>[]
+        let special_array = luaToJsArray(data) as Record<number,包含动态值的记载>[]
         $.Msg("special_arrayspecial_arrayspecial_array",data)
         let special_name = special_array.map(elm=>{
             return Object.values(elm).map(val=>{
@@ -67,7 +67,7 @@ const ItemToolTip = () =>{
         })
         let special_description = special_array.map(elm=>{
             return Object.values(elm).map(val=>{
-               return $.Localize("#" + val.标识 + "_description")
+               return $.Localize("#" + val.标识 + "_description").replace("x",val?.动态值?.arg1?.toString() ?? "0")
             }).join("")
         })
         special_name.forEach((elm,index)=>{
@@ -111,7 +111,6 @@ const ItemToolTip = () =>{
         }
         set_event(_event)
         next_state(_event.switch ? "spawn" : "init")
-        $.Msg("传来的装备属性是什么",_event.comps)
     })
 
     const next_state = (key:keyof typeof main_style) => {
@@ -119,7 +118,6 @@ const ItemToolTip = () =>{
         setState(key)
     }
 
-    $.Msg("当前显示的图标",serialize?.texture_index)
 
     return <Motion hittest={false} key={"CustomToolTip"} defaultStyle={main_style[last_state]} style={{
         opacity: spring(main_style[state].opacity),
@@ -135,6 +133,7 @@ const ItemToolTip = () =>{
                 borderRadius:"8px",
                 x:xy.x + "px",
                 y:xy.y + "px",
+                zIndex:100,
              }}>
                  <Image hittest={false} src="s2r://panorama/images/hud/item_tooltip_passive.psd"/>
                  <Panel hittest={false}  style={{flowChildren:"down",backgroundSize:"100% 100%",minWidth:"335px",backgroundImage:"url('s2r://panorama/images/hud/international_bg.psd')"}}>

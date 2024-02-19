@@ -55,4 +55,6 @@ export interface LocalEvent {
     game_start:string
 
     in_shop:{}
+
+    open_nav:{}
 }
