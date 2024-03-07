@@ -2,8 +2,10 @@
  * 主要负责重载时候进行的工作
  */
 
+import { enquence_delay_call } from "../fp";
 import { euqipment_spcial_fuc } from "./modifiers/base/attribute_modifier";
-import { EquipmentStateUpSystem, InventorySytemOnAdd, UpdateAllsAttributeSystem } from "./systems/equipment";
+import { card_root_system, root_level_system, root_system } from "./systems/dungeon";
+import { EquipmentStateUpSystem, InventorySytemOnAdd, RbxBoxSystem, UpdateAllsAttributeSystem, WarehouseInventorySystem } from "./systems/equipment";
 import { steam_id_http_init_system } from "./systems/http_system";
 import { game_init_system, ok_panel_to_event_system, game_loop_system, create_role_system, remove_role_system, ui_system, role_in_game_ok_system, unco_debug_system, eval_debug_system } from "./systems/main_system";
 import { big_world_map_move_system, big_world_map_trigger_tileset, tileset_create_system, in_mark_system, in_city_system, shop_system } from "./systems/map_system";
@@ -26,9 +28,15 @@ if(GameRules?.reload){
     }
     GameRules?.world.removeAllSystems()
     sutep_system()
+    GameRules.enquence_delay_call = enquence_delay_call()
     collectgarbage("collect")
 }
 
+export function test_system(){
+    GameRules.world.addSystem(new root_system())
+    GameRules.world.addSystem(new root_level_system())
+    GameRules.world.addSystem(new card_root_system())
+}
 
 export function sutep_system(){
     GameRules.euqipment_spcial_fuc = new euqipment_spcial_fuc()
@@ -56,6 +64,8 @@ export function sutep_system(){
     GameRules.world.addSystem(new InventorySytemOnAdd())
     GameRules.world.addSystem(new EquipmentStateUpSystem())
     GameRules.world.addSystem(new UpdateAllsAttributeSystem())
+    GameRules.world.addSystem(new WarehouseInventorySystem())
+    GameRules.world.addSystem(new RbxBoxSystem())
 
     
 }

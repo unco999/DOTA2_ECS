@@ -7,7 +7,7 @@ import { request } from "../../server/core/request";
 export namespace http_base{
 
     /**
-    * http交易系统
+    // * http交易系统
     * @param buy_city 交易城市
     * @param buy_npc 购买NPC
     * @param role_ent 交易角色

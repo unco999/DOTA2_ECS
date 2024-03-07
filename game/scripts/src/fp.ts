@@ -9,6 +9,7 @@ import * as zi_luo_lan_json from "./modules/map_json/zi_luo_lan_01.json"
 import * as kuangdong from "./modules/map_json/kuang_dong_01.json"
 import * as yan_shi from "./modules/map_json/yan_shi_01.json"
 import * as ban_xue from "./modules/map_json/ban_xue_01.json"
+import * as data from "./lib/wfc/data.json"
 
 
 /**这里的key是城市的名字 */
@@ -16,7 +17,8 @@ const tileset_modules_type = {
     "qing_xue_cheng":snow_01,
     "zi_luo_lan_gao_yuan":zi_luo_lan_json,
     "zi_luo_lan_dang_an_guan":ban_xue,
-    "ni_ao_er_de_de_bi_lu":yan_shi
+    "ni_ao_er_de_de_bi_lu":yan_shi,
+    "kuang_dong":kuangdong
 }
 
 export const NONE = {none:"none"} as any
@@ -47,11 +49,18 @@ export function clear_event(...fns:((contenxt:InstanceType<any>)=>void)[]){
 }
 
 
-export const ecsGetKV = (obj:AnyTable) => {
+export const ecsGetKV = (obj:AnyTable,...args) => {
     const list: [string,any][] = []
     const newobj =  _replace$2obj(obj)
     for(const key in newobj){
         list.push([key,newobj[key]])
+    }
+    if(list.length == 0){
+        const des = Object.getOwnPropertyDescriptors(obj)
+        for(let i in des){
+            des[i].set(args[i])
+        }
+        return;
     }
     return list;
 }
@@ -96,15 +105,20 @@ export function has(obj:any,key:string|number){
 
 export class doc{
     
- static watch<T extends new (...args: ConstructorParameters<T>) => InstanceType<T>>(mode:"deep"|"none",...fns:((comp:InstanceType<T>,remove_tag?:boolean)=>void)[]) {
+static watch<T extends new (...args: ConstructorParameters<T>) => InstanceType<T>>(mode:"deep"|"none",...fns:((comp:InstanceType<T>,remove_tag?:boolean)=>void)[]) {
     return (target: T) => {
         const constructor = target.prototype.____constructor as (this:void,...args) => any
         target.prototype.____constructor = unco_new
         
         function unco_new(this:InstanceType<T>,...args:any) {
             constructor(this,...args)
-            const cache_key = ecsGetKV(this)
+            print("创造了根本")
+            const cache_key = ecsGetKV(this,...args)
             const contenxt = this;
+            DeepPrintTable(cache_key)
+            if(cache_key === null){
+                return
+            }
             for(let [key,value] of cache_key){
                 const newkey = container.comp_container.has(target.name) ? key  : "$$$$" + tostring(key)
                 if(type(value) == 'table'){
@@ -122,6 +136,7 @@ export class doc{
                     },
                       __newindex : function (k, v){
                         const oldVal = value[k]
+                        print("设置",k,v)
                         rawset(value, k, v)
                         if (oldVal != v){
                               fns?.forEach(f=>f(contenxt))
@@ -149,6 +164,7 @@ export class doc{
                 cache_key.forEach(([key,value])=>{
                 Object.defineProperty(this,key,{
                     "set":function(v){
+                        print("当前什么KEY",key,"设置为",typeof v == "object" && v['uid'])
                         if(mode == "deep" && typeof v == 'object') {
                             const mt = {
                                 __metatable:v,
@@ -174,11 +190,11 @@ export class doc{
                             fns.forEach(f=>f(this))
                             return
                         }
-                        this["$$$$" + key] = v
-                        fns.forEach(f=>f(this))
+                        context["$$$$" + key] = v
+                        fns.forEach(f=>f(context))
                     },
                     "get":function(){
-                        return this["$$$$" + key]
+                        return context["$$$$" + key]
                     },
                 })
             })
@@ -356,6 +372,21 @@ export function _replace$2obj(instance:object){
     return obj
 }
 
+
+/**
+ * 这个是频闭了一些关键词的replace
+ * @param instance 
+ * @returns 
+ */
+export function replace$2obj(instance:object){
+    let obj = {}
+    for(let key in instance){
+        if( key.includes("next")||key.includes("____constructor")||key.includes("constructor")) continue
+        obj[key.replace("$$$$","")] = instance[key] 
+    }
+    return obj
+}
+
 export function _replace$2KeytoArray(instance:object){
     let obj:string[] = []
     for(let key in instance){
@@ -394,6 +425,8 @@ export function to_system_net_table<T>(){
     }
 }
 
+
+
 export function to_client_event(owner:"player"|"hero"|"system"|"player_hero",is_clear:boolean = false){
     return (instance) => {
         if(getmetatable(instance) && getmetatable(getmetatable(instance))?.constructor.name == "LinkedComponent"){
@@ -401,54 +434,23 @@ export function to_client_event(owner:"player"|"hero"|"system"|"player_hero",is_
                 container.to_client_event_container.add(instance)
             }
             GameRules.enquence_delay_call(()=>{
-                const comp = _replace$2obj(instance)
-                const player_cmp = GameRules.world.getEntityById(instance['$$$$entity'])?.get(c.base.PLAYER)
-                player_cmp && (comp["$$$$player_id"] = player_cmp.PlayerID);
-                CustomGameEventManager.Send_ServerToAllClients("s2c_link_comp_to_event",{uid:comp["uid"],class_name:instance.constructor.name,comp,ecs_entity_index:instance['$$$$entity']})
-            return
-           })
+                const comp = replace$2obj(instance)
+                if(comp['uid'] == null) return; 
+                const player_cmp = GameRules.world.getEntityById(instance['$$$$entity'])?.get(c.dungeon.PlayerInfoComp)
+                player_cmp && (comp["$$$$player_id"] = player_cmp.player_num);
+                print("[ecs] 添加了一个linkcomp",getmetatable(instance)?.constructor.name)
+                print(comp["uid"])
+                DeepPrintTable(comp)
+
+                if(player_cmp){
+                    CustomGameEventManager.Send_ServerToPlayer(PlayerResource.GetPlayer(player_cmp.player_num as PlayerID),"s2c_link_comp_to_event",{uid:comp["uid"],class_name:getmetatable(instance)?.constructor.name,comp,ecs_entity_index:instance['$$$$entity']})
+                }else{
+                    CustomGameEventManager.Send_ServerToAllClients("s2c_link_comp_to_event",{uid:comp["uid"],class_name:getmetatable(instance)?.constructor.name,comp,ecs_entity_index:instance['$$$$entity']})
+                }
+              return
+           },instance["$$$$uid"],111)
             return;
         }   
-        GameRules.enquence_delay_call(()=>{
-            if(!container.to_client_event_container.has(instance)){
-                container.to_client_event_container.add(instance)
-            }
-            const comp = _replace$2obj(instance)
-            const player_cmp = GameRules.world.getEntityById(instance['$$$$entity'])?.get(c.base.PLAYER)
-            player_cmp && (comp["$$$$player_id"] = player_cmp.PlayerID);
-            CustomGameEventManager.Send_ServerToAllClients("s2c_comp_to_event",{class_name:instance.constructor.name,comp,ecs_entity_index:instance['$$$$entity']})
-
-            // if(owner == "system" ){
-            //     CustomGameEventManager.Send_ServerToAllClients("s2c_comp_to_event",{comp:_replace$2obj(instance),ecs_entity_index:instance['$$$$entity']})
-            //     // CustomGameEventManager.Send_ServerToAllClients(instance.constructor.name,is_clear ? {} : send_obj);
-            //     return;
-            // }
-            // if(owner == "player" ){
-            //     const player_cmp = GameRules.world.getEntityById(instance['$$$$entity'])?.get(c.base.PLAYER)
-            //     if(player_cmp == null) return;
-            //     player_cmp && (send_obj["$$$$player_id"] = player_cmp.PlayerID);
-            //     CustomGameEventManager.Send_ServerToAllClients("s2c_comp_to_event",{comp:_replace$2obj(instance),ecs_entity_index:instance['$$$$entity']})
-            //     // CustomGameEventManager.Send_ServerToAllClients(instance.constructor.name + player_cmp.PlayerID + "player",is_clear ? {} : send_obj );
-            //     return;
-            // }
-            // if(owner == "hero"){
-            //     const hero_cmp = GameRules.world.getEntityById(instance['$$$$entity'])?.get(c.base.HERO)
-            //     if(hero_cmp == null) return;
-            //     hero_cmp && (send_obj["$$$$hero_idx"] = hero_cmp.hero_idx);
-            //     CustomGameEventManager.Send_ServerToAllClients(instance.constructor.name + hero_cmp.hero_idx + "hero",is_clear ? {} :send_obj);
-            //     return;
-            // }
-            // if(owner == "player_hero"){
-            //     const player_cmp = GameRules.world.getEntityById(instance['$$$$entity'])?.get(c.base.PLAYER)
-            //     if(player_cmp == null) return;
-            //     player_cmp && (send_obj["$$$$player_id"] = player_cmp.PlayerID);
-            //     const hero_cmp = GameRules.world.getEntityById(instance['$$$$entity'])?.get(c.base.HERO)
-            //     hero_cmp && (send_obj["$$$$hero_idx"] = hero_cmp.hero_idx);
-            //     CustomGameEventManager.Send_ServerToAllClients(instance.constructor.name + player_cmp.PlayerID + hero_cmp.hero_idx + "player_hero",is_clear ? {} :send_obj);
-            //     return;
-            // }
-        },
-        instance['$$$$entity'] ? (instance.constructor.name + tostring(instance['$$$$entity']) + "to_client_event") : (instance.constructor.name + "to_client_event") )
     }
 }
 
@@ -539,7 +541,7 @@ export async function create_npc_with_static(city_name:string){
 }
 
 
-export async function create_with_static_table(city_name:string,progress:SystemProgress,map_cache:InstanceType<typeof c.base.MarkCache>){
+export async function create_with_static_table(city_name:string,progress?:SystemProgress,map_cache?:InstanceType<typeof c.base.MarkCache>){
     try{
     let i = 0
     for (let y = 0; y < 8; y++) {
@@ -599,12 +601,7 @@ export function TriggerBigWolrdTile(tile:string,position:[number,number,number])
     })
 }
 
-/**
- * wfc通过随机WFC创造地图
- * @param terrain_type
- * @returns 
- */
-export async function create_city_road_wfc(terrain_type:string){
+export async function create_city_road_wfc(wfc_json_data:any,width:number,height:number){
     // const uuid = DoUniqueString("mark_cache")
     // const map_ent = new Entity();
     // this.engine.addEntity(map_ent);
@@ -615,7 +612,7 @@ export async function create_city_road_wfc(terrain_type:string){
     // map_ent.add(progress)
     try{
 
-    let wfc2d = new WFC.WFC2D(citys_json as any)
+    let wfc2d = new WFC.WFC2D(wfc_json_data)
     //设定地图尺寸
     let mapWidth = 8;
     let mapHeigth = 8;
@@ -624,79 +621,36 @@ export async function create_city_road_wfc(terrain_type:string){
     // const next = (count:number) => progress.cur = count
     const next = (count:number) => {};
     
-    const map_cache = new Map()
-
     let resultMap = await wfc2d.collapse(mapWidth, mapHeigth,next);
-    const skin = RandomInt(1,19);
     let record = []
     let count = 0
-    for (let y = 0; y < mapHeigth; y++) {
-     for (let x = 0; x < mapWidth; x++) {
-            let imgData = resultMap[count++];
+    for (let y = 0; y < width; y++) {
+     for (let x = 0; x < height; x++) {
+            let imgData = resultMap[count];
+            count++
             //model资源名 , 类型 string
             let modelname = imgData[0];
-            DebugDrawText(Vector(x * 1024 -3072,y * 1024 - 4089.4,3),`${x},${y}`,true,9999);
+            // DebugDrawText(Vector(-x * 2048,-y * 2048,128),`${modelname}`,true,9999);
             //model顺时针旋转次数（每次90度）, 类型 number 
-            let rotate = imgData[1];
-            const data = kuangdong["tileset" + modelname as keyof typeof zi_luo_lan_json] 
-            record.push({rotate,modelname})
-
-        
-
-            if(data){
-                for(let elm of data){
-                    // const raworigin = Vector(x * 1024 - 16384  + elm.origin.x,y * 1024 - 16384 + elm.origin.y,3)
-                    const op_buildy = RotatePosition(Vector(0,0,0),QAngle(0,-rotate * 90,0),Vector(elm.origin.x,elm.origin.y,elm.origin.z))
-                    let angles = `0 ${elm.angle.y + rotate * 90} 0`
-                    let vector_l = Vector(x * 1024 - 3072 + op_buildy.x,y * 1024 - 4096 + op_buildy.y, elm.origin.z + 127)
-                    // DebugDrawText(raworigin,`rotate:${rotate} model${modelname}`,true,9999);
-                    if(elm.name.includes("tree")){
-                        const tree = CreateTempTreeWithModel(vector_l,99999,elm.model)
-                        tree.SetAngles(0,RandomFloat(0,360),RandomInt(0,5))
-                        tree.SetModelScale(RandomFloat(0.8,1.2))
-                        map_cache.set(`${x}${y}${elm.origin.x}${elm.origin.y}`,tree)
-                        continue;
-                    }
-                    if(elm.model.includes("tileset_snow_")){
-                        vector_l = Vector(x * 1024 - 3072,y * 1024 - 4096, elm.origin.z + 127)
-                    }
-                    const prop_dynamic = SpawnEntityFromTableSynchronous("prop_dynamic",{
-                        origin:vector_l,
-                        angles,
-                        scales : `${elm.scale} ${elm.scale} ${elm.scale}`,
-                        skin : "mark" + 18,
-                        model :elm.model,
-                        lightmapstatic:"1",
-                        renderfx:"kRenderFxPulseFast",
-                        solid:"0",
-                        DefaultAnim:"ACT_DOTA_IDLE"
-                    }) as CDOTA_BaseNPC_Hero
-                    map_cache.set(`${x}${y}${elm.origin.x}${elm.origin.y}`,prop_dynamic)
-
-                }
-            }else{
-                const prop_dynamic = SpawnEntityFromTableSynchronous("prop_dynamic",{
-                    origin : `${x * 1024 - 3072} ${y * 1024 - 4096} ${1}`,
-                    scales : `${1} ${1} ${1}`,
-                    skin : "mark" + skin,
-                    model :`models/3dtileset/snow_city_road/tileset_snow_${modelname}.vmdl`
-                 }) as CBaseModelEntity
-                map_cache.set(`${x}${y}`,prop_dynamic)
-            }
+            // const data = kuangdong["tileset" + modelname as keyof typeof zi_luo_lan_json] 
+            record.push(modelname)
 
         }    
        }
-       const json_str = JSON.encode(record)
-       // print(json_str)
-       const http = CreateHTTPRequest("POST","http://localhost:3123/")
-       http.SetHTTPRequestRawPostBody("application/json",json_str)
-       http.Send((res)=>{})
-       return map_cache
+       DeepPrintTable(record)
+       return record
+    //    const json_str = JSON.encode(record)
+    //    // print(json_str)
+    //    const http = CreateHTTPRequest("POST","http://localhost:3123/")
+    //    http.SetHTTPRequestRawPostBody("application/json",json_str)
+    //    http.Send((res)=>{})
+    //    return map_cache
     }
     catch(err){
         print(err)
     } 
     // })
+
 
 }
 
@@ -737,6 +691,41 @@ export function interval(val:number){
             res(null)
         })
     })
+}
+
+
+/**
+ * 
+ * @returns 伤害过滤器注册
+ */
+export function damage_filter_register(){
+    const fucs:Map<string,((event:DamageFilterEvent)=>boolean)> = new Map()
+    return (name:string,call:(event:DamageFilterEvent)=>boolean,clear?:boolean) =>{
+        if(clear){
+            fucs.delete(name)
+            GameRules.GetGameModeEntity().SetDamageFilter<{fucs:Map<string,((event:DamageFilterEvent)=>boolean)>}>(function(event){
+                print(`[ecs] 运行伤害过滤器 ${name}`)
+                let out = false
+                for(let fuc of this.fucs){
+                    print(`[ecs] 指定过滤器 ${fuc[0]}`)
+                    out = fuc[1](event)
+                }
+                return out
+            },{fucs})
+            return
+        }
+        fucs.set(name,call)
+        print(`[ecs] 注册伤害过滤器 ${name}`)
+        GameRules.GetGameModeEntity().SetDamageFilter<{fucs:Map<string,((event:DamageFilterEvent)=>boolean)>}>(function(event){
+            print(`[ecs] 运行伤害过滤器 ${name}`)
+            let out = false
+            for(let fuc of this.fucs){
+                print(`[ecs] 指定过滤器 ${fuc[0]}`)
+                out = fuc[1](event)
+            }
+            return out
+        },{fucs})
+    } 
 }
 
 
@@ -850,4 +839,291 @@ export function GenerateSplitVectors(center: Vector, forward: Vector, radius: nu
         list.push(vec)
     }
     return list
+}
+
+/**
+ * 查询给固定背包中是否有目标物品index 查找到指定的固定背包
+ */
+export function CheckGetHasInventoryItemWithEntity(dota_ent_index:EntityIndex):{elm:any,old_slot:number}{
+    const role = GameRules.QSet.is_select_role.first
+    let out:{elm:any,old_slot:number}
+    role.iterate(c.role.WarehouseInventory,(elm)=>{
+        for(let key = 1 ; key <= 6 ; key ++ ){
+            if(elm.ItemSlots[key] == dota_ent_index){
+                out = {elm,old_slot:key}
+            }
+        }
+    })
+    TRACE("找到了指定的数据",true)
+    return out
+}
+
+/**查询快捷栏中是否有目标物品index */
+export function CheckGetHasItemWithEntity(hero:CDOTA_BaseNPC_Hero,dota_ent_index:EntityIndex){
+    for(let i = 0 ; i < 9 ; i++){
+        const item = hero.GetItemInSlot(i)
+        if(item){
+            if(item.entindex() == dota_ent_index){
+                print("在",i,"号位置找到物品")
+                return i 
+            }
+        }
+    }
+    return null;
+}
+
+
+//给一段时间 一个起始速度 一个时间节点 生成一个起伏的抛物线的Z轴高度 在这段时间里抛物线从最低点到最高点然后降落在最低点
+// 加入重力与空气阻力
+export function GenerateParabolaZHeight(time:number,start_speed:number,time_node:number, gravity:number = 9.8, air_resistance:number = 0.1){
+    const a = 2 * start_speed / time_node
+    const b = start_speed
+    const c = 0
+    const z = a * time * time + b * time + c - (gravity * time * time) / 2 - air_resistance * time
+    return z
+}
+
+  
+// 构建抛物线函数  
+export function parabola(t: number): number {  
+    const g: number = 9.8; // 重力加速度  
+    const v0: number = 3; // 起跳速度  
+    const hMax: number = 300; // 最大高度  
+    return -g / 2 * t ** 2 + v0 * t + hMax + g * (v0 ** 2) / (2 * 2);  
+}  
+//写一个类似野蛮人大跳的抛物线函数
+
+export type TEasing = (time: number) => number;
+
+export interface IEasingMap {
+  linear: TEasing;
+  quadratic: TEasing;
+  cubic: TEasing;
+  elastic: TEasing;
+  inQuad: TEasing;
+  outQuad: TEasing;
+  inOutQuad: TEasing;
+  inCubic: TEasing;
+  outCubic: TEasing;
+  inOutCubic: TEasing;
+   inQuart: TEasing;
+  outQuart: TEasing;
+  inOutQuart: TEasing;
+  inQuint: TEasing;
+  outQuint: TEasing;
+  inOutQuint: TEasing;
+  inSine: TEasing;
+  outSine: TEasing;
+  inOutSine: TEasing;
+  inExpo: TEasing;
+  outExpo: TEasing;
+  inOutExpo: TEasing;
+  inCirc: TEasing;
+  outCirc: TEasing;
+  inOutCirc: TEasing;
+}
+
+export const easing: IEasingMap = {
+  // No easing, no acceleration
+  linear: (t) => t,
+
+  // Accelerates fast, then slows quickly towards end.
+  quadratic: (t) => t * (-(t * t) * t + 4 * t * t - 6 * t + 4),
+
+  // Overshoots over 1 and then returns to 1 towards end.
+  cubic: (t) => t * (4 * t * t - 9 * t + 6),
+
+  // Overshoots over 1 multiple times - wiggles around 1.
+  elastic: (t) => t * (33 * t * t * t * t - 106 * t * t * t + 126 * t * t - 67 * t + 15),
+
+  // Accelerating from zero velocity
+  inQuad: (t) => t * t,
+
+  // Decelerating to zero velocity
+  outQuad: (t) => t * (2 - t),
+
+  // Acceleration until halfway, then deceleration
+  inOutQuad: (t) => t <.5 ? 2 * t * t : -1 + (4 - 2 * t) * t,
+
+  // Accelerating from zero velocity
+  inCubic: (t) => t * t * t,
+
+  // Decelerating to zero velocity
+  outCubic: (t) => (--t) * t * t + 1,
+
+  // Acceleration until halfway, then deceleration
+  inOutCubic: (t) => t <.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1,
+
+  // Accelerating from zero velocity
+  inQuart: (t) => t * t * t * t,
+
+  // Decelerating to zero velocity
+  outQuart: (t) => 1 - (--t) * t * t * t,
+
+  // Acceleration until halfway, then deceleration
+  inOutQuart: (t) => t <.5 ? 8 * t * t * t * t : 1 - 8 * (--t) * t * t * t,
+
+  // Accelerating from zero velocity
+  inQuint: (t) => t * t * t * t * t,
+
+  // Decelerating to zero velocity
+  outQuint: (t) => 1 + (--t) * t * t * t * t,
+
+  // Acceleration until halfway, then deceleration
+  inOutQuint: (t) => t < .5 ? 16 * t * t * t * t * t : 1 + 16 * (--t) * t * t * t * t,
+
+  // Accelerating from zero velocity
+  inSine: (t) => -Math.cos(t * (Math.PI / 2)) + 1,
+
+  // Decelerating to zero velocity
+  outSine: (t) => Math.sin(t * (Math.PI / 2)),
+
+  // Accelerating until halfway, then decelerating
+  inOutSine: (t) => -(Math.cos(Math.PI * t) - 1) / 2,
+
+  // Exponential accelerating from zero velocity
+  inExpo: (t) => Math.pow(2, 10 * (t - 1)),
+
+  // Exponential decelerating to zero velocity
+  outExpo: (t) => -Math.pow(2, -10 * t) + 1,
+
+  // Exponential accelerating until halfway, then decelerating
+  inOutExpo: (t) => {
+    t /= .5;
+    if (t < 1) return Math.pow(2, 10 * (t - 1)) / 2;
+    t--;
+    return (-Math.pow( 2, -10 * t) + 2) / 2;
+  },
+
+  // Circular accelerating from zero velocity
+  inCirc: (t) => -Math.sqrt(1 - t * t) + 1,
+
+  // Circular decelerating to zero velocity Moves VERY fast at the beginning and
+  // then quickly slows down in the middle. This tween can actually be used
+  // in continuous transitions where target value changes all the time,
+  // because of the very quick start, it hides the jitter between target value changes.
+  outCirc: (t) => Math.sqrt(1 - (t = t - 1) * t),
+
+  // Circular acceleration until halfway, then deceleration
+  inOutCirc: (t) => {
+    t /= .5;
+    if (t < 1) return -(Math.sqrt(1 - t * t) - 1) / 2;
+    t -= 2;
+    return (Math.sqrt(1 - t * t) + 1) / 2;
+  }
+};
+
+
+export function rolltable (roll_table:{击中几率:number,击中后随机的数值:{min:number,max:number}}[]):number{
+    const seleced = roll_table.find(elm=>RollPercentage(elm.击中几率))
+    if(seleced){
+        return RandomInt(seleced.击中后随机的数值.min,seleced.击中后随机的数值.max)
+    }else{
+        const bad = table.shuffle(roll_table).pop()
+        return RandomInt(bad.击中后随机的数值.min,bad.击中后随机的数值.max)
+    }
+}
+
+//写一个rollweight权重[{wight:number,aciton:()=>{}}]的函数
+export function rollweight (roll_table:{weight:number,aciton:Function}[]):void{
+    const total = roll_table.reduce((acc,elm)=>acc + elm.weight,0)
+    const random = RandomInt(1,total)
+    let cur = 0
+    for(let elm of roll_table){
+        cur += elm.weight
+        if(random <= cur){
+            elm.aciton()
+            return
+        }
+    }
+}
+
+export function entity_distance(a:CBaseEntity,b:CBaseEntity){
+    return a.GetAbsOrigin().__sub(b.GetAbsOrigin()).Length2D()
+}
+
+/**
+ * 创造一个踩踏开关
+ */
+export function CreateUpDown(origin:Vector,call_back:(event:{activator:CDOTA_BaseNPC_Hero})=>void,bind_int_attr?:[string,number]):CBaseModelEntity{
+    //models/props_structures/ancient_trigger001.vmdl
+    const volume_name = DoUniqueString("volume")
+
+    const prop_dynamic = SpawnEntityFromTableSynchronous("prop_dynamic",{
+        targetname:"temp",
+        origin:`${origin.x} ${origin.y} ${origin.z}`,
+        angles:`1 1 1`,
+        scales : `${1} ${1} ${1}`,
+        DefaultAnim:"ACT_DOTA_IDLE",
+        model :"models/props_structures/ancient_trigger001.vmdl",
+    }) as any
+
+    if(bind_int_attr){
+        (prop_dynamic as CBaseModelEntity).SetIntAttr(bind_int_attr[0],bind_int_attr[1])
+        switch(bind_int_attr[1]){
+            case 1:{
+                (prop_dynamic as CBaseModelEntity).SetRenderColor(55,0,0)
+                break;
+            }
+            case 2:{ 
+                (prop_dynamic as CBaseModelEntity).SetRenderColor(55,55,0)
+                break;
+            }
+            case 3:{
+                (prop_dynamic as CBaseModelEntity).SetRenderColor(0,0,55)
+                break;
+            }
+            case 4:{
+                (prop_dynamic as CBaseModelEntity).SetRenderColor(55,0,55)
+                break;
+            }
+            case 5:{
+                (prop_dynamic as CBaseModelEntity).SetRenderColor(0, 55, 0)
+                break;
+            }
+        }
+    }
+
+    const trigger = SpawnEntityFromTableSynchronous("trigger_dota",{
+        targetname:volume_name,
+        origin:origin,
+        angles:"0 0 0",
+        scales : `1 1 1`,
+        model :GameRules.trigger_base.GetModelName(),
+        every_unit:true,
+    }) as CBaseTrigger
+    trigger.RedirectOutput('OnTrigger', 'startTouchHandler', trigger)
+    trigger.Enable()
+    trigger['startTouchHandler'] = (event)=>{
+        const entity = event.activator as CDOTA_BaseNPC
+        if(!entity.IsRealHero()){
+            return
+        }
+        prop_dynamic.SetSequence("ancient_trigger001_down")
+        GameRules.enquence_delay_call(()=>{
+            prop_dynamic.SetSequence("ancient_trigger001_down_idle")
+        },undefined,800)
+        call_back(event)
+    }
+
+    return prop_dynamic
+}
+
+export function SetObstacles(info_target:CBaseEntity){
+    info_target.SetIntAttr("Obstacles",1);
+}
+
+export function NearbyObstacles(origin:Vector,radius:number){
+    return Entities.FindAllByClassnameWithin("info_target",origin,radius)
+            .some(elm=>elm.GetIntAttr("Obstacles") == 0)
+}
+
+/**确保单位的每一个标签都没有 */
+export function InfoTargetTagEvery(dota_ent:CBaseEntity,...args:INFO_TARGET_TAG[]){
+    return [...args.map(elm=>dota_ent.GetIntAttr(elm) == null)].every(elm=>elm)
+}
+
+/**从一组表里找到没有任何标签的info_target */
+export function FindNullTagInfoTarget(dota_ent:CBaseEntity[],...args:INFO_TARGET_TAG[]){
+    return dota_ent.filter(elm=> args.every(tag=>elm.GetIntAttr(tag) == 0))
 }

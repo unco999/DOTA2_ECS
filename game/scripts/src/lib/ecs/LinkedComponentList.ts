@@ -12,23 +12,30 @@ export class LinkedComponentList<T extends ILinkedComponent> {
   }
 
   public add(linkedComponent: T): void {
+    print(linkedComponent.constructor.name)
+    DeepPrintTable(linkedComponent)
     let prev: T | undefined = undefined;
     let current: T | undefined = this._head;
     while (current !== undefined) {
       if (current === linkedComponent) {
-        throw new Error('Component is already appended, appending it once again will break linked items order');
+         print('Component is already appended, appending it once again will break linked items order');
       }
       prev = current;
       current = current.next as (T | undefined);
     }
     if (this._head === undefined) {
       this._head = linkedComponent;
+      print("_head_head_head_head",this._head['uid'])
     } else {
-      prev!.next = linkedComponent;
+      prev.next = linkedComponent;
+      print("linkedComponent back",prev!['uid'])
+      print("linkedComponent next",prev!.next ['uid'])
+
     }
   }
 
   public remove(linkedComponent: T): boolean {
+    print("删除了 linkedComponent",linkedComponent.id)
     const [prev, current] = this.find(linkedComponent);
     if (current === undefined) {
       return false;

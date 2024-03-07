@@ -1,4 +1,14 @@
 .image-precache {
+	background-image: url("file://{images}/custom_game/map/3d/crass_01_01.png");
+	background-image: url("file://{images}/custom_game/map/3d/crass_01_02.png");
+	background-image: url("file://{images}/custom_game/map/3d/crass_02_01.png");
+	background-image: url("file://{images}/custom_game/map/3d/crass_02_02.png");
+	background-image: url("file://{images}/custom_game/map/3d/crass_02_03.png");
+	background-image: url("file://{images}/custom_game/map/3d/crass_02_04.png");
+	background-image: url("file://{images}/custom_game/map/3d/crass_03_01.png");
+	background-image: url("file://{images}/custom_game/map/3d/crass_03_02.png");
+	background-image: url("file://{images}/custom_game/map/3d/crass_03_03.png");
+	background-image: url("file://{images}/custom_game/map/3d/crass_03_04.png");
 	background-image: url("file://{images}/custom_game/map/big_map/05.png");
 	background-image: url("file://{images}/custom_game/map/big_map/06.png");
 	background-image: url("file://{images}/custom_game/map/big_map/13.png");

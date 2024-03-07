@@ -57,6 +57,22 @@ export namespace Qset{
     export const cur_is_euqipments_ent = new QueryBuilder()
     .contains(GameRules.tag.is_cur_euqipment_tag)
     .build()
+
+    /**地下城当前缓存实例 */
+    export const cur_dungenon_cache = new QueryBuilder()
+    .contains(c.dungeon.DunGenonCache)
+    .build()
+
+    /**查询基础玩家实体 */ 
+    export const is_player_ent = new QueryBuilder()
+    .contains(c.dungeon.PlayerInfoComp)
+    .build()
+
+    /**查询基础英雄实体 */ 
+    export const is_hero_ent = new QueryBuilder()
+    .contains(c.dungeon.HeroInfoComp)
+    .build()
+
 }
 
 

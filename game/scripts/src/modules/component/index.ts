@@ -7,6 +7,7 @@ import * as role from "./role"
 import * as special from "./special"
 import * as tag from "./tag"
 import * as quipment from "./equipment"
+import * as dungeon from "./dungeon"
 
 
 export default {
@@ -18,5 +19,6 @@ export default {
     role,
     special,
     tag,
-    quipment
+    quipment,
+    dungeon
 }

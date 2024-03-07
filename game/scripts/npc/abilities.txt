@@ -24,4 +24,103 @@
 "test" "this is test of plain kv"
 }
 	}
+	"han_di_zhi_yue_ability" {
+		"BaseClass" "ability_lua"
+		"ScriptFile" "ability/soldier/kuangzhan/han_di_zhi_yue_ability.lua"
+		"AbilityValues" {
+		}
+		"MaxLevel" "20"
+		"AbilityCooldown" "5"
+		"AbilityManaCost" "0"
+		"AbilityBehavior" "DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
+		"AbilityUnitTargetTeam" "DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitTargetType" "DOTA_UNIT_TARGET_NONE"
+		"AbilityUnitTargetFlags" "DOTA_UNIT_TARGET_FLAG_INVULNERABLE"
+		"SpellImmunityType" "SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange" "1200"
+	}
+	"shi_xue_ability" {
+		"BaseClass" "ability_lua"
+		"ScriptFile" "ability/soldier/kuangzhan/shi_xue_ability.lua"
+		"AbilityValues" {
+		}
+		"AbilityBehavior" "DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityUnitTargetTeam" "DOTA_UNIT_TARGET_FRIENDLY_HERO"
+		"AbilityUnitTargetType" "DOTA_UNIT_TARGET_NONE"
+		"AbilityUnitTargetFlags" "DOTA_UNIT_TARGET_FLAG_INVULNERABLE"
+		"SpellImmunityType" "SPELL_IMMUNITY_ENEMIES_YES"
+	}
+	"sheng_ming_ke_wang_ability" {
+		"BaseClass" "ability_lua"
+		"ScriptFile" "ability/soldier/kuangzhan/sheng_ming_ke_wang_ability.lua"
+		"AbilityValues" {
+		}
+		"AbilityBehavior" "DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityUnitTargetTeam" "DOTA_UNIT_TARGET_FRIENDLY_HERO"
+		"AbilityUnitTargetType" "DOTA_UNIT_TARGET_NONE"
+		"AbilityUnitTargetFlags" "DOTA_UNIT_TARGET_FLAG_INVULNERABLE"
+		"SpellImmunityType" "SPELL_IMMUNITY_ENEMIES_YES"
+	}
+	"jian_shu_hao_jiao_ability" {
+		"BaseClass" "ability_lua"
+		"ScriptFile" "ability/soldier/kuangzhan/jian_shu_hao_jiao_ability.lua"
+		"AbilityValues" {
+		}
+		"AbilityBehavior" "DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityUnitTargetTeam" "DOTA_UNIT_TARGET_FRIENDLY_HERO"
+		"AbilityUnitTargetType" "DOTA_UNIT_TARGET_NONE"
+		"AbilityUnitTargetFlags" "DOTA_UNIT_TARGET_FLAG_INVULNERABLE"
+		"SpellImmunityType" "SPELL_IMMUNITY_ENEMIES_YES"
+	}
+	"shou_lue_kuang_ability" {
+		"BaseClass" "ability_lua"
+		"ScriptFile" "ability/soldier/kuangzhan/shou_lue_kuang_ability.lua"
+		"AbilityValues" {
+		}
+		"AbilityBehavior" "DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityUnitTargetTeam" "DOTA_UNIT_TARGET_FRIENDLY_HERO"
+		"AbilityUnitTargetType" "DOTA_UNIT_TARGET_NONE"
+		"AbilityUnitTargetFlags" "DOTA_UNIT_TARGET_FLAG_INVULNERABLE"
+		"SpellImmunityType" "SPELL_IMMUNITY_ENEMIES_YES"
+	}
+	"tou_zhi_wu_qi_ability" {
+		"BaseClass" "ability_lua"
+		"ScriptFile" "ability/soldier/kuangzhan/tou_zhi_wu_qi_ability.lua"
+		"AbilityValues" {
+		}
+		"MaxLevel" "20"
+		"AbilityCooldown" "5"
+		"AbilityManaCost" "0"
+		"AbilityBehavior" "DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
+		"AbilityUnitTargetTeam" "DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitTargetType" "DOTA_UNIT_TARGET_NONE"
+		"AbilityUnitTargetFlags" "DOTA_UNIT_TARGET_FLAG_INVULNERABLE"
+		"SpellImmunityType" "SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange" "1200"
+	}
+	"card_base_ability" {
+		"BaseClass" "ability_lua"
+		"ScriptFile" "ability/card/base.lua"
+		"AbilityValues" {
+		}
+		"AbilityManaCost" "0"
+		"AbilityBehavior" "DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
+		"AbilityUnitTargetTeam" "DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitTargetType" "DOTA_UNIT_TARGET_NONE"
+		"AbilityUnitTargetFlags" "DOTA_UNIT_TARGET_FLAG_INVULNERABLE"
+		"SpellImmunityType" "SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange" "1200"
+	}
+	"pick_card_ability" {
+		"BaseClass" "ability_lua"
+		"ScriptFile" "ability/card/base.lua"
+		"AbilityValues" {
+		}
+		"AbilityManaCost" "100"
+		"AbilityBehavior" "DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityUnitTargetTeam" "DOTA_UNIT_TARGET_FRIENDLY_HERO"
+		"AbilityUnitTargetType" "DOTA_UNIT_TARGET_NONE"
+		"AbilityUnitTargetFlags" "DOTA_UNIT_TARGET_FLAG_INVULNERABLE"
+		"SpellImmunityType" "SPELL_IMMUNITY_ENEMIES_YES"
+	}
 }

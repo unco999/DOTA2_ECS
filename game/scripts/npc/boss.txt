@@ -1,0 +1,233 @@
+"Content"
+{
+"npc_tka_hero_medusa_1"
+	{
+        "UseNeutralCreepBehavior"   "0"
+		"Searchable" "0"
+		"Cost" "2"
+		"BaseClass" "npc_dota_creature"
+		"Model" "models/heroes/medusa/medusa.vmdl"
+		"ModelScale" "0.8500"
+		"Creature"
+		{
+			"AttachWearables"
+			{
+				"1"
+				{
+					"ItemDef" "8715"
+				}
+				"2"
+				{
+					"ItemDef" "8717"
+				}
+				"3"
+				{
+					"ItemDef" "8718"
+				}
+				"4"
+				{
+					"ItemDef" "531"
+				}
+				"5"
+				{
+					"ItemDef" "8719"
+				}
+				"6"
+				{
+					"ItemDef" "8716"
+				}
+			}
+		}
+		"SpawnSound" "medusa.spawn_tka"
+		"ConquestSound" "medusa.conquest_tka"
+		"DeathSound" "medusa.death_tka"
+		"VictorySound" "medusa.victory_tka"
+		"SoundSet" "Hero_Medusa"
+		"particle_folder" "particles/units/heroes/hero_medusa"
+		"GameSoundsFile" "soundevents/game_sounds_heroes/game_sounds_medusa.vsndevts"
+		"VoiceFile" "soundevents/voscripts/game_sounds_vo_medusa.vsndevts"
+		"Ability1" ""
+		"Ability2" ""
+		"Ability3" ""
+		"Ability4" ""
+		"Ability5" ""
+		"Ability6" ""
+		"ConsideredHero" "1"
+		"HealthBarOffset" "208"
+		"MovementSpeed" "275"
+		"MovementTurnRate" "0.5000"
+		"HasAggressiveStance" "1"
+		"MovementCapabilities" "DOTA_UNIT_CAP_MOVE_GROUND"
+		"AttackCapabilities" "DOTA_UNIT_CAP_RANGED_ATTACK"
+		"ArmorPhysical" "0"
+		"MagicalResistance" "0"
+		"StatusHealth" "420"
+		"StatusHealthRegen" "0"
+		"StatusMana" "100"
+		"StatusManaRegen" "0"
+		"AttackDamageMin" "16"
+		"AttackDamageMax" "17"
+		"AttackRate" "1.0625"
+		"AttackAnimationPoint" "0.5000"
+		"AttackRange" "600"
+		"BoundsHullName" "DOTA_HULL_SIZE_HERO"
+		"RingRadius" "70"
+		"ProjectileModel" "particles/units/heroes/hero_medusa/medusa_base_attack.vpcf"
+		"ProjectileSpeed" "1200"
+		"AutoAttacksByDefault" "0"
+		"HasInventory" "1"
+	}
+	"npc_tka_hero_medusa_2"
+	{
+		"AutoAttacksByDefault" "0"
+		"Cost" "2"
+		"BaseClass" "npc_dota_creature"
+		"Model" "models/heroes/medusa/medusa.vmdl"
+		"ModelScale" "0.9350"
+		"Creature"
+		{
+			"AttachWearables"
+			{
+				"1"
+				{
+					"ItemDef" "8194"
+				}
+				"2"
+				{
+					"ItemDef" "8191"
+				}
+				"3"
+				{
+					"ItemDef" "8193"
+				}
+				"4"
+				{
+					"ItemDef" "531"
+				}
+				"5"
+				{
+					"ItemDef" "8196"
+				}
+				"6"
+				{
+					"ItemDef" "8195"
+				}
+			}
+		}
+		"SpawnSound" "medusa.spawn_tka"
+		"ConquestSound" "medusa.conquest_tka"
+		"DeathSound" "medusa.death_tka"
+		"VictorySound" "medusa.victory_tka"
+		"SoundSet" "Hero_Medusa"
+		"particle_folder" "particles/units/heroes/hero_medusa"
+		"GameSoundsFile" "soundevents/game_sounds_heroes/game_sounds_medusa.vsndevts"
+		"VoiceFile" "soundevents/voscripts/game_sounds_vo_medusa.vsndevts"
+		"Ability1" ""
+		"Ability2" ""
+		"Ability3" ""
+		"Ability4" ""
+		"Ability5" ""
+		"Ability6" ""
+		"ConsideredHero" "1"
+		"HealthBarOffset" "228.8000"
+		"MovementSpeed" "275"
+		"MovementTurnRate" "0.5000"
+		"HasAggressiveStance" "1"
+		"MovementCapabilities" "DOTA_UNIT_CAP_MOVE_GROUND"
+		"AttackCapabilities" "DOTA_UNIT_CAP_RANGED_ATTACK"
+		"ArmorPhysical" "0"
+		"MagicalResistance" "0"
+		"StatusHealth" "840"
+		"StatusHealthRegen" "0"
+		"StatusMana" "100"
+		"StatusManaRegen" "0"
+		"AttackDamageMin" "32"
+		"AttackDamageMax" "34"
+		"AttackRate" "1.0625"
+		"AttackAnimationPoint" "0.5000"
+		"AttackRange" "600"
+		"BoundsHullName" "DOTA_HULL_SIZE_HERO"
+		"RingRadius" "70"
+		"ProjectileModel" "particles/units/heroes/hero_medusa/medusa_base_attack.vpcf"
+		"ProjectileSpeed" "1200"
+		"HasInventory" "1"
+        "UseNeutralCreepBehavior"   "0"
+	}
+	"npc_tka_hero_medusa_3"
+	{
+		"AutoAttacksByDefault" "0"
+        "UseNeutralCreepBehavior"   "0"
+		"Cost" "2"
+		"BaseClass" "npc_dota_creature"
+		"Model" "models/heroes/medusa/medusa.vmdl"
+		"ModelScale" "1.0285"
+		"Creature"
+		{
+			"AttachWearables"
+			{
+				"1"
+				{
+					"ItemDef" "12622"
+				}
+				"2"
+				{
+					"ItemDef" "12626"
+				}
+				"3"
+				{
+					"ItemDef" "7911"
+				}
+				"4"
+				{
+					"ItemDef" "531"
+				}
+				"5"
+				{
+					"ItemDef" "12624"
+				}
+				"6"
+				{
+					"ItemDef" "12623"
+				}
+			}
+		}
+		"SpawnSound" "medusa.spawn_tka"
+		"ConquestSound" "medusa.conquest_tka"
+		"DeathSound" "medusa.death_tka"
+		"VictorySound" "medusa.victory_tka"
+		"SoundSet" "Hero_Medusa"
+		"particle_folder" "particles/units/heroes/hero_medusa"
+		"GameSoundsFile" "soundevents/game_sounds_heroes/game_sounds_medusa.vsndevts"
+		"VoiceFile" "soundevents/voscripts/game_sounds_vo_medusa.vsndevts"
+		"Ability1" ""
+		"Ability2" ""
+		"Ability3" ""
+		"Ability4" ""
+		"Ability5" ""
+		"Ability6" ""
+		"ConsideredHero" "1"
+		"HealthBarOffset" "251.6800"
+		"MovementSpeed" "275"
+		"MovementTurnRate" "0.5000"
+		"HasAggressiveStance" "1"
+		"MovementCapabilities" "DOTA_UNIT_CAP_MOVE_GROUND"
+		"AttackCapabilities" "DOTA_UNIT_CAP_RANGED_ATTACK"
+		"ArmorPhysical" "0"
+		"MagicalResistance" "0"
+		"StatusHealth" "1680"
+		"StatusHealthRegen" "0"
+		"StatusMana" "100"
+		"StatusManaRegen" "0"
+		"AttackDamageMin" "64"
+		"AttackDamageMax" "68"
+		"AttackRate" "1.0625"
+		"AttackAnimationPoint" "0.5000"
+		"AttackRange" "600"
+		"BoundsHullName" "DOTA_HULL_SIZE_HERO"
+		"RingRadius" "70"
+		"ProjectileModel" "particles/units/heroes/hero_medusa/medusa_base_attack.vpcf"
+		"ProjectileSpeed" "1200"
+		
+		"HasInventory" "1"
+	}
+}

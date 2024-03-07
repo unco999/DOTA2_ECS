@@ -23,6 +23,10 @@ export interface LocalEvent {
         data:any;
     }
 
+    link_comp_update:{
+        comp_name:string
+    }
+
     OkPanel:{
         title:string;
         type:string;

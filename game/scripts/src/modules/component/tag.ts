@@ -11,8 +11,12 @@ export const tag = {
     is_in_shop:"is_in_shop",//是否在商店中
     is_in_kuang_dong:"is_in_kuang_dong",//是否在矿洞中
     is_cur_in_city_map_ent:"is_cur_in_city",//当前被进入的城市实体 或者说mark
-    is_cur_euqipment_tag:"is_cur_euqipment_tag"
+    is_cur_euqipment_tag:"is_cur_euqipment_tag",
+    is_cur_booss:"is_cur_boss", //
+    is_cur_creep:"is_cur_creep"
 }
+
+
 
 export enum scene {
     大地图,

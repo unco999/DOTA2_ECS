@@ -36,25 +36,6 @@ export class UiCache{
     ){}
 }
 
-//实体关联组件
-export class Link extends LinkedComponent{
-    constructor(
-        public type:string,
-        public entity:Entity
-    ){
-        super();
-    }
-}
-
-
-@doc.watch("none",to_save())
-export class State extends LinkedComponent{
-    constructor(
-        public state:XstateID
-    ){
-        super();
-    }
-}
 
 export class MarkCache{
     constructor(

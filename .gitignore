@@ -46,3 +46,5 @@ scripts/.test
 *.fbx
 *.vmdl
 *.mov
+*.vpcf
+*.vpk

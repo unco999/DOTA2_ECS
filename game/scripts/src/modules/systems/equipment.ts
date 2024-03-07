@@ -1,11 +1,11 @@
-import { BindDota2EntityLinkEcsEntity, TRACE, _replace$2KeytoArray, _replace$2obj, clear_event } from "../../fp";
+import { BindDota2EntityLinkEcsEntity, CheckGetHasInventoryItemWithEntity, CheckGetHasItemWithEntity, TRACE, _replace$2KeytoArray, _replace$2obj, clear_event } from "../../fp";
 import { Entity } from "../../lib/ecs/Entity";
 import { System } from "../../lib/ecs/System";
 import { reloadable } from "../../utils/tstl-utils";
 import {type EQUIPMENT_TYPE, type EquipmentState,type Inventory} from '../component/equipment'
 import * as item_json from "../../json/items_list_1.json" 
 import * as equipment_json from "../../json/equipment.json"
-import type { AllModifierAndAttributeComps } from "../component/role";
+import type { AllModifierAndAttributeComps, WarehouseInventory } from "../component/role";
 /**
  * 主要负责装备和卸载的功能
  */
@@ -203,5 +203,149 @@ export class InventorySytemOnAdd extends System{
             DeepPrintTable(event)
         },[])
 
+    }
+}
+
+/**
+ * 固定仓库管理系统
+ */
+@reloadable
+export class WarehouseInventorySystem extends System{
+    
+    /**
+     * 和快捷栏背包交换位置
+     */
+    raw_change(hero:CDOTA_BaseNPC_Hero,slot_num:number,warehouse_inventory:WarehouseInventory,event:CustomGameEventDeclarations['c2s_item_to_warehouse_inventory']){
+        const raw_inventory_item = hero.GetItemInSlot(slot_num) as CDOTA_Item
+        hero.DropItemAtPositionImmediate(raw_inventory_item,Vector(44444,44444,44444))
+        const last_warehouse_item = warehouse_inventory.ItemSlots[event.to_slot]
+        const last_item = EntIndexToHScript(last_warehouse_item) as CDOTA_Item
+        hero.AddItem(last_item)
+        warehouse_inventory.ItemSlots[event.to_slot] = event.dota_entity_id
+    }
+
+
+    /**交换位置 */
+    change(hero:CDOTA_BaseNPC_Hero,old_warehouse_inventory:{elm:WarehouseInventory,old_slot:number},event:CustomGameEventDeclarations['c2s_item_to_warehouse_inventory']){
+        const role = GameRules.QSet.is_select_role.first
+        const old  = old_warehouse_inventory.elm.ItemSlots[old_warehouse_inventory.old_slot]
+        role.iterate(c.role.WarehouseInventory,(elm)=>{
+            if(elm.slot_index == event.to_index_inventory && elm.is_lock){
+                //如果指定背包是锁定状态
+                TRACE("该栏目已经被锁定了",false)
+                CustomGameEventManager.Send_ServerToPlayer(PlayerResource.GetPlayer(role.get(c.base.PLAYER).PlayerID),"LargePopupBox",{tag_name:"该背包还没有解锁...",player_id:role.get(c.base.PLAYER).PlayerID})
+                return
+            }
+            if(elm.slot_index == event.to_index_inventory){
+                const new_ent = elm.ItemSlots[event.to_slot];
+
+                old_warehouse_inventory.elm.ItemSlots[old_warehouse_inventory.old_slot] = new_ent
+                elm.ItemSlots[event.to_slot] = old
+            }
+        })
+    }
+
+    /**直接放置 */
+    insert(hero:CDOTA_BaseNPC_Hero,warehouse_inventory:WarehouseInventory,event:CustomGameEventDeclarations['c2s_item_to_warehouse_inventory']){
+        warehouse_inventory.ItemSlots[event.to_slot] = event.dota_entity_id
+        print("event.to_slot",event.to_slot,"to",event.dota_entity_id)
+        const item = EntIndexToHScript(event.dota_entity_id) as CDOTA_Item
+        hero.DropItemAtPositionImmediate(item,Vector(44444,44444,44444))
+    }
+
+    /**
+     * 从固定仓库面板放入快捷背包操作
+     */
+    to_raw(event:CustomGameEventDeclarations["c2s_warehouse_inventory_to_raw"]){
+        const role = GameRules.QSet.is_select_role.first
+        // role.iterate(c.role.WarehouseInventory,(elm)=>{
+        //     if(event.to_index_inventory == elm.slot_index && !elm.is_lock){
+                
+        //     }
+        // })
+        const data = CheckGetHasInventoryItemWithEntity(event.dota_entity_id)
+        if(data){
+            const warehouse = data.elm as WarehouseInventory
+            warehouse.ItemSlots[event.to_slot] = null
+            const item = EntIndexToHScript(event.dota_entity_id) as CDOTA_Item
+            const hero = EntIndexToHScript(role.get(c.base.HERO).hero_idx) as CDOTA_BaseNPC_Hero
+            hero.AddItem(item)
+        }else{
+           TRACE("没有找到背包里的物品,失败",false)
+        }
+    }
+    
+    /**
+     * 他交换位置时 要么是快捷栏背包 要么是固定背包
+     * 所以我们要么传入 快捷栏背包 要么传入固定背包
+     */
+    public onAddedToEngine(): void {
+        
+        CustomGameEventManager.RegisterListener("c2s_warehouse_inventory_to_raw",(_,event)=>{
+            this.to_raw(event)
+        })
+        CustomGameEventManager.RegisterListener("c2s_item_to_warehouse_inventory",(_,event)=>{
+            const role = GameRules.QSet.is_select_role.first
+            const hero = EntIndexToHScript(role.get(c.base.HERO).hero_idx) as CDOTA_BaseNPC_Hero
+            let slot_num:number
+            let ecs_inventory_dota_ent:{elm:WarehouseInventory,old_slot:number}
+            print("特殊值")
+            DeepPrintTable(event)
+            slot_num = CheckGetHasItemWithEntity(hero,event.dota_entity_id)
+            if(slot_num == null){
+                ecs_inventory_dota_ent = CheckGetHasInventoryItemWithEntity(event.dota_entity_id) 
+            }
+            if(slot_num){
+                //这里是从快捷栏背包拿物品进仓库 有2种情况 仓库里本身有东西 和仓库本身没东西
+                role.iterate(c.role.WarehouseInventory,(elm)=>{
+                    if(elm.slot_index == event.to_index_inventory && elm.is_lock){
+                        //如果指定背包是锁定状态
+                        TRACE("该栏目已经被锁定了",false)
+                        CustomGameEventManager.Send_ServerToPlayer(PlayerResource.GetPlayer(event.PlayerID),"LargePopupBox",{tag_name:"该背包还没有解锁...",player_id:event.PlayerID})
+                        return
+                    }
+                    if(elm.slot_index == event.to_index_inventory && elm.ItemSlots[event.to_slot]){
+                        this.raw_change(hero,slot_num,elm,event)
+                        return
+                    }
+                    if(elm.slot_index == event.to_index_inventory && elm.ItemSlots[event.to_slot] == null){
+                        this.insert(hero,elm,event)
+                        return
+                    }
+                })
+            }
+            else if(ecs_inventory_dota_ent){
+                this.change(hero,ecs_inventory_dota_ent,event)
+            }
+            else{
+                TRACE("错误没有在背包里找到指定的物品",false)
+            }
+        })
+    }
+}
+
+@reloadable
+export class RbxBoxSystem extends System{
+
+    private _insert(dota_item_name:string,input:number,slot:number){
+        print("触发了rbx_box")
+        const role = GameRules.QSet.is_select_role.first
+        const rbx_comp = role.get(c.quipment.RbxBoxElement)
+        rbx_comp.element[slot] = {item_name:dota_item_name,num:input}
+    }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+
+    public onAddedToEngine(): void {
+        CustomGameEventManager.RegisterListener("c2s_number_input_ok_register",(_,event)=>{
+            const id = CustomGameEventManager.RegisterListener(event.uuid,(_,event)=>{
+                if(event.type == "rbx_insert_item" && event.click == "ok"){
+                    this._insert(
+                        event.data.data.dota_item_name,
+                        Number(event.data.input),
+                        Number(event.data.data.slot)
+                    )
+                }
+                CustomGameEventManager.UnregisterListener(id)
+            })
+        })    
     }
 }

@@ -1,25 +1,45 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { onLocalEvent } from "../utils/event-bus";
+import { onLocalEvent, useLocalEvent } from "../utils/event-bus";
 import { useGameEvent } from "react-panorama-x";
 
-export function useLinkComps<T extends keyof compc_map>(compsName:T,sort:(a:compc_map[T],b:compc_map[T])=>number){
+export function useLinkComps<T extends keyof compc_map>(compsName:T,sort?:(a:compc_map[T],b:compc_map[T])=>number){
     const [comps,change_comps] = useState<compc_map[T][]>()
-    const [last_update_time,set_last_update_time] = useState<number>(0)
+    const [last_update_time,set_last_update_time] = useState<number>()
     
-    useGameEvent("s2c_link_comp_to_event",()=>{
-        set_last_update_time(new Date().getTime())
+    useLayoutEffect(()=>{
+        $.Msg("接收到事件了")
+        if(GameUI.CustomUIConfig().with_link_comp_cache[compsName]){
+            $.Msg("有东西")
+            const data = GameUI.CustomUIConfig().with_link_comp_cache[compsName]?.map(elm=> elm.comp)
+
+            if(sort){
+                change_comps(data?.sort(sort) ?? [])
+            }else{
+                change_comps(data)
+            }
+            set_last_update_time(new Date().getTime())
+
+        }
     },[])
 
-    useEffect(()=>{
+    useLocalEvent("link_comp_update",()=>{
+        $.Msg("接收到事件了")
         if(GameUI.CustomUIConfig().with_link_comp_cache[compsName]){
-            const data = GameUI.CustomUIConfig().with_link_comp_cache[compsName]
-            const list:compc_map[T][] = []
-            data?.forEach(elm=>{
-                list.push(elm.comp)
+            $.Schedule(Game.GetGameFrameTime(),()=>{
+                $.Msg("有东西")
+                const data = GameUI.CustomUIConfig().with_link_comp_cache[compsName]?.map(elm=>elm.comp)
+    
+                if(sort){
+                    change_comps(data?.sort(sort) ?? [])
+                }else{
+                    change_comps(data)
+                }
+                set_last_update_time(new Date().getTime())
             })
-            change_comps(list.sort(sort))
         }
-   },[last_update_time])
+   })
+
+
 
    return [comps,last_update_time]
 }
@@ -28,24 +48,30 @@ export function useLinkComps<T extends keyof compc_map>(compsName:T,sort:(a:comp
 
 export function useCompWithEntityID(dota_entity_id:EntityIndex){
     const [comps,change_comps] = useState<any>()
-    const [last_update_time,set_last_update_time] = useState<number>(0)
+    const last_update_time= useRef<number>(0)
     
-    useGameEvent("s2c_bind_dota_entity_to_ecs_entity",()=>{
-        set_last_update_time(new Date().getTime())
-    },[])
-
-    useEffect(()=>{
+    useLayoutEffect(()=>{
         $.Msg("我的dota_entity_id",dota_entity_id)
         $.Msg("获取到的ecs",GameUI.CustomUIConfig().comp_data_with_dota_entity[dota_entity_id])
         const ecs_entity_id = GameUI.CustomUIConfig().comp_data_with_dota_entity[dota_entity_id]
         if(ecs_entity_id == null) return
         if(GameUI.CustomUIConfig().with_entity_comp_cache[ecs_entity_id] ){
+           change_comps(GameUI.CustomUIConfig().with_entity_comp_cache[ecs_entity_id])
+           last_update_time.current = new Date().getTime()
+        }
+    },[])
+
+    useGameEvent("s2c_bind_dota_entity_to_ecs_entity",()=>{
+        const ecs_entity_id = GameUI.CustomUIConfig().comp_data_with_dota_entity[dota_entity_id]
+        if(ecs_entity_id == null) return
+        if(GameUI.CustomUIConfig().with_entity_comp_cache[ecs_entity_id] ){
            $.Msg("获取到了根据ecs_entity_id拿到的东西",(GameUI.CustomUIConfig().with_entity_comp_cache[ecs_entity_id]))
            change_comps(GameUI.CustomUIConfig().with_entity_comp_cache[ecs_entity_id])
+           last_update_time.current = new Date().getTime()
         }
-   },[last_update_time])
+   },[])
 
-   return [comps,last_update_time]
+   return [comps,last_update_time.current]
 }
 
 

@@ -54,3 +54,13 @@ a000025_name,english,元素,
 
 a000026_description,english,使元素分裂x次,
 a000026_name,english,分裂
+
+
+element_1,english,风元素,
+element_2,english,火元素,
+element_4,english,雷元素,
+element_8,english,水元素,
+element_16,english,木元素,
+element_32,english,土元素,
+element_64,english,光元素,
+element_128,english,暗元素

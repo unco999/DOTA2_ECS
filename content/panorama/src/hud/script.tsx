@@ -4,13 +4,15 @@ import 'panorama-polyfill-x/lib/timers';
 import { render, useGameEvent, useNetTableKey } from 'react-panorama-x';
 import { useXNetTableKey } from '../hooks/useXNetTable';
 import { onLocalEvent, useLocalEvent } from '../utils/event-bus';
-import { useCompWithPlayer } from '../hooks/useComp';
+import { useCompWithPlayer, useCompWithSystem, useLinkComps } from '../hooks/useComp';
 import { FC, useEffect, useMemo, useRef, useState } from 'react';
 //@ts-ignore
 import {Motion, spring} from "@serprex/react-motion"
 import { pop_tag } from '../config';
 import { LocalEvent } from '../def/local_event_def';
 import { AnchorPanel, TilePanel, luaToJsArray } from '../base';
+import { distance } from '../utils/lib';
+import { useInterval } from '../hooks/useInterval';
 
 const main_style= {
     "init": {
@@ -23,10 +25,144 @@ const main_style= {
     },
 }
 
+
+
+const start_check_point:[number,number] = [945,1000]
+const end_check_point:[number,number] = [1419,982]
+
+
+const MagicCardMain = () =>{
+    const [update,set_update] = useState(false)
+    const cursor_position = useRef<[number,number]>([0,0])
+    const compise = useRef<boolean>(false)
+
+    const [select_card_table,set_select_card_table] = useState<Record<number,string|undefined>>({})
+    const [merge,setmerge] = useState<boolean>(false)
+
+    const [card_comp,card_link_comp_update] = useLinkComps("Card",(a,b)=>a?.index - b?.index) as [Card[],number]
+
+    $.Msg(card_comp)
+
+    // useInterval(Game.GetGameFrameTime(),()=>{
+    //     if(GameUI.IsMouseDown(0)){
+    //         const cur = GameUI.GetCursorPosition()
+    //         if(distance(cur,start_check_point) < 222){
+    //             compise.current = true
+    //             cursor_position.current = cur
+    //         }
+    //     }
+    //     else{
+    //         if(compise.current == false) return;
+    //         const end_point = GameUI.GetCursorPosition()
+    //         if(compise.current && distance(end_point,end_check_point) < 222 && Object.keys(select_card_table).length > 1){
+    //             compise.current = false
+    //             cursor_position.current = [0,0]
+    //             setmerge(true)
+    //         }
+    //     }
+    // },undefined,select_card_table)
+
+    useEffect(()=>{
+        if(merge == true){
+            set_select_card_table({})
+            setmerge(false)
+        }
+    },[merge])
+
+
+    
+
+    return <Panel style={{width:"1000px",height:"400px",border:"1px solid red",align:"right bottom"}}>
+        {card_comp?.map((elm,index)=><Card index={elm.index} merge={merge} dispatich={set_select_card_table} key={"Card"+elm?.uid + elm.index}  card_data={elm}/>)}
+    </Panel>
+}
+
+const Card = ({card_data,dispatich,merge,index}:{card_data:Card,index:number,merge:boolean,dispatich:React.Dispatch<React.SetStateAction<Record<number, string|undefined>>>}) =>{
+    const main = useRef<Panel>()
+    const dummy = useRef<Panel>()
+    const card_label = useRef<Panel>()
+    const is_select = useRef<boolean>()
+
+    useEffect(()=>{
+        main.current?.AddClass(`car_index_${index}`)
+        dummy.current?.AddClass(`dummy_index_${index}`)
+    },[index])
+
+    const translate = (p?:Panel) =>{
+        p?.RemoveClass(`init`)
+        p?.AddClass(`card_index_${index}`)
+    }
+
+    // useEffect(()=>{
+    //     translate(main.current)
+    //     translate(dummy.current)
+
+    //     return () =>{
+    //         main.current?.RemoveClass(`card_index_${card_data.index}`)
+    //     }
+    // },[card_data.index])
+    useEffect(()=>{
+        if(merge && is_select.current == true){
+            main.current?.AddClass("merge")
+            main.current?.RemoveClass("select")
+            main.current?.RemoveClass("mouseover")
+            main.current?.RemoveClass(`card_index_${index}`)
+        }
+    },[merge])
+
+    const onmouseover = (p:Panel) =>{
+        if(is_select.current == true) return
+        main.current?.AddClass("mouseover")
+    }
+    
+    const onmouseout = (p:Panel) =>{
+        main.current?.RemoveClass("mouseover")
+    }
+
+    const dclick = (p:Panel) =>{
+        is_select.current = !is_select.current 
+        main.current?.ToggleClass("select")
+        if(is_select.current == true){
+            dispatich(elm=> ({...elm,[index]:card_data.card_name}))
+        }else{
+            dispatich(elm=> ({...elm,[index]:undefined}))
+        }
+    }
+
+    const ondrag = (p:Panel) => {
+        const abilityindex = Entities.GetAbility(Players.GetPlayerHeroEntityIndex(Players.GetLocalPlayer()),0)
+        const a = Players.GetPlayerHeroEntityIndex(Players.GetLocalPlayer())
+        Abilities.ExecuteAbility(abilityindex,a,false)
+    } 
+ 
+    const dbclieck = (p:Panel) =>{
+        $.Msg("dbclieck",card_data.uid)
+        GameEvents.SendCustomGameEventToServer("c2s_card_event",{container_behavior:16,merge_data:{1:card_data.uid}})
+    }
+
+    return <>
+            <Panel onload={translate} hittest={false} ref={p=>main.current=p!} className={`card`}>
+             <Label hittest={false} text={card_data?.uid} ref={p=>card_label.current = p!} className={`card_label`}/>
+            </Panel>
+            <Panel ondblclick={dbclieck} onactivate={ondrag} oncontextmenu={dclick} hittest={true} ref={p=>dummy.current = p!} onmouseover={onmouseover} onmouseout={onmouseout} className={`card_dummy`}/>
+        </>
+}
+
+
+/**过关条件UI */
+const LevelCheckHud = () =>{
+    const [level_behaivor_check,level_behaivor_checkupdate] = useCompWithSystem("LevelBehaivorCheck") as [LevelBehaivorCheck,number]
+
+    return <Panel hittest={false} style={{width:"100%",height:"100%"}}>
+        <Label style={{color:"white",textShadow:"2px 2px 8px 3.0 #333333b0",fontSize:"35px",align:"center top",marginTop:"30px"}} 
+        text={`当前过关条件 #level_behaivor_${level_behaivor_check?.level_behaivor} 需要数量${level_behaivor_check?.check_max} 完成数量${level_behaivor_check?.cur}`}/>
+    </Panel>
+}
+
 const BaseAttribute = ({icon,num}:{icon:string,num:number}) => {
     return <Panel hittest={false} style={{flowChildren:"down"}}>
-        <Image style={{width:"32px",height:"32px"}} src={`s2r://panorama/images/control_icons/${icon}.png`}/>
-        <Label style={{horizontalAlign:"center",marginLeft:"9px",fontSize:"16px",color:"white"}} text={num.toString()}/>
+        <Image hittest={false} style={{width:"32px",height:"32px"}} src={`s2r://panorama/images/control_icons/${icon}.png`}/>
+        <Label  hittest={false} style={{horizontalAlign:"center",marginLeft:"9px",fontSize:"16px",color:"white"}} text={num.toString()}/>
     </Panel>
 }
 
@@ -254,7 +390,7 @@ const LargePopupBox: FC = () => {
   
       
     const [last_state,set_last_state] = useState<keyof typeof main_style>("init")
-    const [state,setState] = useState<keyof typeof main_style>("spawn")
+    const [state,setState] = useState<keyof typeof main_style>("init")
     const text = useRef<string>()
 
     useEffect(()=>{
@@ -486,7 +622,7 @@ const SystemProgress: FC = () => {
 
 const OkPanel: FC = () => {
     const [last_state,set_last_state] = useState<keyof typeof main_style>("init")
-    const [state,setState] = useState<keyof typeof main_style>("spawn")
+    const [state,setState] = useState<keyof typeof main_style>("init")
     const [event,set_event] = useState<LocalEvent['OkPanel']>()
 
     useLocalEvent("OkPanel",(event)=>{
@@ -571,7 +707,7 @@ const OkPanel: FC = () => {
 
 const OkNumberInputPanel: FC = () => {
     const [last_state,set_last_state] = useState<keyof typeof main_style>("init")
-    const [state,setState] = useState<keyof typeof main_style>("spawn")
+    const [state,setState] = useState<keyof typeof main_style>("init")
     const [event,set_event] = useState<LocalEvent['OkNumberInputPanel']>()
     const entry_number_panel = useRef<TextEntry>()
 
@@ -692,9 +828,28 @@ render(
 <OkPanel/>
 <OkNumberInputPanel/>
 <ItemToolTip/>
+<LevelCheckHud/>
+<MagicCardMain/>
 </>
 , $.GetContextPanel());
 
 
+
+GameEvents.Subscribe("test_map",(event:any)=>{
+    const data = event.data
+    let count = 0
+    for(let y = 0 ; y < 8 ; y ++){
+        for(let x = 0; x < 8 ; x++){
+            count ++;
+            if(data[count].modelname == "crass_0"){continue}
+                const p =  $.CreatePanel("Image",$.GetContextPanel(),data[count].modelname + x +y *x)
+                p.style.x = x * 64 + "px"
+                p.style.y = y * 64 + "px"
+                p.style.width = 64 + "px"
+                p.style.height = 64 + "px"
+                p.SetImage(`file://{images}/custom_game/map/3d/${data[count].modelname}.png`)
+            }
+        }
+})
 
 

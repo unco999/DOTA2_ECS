@@ -10,7 +10,7 @@ export function val<T>(val:T,defualt:T){
 }
 
 // distance between 2 points
-function distance(p1: Point, p2: Point): number {
+export function distance(p1: Point, p2: Point): number {
   return Math.sqrt(distanceSq(p1, p2));
 }
 

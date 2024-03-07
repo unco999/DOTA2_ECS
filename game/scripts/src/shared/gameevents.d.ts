@@ -70,6 +70,11 @@ declare interface CurrentScene {
     scene_type: number;
 }
 
+declare interface RbxBoxElement {
+    element:Record<number,{item_name:string,num:number}>
+}
+
+
 
 declare type event_player = { PlayerID: PlayerID }
 declare type compc_map = {
@@ -88,6 +93,10 @@ declare type compc_map = {
     EquipmentState:EquipmentStateExntendsComps
     EquipMentAttribute:EquipMentAttribute
     WarehouseInventory:WarehouseInventory
+    RbxBoxElement:RbxBoxElement
+    LevelBehaivorCheck:LevelBehaivorCheck
+    LevelInfo:LevelInfo
+    Card:Card
 }
 
 declare interface CustomGameEventDeclarations {
@@ -120,7 +129,10 @@ declare interface CustomGameEventDeclarations {
     s2c_bind_dota_entity_to_ecs_entity: { dota_entity: EntityIndex, ecs_entity_id: number }
     s2c_comp_to_event: { class_name:string, ecs_entity_index: EntityIndex, comp:Partial<compc_map[keyof compc_map]> }
     s2c_link_comp_to_event: { uid:string,class_name:string, ecs_entity_index: EntityIndex, comp:Partial<compc_map[keyof compc_map]> }
-    
+    s2c_link_remove : {class_name:string,uid:string}
+    c2s_item_to_warehouse_inventory:{dota_entity_id:EntityIndex,to_index_inventory:number,to_slot:number}
+    c2s_warehouse_inventory_to_raw:{dota_entity_id:EntityIndex,to_index_inventory:number,to_slot:number}
+    c2s_card_event:{merge_data:Record<number,string>,container_behavior:CardContainerBehavior}
     [key: string]: any
 }
 
@@ -282,9 +294,11 @@ declare interface Inventory {
     slots: { slot_1: { dota_entity: any; ecs_entity_index: number; }; slot_2: { dota_entity: any; ecs_entity_index: number; }; slot_3: { dota_entity: any; ecs_entity_index: number; }; slot_4: { dota_entity: any; ecs_entity_index: number; }; slot_5: { dota_entity: any; ecs_entity_index: number; }; slot_6: { dota_entity: any; ecs_entity_index: number; }; slot_7: { dota_entity: any; ecs_entity_index: number; }; slot_8: { dota_entity: any; ecs_entity_index: number; }; slot_9: { dota_entity: any; ecs_entity_index: number; }; };
 }
 
+declare type ECSEntityID = number
+
 declare interface WarehouseInventory {
     slot_index: number;
-    ItemSlots: any;
+    ItemSlots: Record<number,EntityIndex>;
     is_lock: boolean;
 }
 
@@ -438,4 +452,22 @@ declare const enum 数据流类型{
     元素影响 = 0x0000080,
     元素分裂 = 0x0000100,
     无 = 0,
+}
+
+
+
+declare interface LevelBehaivorCheck {
+    cur: number;
+    check_max: number;
+    level_behaivor:number
+}
+
+/**
+ * 当前地下城信息info
+ */
+declare interface LevelInfo {
+    dungeon_info: [string, any];
+    entry_point: any;
+    level_behaivor: any;
+    creep_count?: number;
 }

@@ -316,6 +316,8 @@ export class Engine {
     let parent = getmetatable(message)?.constructor as T ?? message; 
     for (const subscription of this._subscriptions) {
       if ( (typeof subscription.messageType === 'function' && parent instanceof subscription.messageType) || parent === subscription.messageType) {
+        print("[ecs] 发送了事件 以下是事件内容==========================>")
+        Object.entries(message).forEach(([key,val])=>print(`[ecs] ${key} = ${val}`))
         subscription.handler(children);
       }
     }

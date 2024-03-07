@@ -95,6 +95,56 @@ export namespace event{
 
         }
     }
+
+    //**地下城加载完毕事件 */
+    export class DungeonMapReadOk{
+        public constructor(
+            public readonly dungeon_ent:Entity,
+        ){
+
+        }
+    }
+
+    //**游戏初始化完毕 */
+    export class GameLoopEvent{
+        public constructor(
+            public readonly event:GameLoopState
+        ){
+            
+        }
+    }
+
+    //**进入下一关 */
+    export class NextLevelEvent{
+        public constructor(
+            
+        ){
+
+        }
+    }
+
+
+
+    export class LevelEvent{
+        constructor(
+            public level_state:LevelState,
+            public level_type:LevelType,
+            public level_ecs_ent:Entity
+        ){
+
+        }
+    }
+
+    export class CardEvent{
+        constructor(
+            public card_event:CardContainerBehavior,
+            public player_ent:Entity,
+            /**@string uid */
+            public  merge_data:Record<number,string>
+        ){
+
+        }
+    }
     
 }
 

@@ -1,4 +1,4 @@
-import { TRACE, _replace$2obj, create_city_road_wfc, sigmoid, to_client_event, to_debug } from '../fp';
+import { TRACE, _replace$2obj, create_city_road_wfc, easing, sigmoid, to_client_event, to_debug } from '../fp';
 import { OpenAPI } from '../server/core/OpenAPI';
 import { request } from '../server/core/request';
 import { reloadable } from '../utils/tstl-utils';
@@ -10,6 +10,7 @@ import { matrix} from '../lib/math/martrix';
 import { rubic_box } from './systems/rubic_box';
 import './modifiers/base/test_modifier'
 import { FN } from './attribute/FN';
+import { Entity } from '../lib/ecs/Entity';
 
 let cache = new Map()
 
@@ -68,33 +69,67 @@ export class Debug {
 
         if(cmd == "test"){
             const hero = PlayerResource.GetPlayer(keys.playerid).GetAssignedHero()
+            const foward = hero.GetForwardVector().__mul(1000).__add(hero.GetOrigin())
 
-            const id = ProjectileManager.CreateLinearProjectile({
-                "Ability":null,
-                "EffectName":"particles/units/heroes/hero_tidehunter/tidehunter_arm_of_the_deep_projectile.vpcf",
-                "vSpawnOrigin":hero.GetAbsOrigin(),
-                "vVelocity":hero.GetForwardVector().__mul(500),
-                "fDistance":1000,
-                "fStartRadius":100,
-                "fEndRadius":100,
+
+
+            const c = CreateModifierThinker(hero,undefined,"",{},foward,hero.GetTeamNumber(),false)
+
+            let g;
+            let model = hero.GetChildren()
+           for(let i = 0 ; i < model.length ; i++){
+              if(model[i].GetModelName().includes("weapon")){
+                  const a  = model[i] as CBaseModelEntity
+                  print("隐藏了")
+                  a.AddEffects(EntityEffects.EF_NODRAW)
+                  g = a;
+                }} 
+            SendToConsole("dota_combine_models 0")
+            ProjectileManager.CreateTrackingProjectile({
+                Ability:null,
+                "Target":c,
                 "Source":hero,
+                "EffectName":"particles/kuangzhanshi/troll_warlord__2whirling_axe_ranged.vpcf",
+                "iMoveSpeed":1000,
             })
+
             GameRules.enquence_delay_call(()=>{
-                const vec = ProjectileManager.GetLinearProjectileLocation(id)
-                const find = FindUnitsInRadius(hero.GetTeamNumber(),vec,undefined,100,UnitTargetTeam.ENEMY,UnitTargetType.CREEP | UnitTargetType.HERO,UnitTargetFlags.NONE,FindOrder.ANY,false)
-                find.forEach(elm=>{
-                    ApplyDamage({
-                        attacker:hero,
-                        victim:elm,
-                        ability:null,
-                        damage:100,
-                        damage_type:DamageTypes.MAGICAL,
-                    })
+                c.SetModel(g.GetModelName())
+                c.SetOriginalModel(g.GetModelName())
+                c.SetModelScale(1.5)
+                c.SetAbsAngles(180,0,180) 
+                c.SetOrigin(c.GetOrigin().__add(Vector(0,0,256)))
+                const id = ParticleManager.CreateParticle("particles/ecmon/items/huskar/huskar_2022_immortal/huskar_2022_immortal_life_break.vpcf",ParticleAttachment.WORLDORIGIN,hero)
+                ParticleManager.SetParticleControl(id,0,c.GetOrigin())
+            },undefined,1000)
+
+            GameRules.enquence_delay_call(()=>{
+                ProjectileManager.CreateTrackingProjectile({
+                    Ability:null,
+                    "Target":hero,
+                    "Source":c,
+                    "EffectName":"particles/kuangzhanshi/troll_warlord__2whirling_axe_ranged.vpcf",
+                    "iMoveSpeed":500,
                 })
-                if(ProjectileManager.IsValidProjectile(id)){
-                    return "update"
-                }
-            },undefined,333)
+                c.RemoveSelf()
+                // a.RemoveEffects(EntityEffects.EF_NODRAW)
+                GameRules.enquence_delay_call(()=>{
+                    g.RemoveEffects(EntityEffects.EF_NODRAW)
+                },undefined,1000)
+            },undefined,3000)
+
+
+            // const id =  ParticleManager.CreateParticle("particles/kuangzhanshi/troll_warlord__2whirling_axe_ranged.vpcf",ParticleAttachment.ABSORIGIN,hero)
+            // ParticleManager.SetParticleControl(id,1,foward)
+            // ParticleManager.SetParticleControlEnt(id,9,hero,ParticleAttachment.CUSTOMORIGIN,null,Vector(0),true)
+            // GameRules.enquence_delay_call(()=>{
+            //     ParticleManager.SetParticleControlFallback(id,1,hero.GetOrigin())
+            // },undefined,3000)
+        }
+        if(cmd == "modifier"){
+            const hero = PlayerResource.GetPlayer(keys.playerid).GetAssignedHero()
+            const foward = hero.GetForwardVector().__mul(1000).__add(hero.GetOrigin())
+            const modifier = hero.AddNewModifier(hero,null,"modifier_han_di_zhi_yue_jump",{duration:3,x:foward.x,y:foward.y,z:foward.z})
         }
         if(cmd == "reload"){
             container.to_client_event_container.forEach(val=>{
@@ -109,6 +144,13 @@ export class Debug {
                 GameRules.world.sharedConfig.add("debug")
             }
         }
+        if(cmd == "animation"){
+            const hero = PlayerResource.GetPlayer(keys.playerid).GetAssignedHero()
+            hero.StartGestureWithPlaybackRate(GameActivity.DOTA_DIE,999);
+            GameRules.enquence_delay_call(()=>{
+                hero.AddNewModifier(hero,null,"dao_di_modifier",{duration:3})
+            },undefined,200)
+        }
         if(cmd == "eval"){
             if(GameRules.world.sharedConfig.hasTag("eval")){
                 GameRules.world.sharedConfig.removeTag("eval")
@@ -118,8 +160,36 @@ export class Debug {
         }
         if(cmd == "deg"){
             const hero = PlayerResource.GetPlayer(keys.playerid).GetAssignedHero()
-            
-            print(hero.GetForwardVector())
+            hero.RemoveEffects(EntityEffects.EF_NODRAW)
+            let model = hero.GetChildren()
+           for(let i = 0 ; i < model.length ; i++){
+              if(model[i].GetModelName().includes("weapon")){
+                  const a  = model[i] as CBaseModelEntity
+                  const prop_dynamic = SpawnEntityFromTableSynchronous("prop_dynamic",{
+                    targetname:"lisi",
+                    origin:`${a.GetOrigin().x} ${a.GetOrigin().y} ${a.GetOrigin().z}`,
+                    angles:`${a.GetAngles().x} ${a.GetAngles().y} ${a.GetAngles().z}`,
+                    scales : `${1.1} ${1.1} ${1.}`,
+                    model :"models/heroes/axe/axe_weapon.vmdl",
+                    lightmapstatic:"1",
+                    renderfx:"kRenderFxPulseFast",
+                    solid:"0",
+                }) as CBaseModelEntity
+
+                let b = 0; 
+                GameRules.enquence_delay_call(()=>{
+                    const dir = GameRules.GetGameFrameTime() * easing.inOutCirc(1 - b / 1000) * 550
+                    prop_dynamic.SetOrigin(prop_dynamic.GetOrigin().__add(prop_dynamic.GetForwardVector().__mul(dir)))
+                    if(b < 1000){
+                        b++
+                        return "update"
+                    }
+                },undefined,10)
+
+                  print(DeepPrintTable(getmetatable(a)))
+              }
+
+           }
         }
         // if(cmd == "test"){
 
@@ -403,17 +473,32 @@ export class Debug {
             print("矩阵大小",b)
         }
 
+        if(cmd =="testboss"){
+            GameRules.dota_spawn_cache.forEach(elm=>{
+                UnloadSpawnGroupByHandle(elm)
+            })
+            GameRules.dota_spawn_cache = []
+            Timers.CreateTimer(2,()=>{
+                const spawn_id =  DOTA_SpawnMapAtPosition(`migong/boss/hai_di_boss`,Vector(0,0,0),false,null,null,undefined);
+                GameRules.dota_spawn_cache.push(spawn_id)
+            })
+        }
 
+        if(cmd == "nextlevel"){
+            GameRules.world.dispatch(new GameRules.event.NextLevelEvent())
+        }
 
         if(cmd == "testbuild"){
-            try{
-                create_city_road_wfc("snow_01").then(elm=>{
-                    print("返回了值")
-                    cache = elm
-                })
-            }catch(err){
-                print(err)
-            }
+
+            // Timers.CreateTimer(()=>{
+            //     const unit = CreateUnitByName("npc_dota_creep_badguys_melee",RandomVector(1000),true,null,null,DotaTeam.BADGUYS)
+            //     unit.SetBaseMoveSpeed(400)
+            //     unit.SetOriginalModel("models/creeps/lane_creeps/creep_bad_melee/creep_bad_melee_crystal.vmdl")
+            //     unit.SetModel("models/creeps/lane_creeps/creep_bad_melee/creep_bad_melee_crystal.vmdl")
+            //     unit.SetBaseMaxHealth(1000)
+            //     unit.MoveToTargetToAttack(hero)
+            //     return 5
+            // })
         }
         if(cmd == "testdelete"){
             cache.forEach(elm=>{
@@ -475,6 +560,26 @@ export class Debug {
                 }
             })
             print(csv)
+        }
+        if(cmd == "rule"){
+            print("操")
+            const hero = PlayerResource.GetPlayer(keys.playerid).GetAssignedHero()
+            CreateRune(hero.GetAbsOrigin(),RuneType.XP)
+
+        }
+        if(cmd == "ability"){
+            const kv = LoadKeyValues("scripts/npc/npc_heroes.txt")
+            Object.entries(kv).forEach(([hero_name,val])=>{
+                if(typeof val == "object"){
+                    let a = hero_name
+                    for(let i = 1 ; i < 16 ; i ++){
+                        a += "," + val['Ability' + i]
+                    }
+                    a += "\n"
+                    print(a)
+                }
+
+            })
         }
         if(cmd == "http"){
             print("触发这个")

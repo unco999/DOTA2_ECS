@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { onLocalEvent } from "../utils/event-bus";
 
 
-export const useInterval = (interval:number,fn:(panel?:Panel,count?:number)=>any,panel?:Panel) =>{
+export const useInterval = (interval:number,fn:(panel?:Panel,count?:number)=>any,panel?:Panel,dep?:any) =>{
     const timer = useRef<number>();
 
     useEffect(()=>{
@@ -17,5 +17,5 @@ export const useInterval = (interval:number,fn:(panel?:Panel,count?:number)=>any
         return ()=>{
             clearInterval(timer.current)
         }
-    },[])
+    },[dep])
 }

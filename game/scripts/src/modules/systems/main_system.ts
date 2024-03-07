@@ -358,29 +358,6 @@ export class game_loop_system extends System{
         next_xstate(main_ui_id)
         
 
-        this.sharedConfig.appendComponent(new c.base.State(
-            main_ui_id
-        ))
-
-        this.sharedConfig.appendComponent(new c.base.State(
-            ui_main_role_id
-        ))
-
-        this.sharedConfig.appendComponent(new c.base.State(
-            game_state_main
-        ))
-
-        this.sharedConfig.appendComponent(new c.base.State(
-            ui_main_map
-        ))
-
-        this.sharedConfig.appendComponent(new c.base.State(
-            ui_tileset_map
-        ))
-
-        this.sharedConfig.addComponent(new c.base.State(
-            ui_city
-        ))
     }
     
     public onAddedToEngine(): void {
@@ -434,7 +411,7 @@ export class game_init_system extends System{
                 const role_ent = new Entity()
                 role_ent.add(player_comp)
                 
-                test_entity.append(new c.base.Link("slot" + i,role_ent))
+                // test_entity.append(new c.base.Link("slot" + i,role_ent))
 
                 role_ent.add(new c.role.CurrentScene("default","default",c.tag.scene.大地图))
                 this.engine.addEntity(role_ent)
@@ -558,10 +535,10 @@ export class role_in_game_ok_system extends System{
     /**创造玩家仓库背包 */
     private _create_warehouse_inventory(){
         const role = GameRules.QSet.is_select_role.first
-        const comp = new c.role.WarehouseInventory(0,WAIT,false)
+        const comp = new c.role.WarehouseInventory(0,{},false)
         role.appendComponent(comp)
         for(let i = 1 ; i <= 11 ; i++){
-            const comp = new c.role.WarehouseInventory(i,WAIT,true)
+            const comp = new c.role.WarehouseInventory(i,{},true)
             role.appendComponent(comp)
         }
     }
@@ -576,74 +553,74 @@ export class role_in_game_ok_system extends System{
             Warning("没找到适配角色 uuid 不存在 或者select_index不存在")
         }
 
-        player_ent.iterate(c.base.Link,(comp)=>{
-            if(comp.type == "slot" + select_slot){
-                print(`[ecs]:${"slot" + select_slot}的玩家插槽被选择`)
-                const select_ent = comp.entity;
-                select_ent.add(player_ent.get(c.base.PLAYER))
-                const inventory_comp = new c.quipment.Inventory({} as any)
-                inventory_comp.slots.slot_0 = {ecs_entity_index:-1,dota_entity:-1 as EntityIndex}
-                inventory_comp.slots.slot_1 = {ecs_entity_index:-1,dota_entity:-1 as EntityIndex}
-                inventory_comp.slots.slot_2 = {ecs_entity_index:-1,dota_entity:-1 as EntityIndex}
-                inventory_comp.slots.slot_3 = {ecs_entity_index:-1,dota_entity:-1 as EntityIndex}
-                inventory_comp.slots.slot_4 = {ecs_entity_index:-1,dota_entity:-1 as EntityIndex}
-                inventory_comp.slots.slot_5 = {ecs_entity_index:-1,dota_entity:-1 as EntityIndex}
-                inventory_comp.slots.slot_6 = {ecs_entity_index:-1,dota_entity:-1 as EntityIndex}
-                inventory_comp.slots.slot_7 = {ecs_entity_index:-1,dota_entity:-1 as EntityIndex}
-                inventory_comp.slots.slot_8 = {ecs_entity_index:-1,dota_entity:-1 as EntityIndex}
+        // player_ent.iterate(c.base.Link,(comp)=>{
+        //     if(comp.type == "slot" + select_slot){
+        //         print(`[ecs]:${"slot" + select_slot}的玩家插槽被选择`)
+        //         const select_ent = comp.entity;
+        //         select_ent.add(player_ent.get(c.base.PLAYER))
+        //         const inventory_comp = new c.quipment.Inventory({} as any)
+        //         inventory_comp.slots.slot_0 = {ecs_entity_index:-1,dota_entity:-1 as EntityIndex}
+        //         inventory_comp.slots.slot_1 = {ecs_entity_index:-1,dota_entity:-1 as EntityIndex}
+        //         inventory_comp.slots.slot_2 = {ecs_entity_index:-1,dota_entity:-1 as EntityIndex}
+        //         inventory_comp.slots.slot_3 = {ecs_entity_index:-1,dota_entity:-1 as EntityIndex}
+        //         inventory_comp.slots.slot_4 = {ecs_entity_index:-1,dota_entity:-1 as EntityIndex}
+        //         inventory_comp.slots.slot_5 = {ecs_entity_index:-1,dota_entity:-1 as EntityIndex}
+        //         inventory_comp.slots.slot_6 = {ecs_entity_index:-1,dota_entity:-1 as EntityIndex}
+        //         inventory_comp.slots.slot_7 = {ecs_entity_index:-1,dota_entity:-1 as EntityIndex}
+        //         inventory_comp.slots.slot_8 = {ecs_entity_index:-1,dota_entity:-1 as EntityIndex}
 
-                const equipmentState = new c.quipment.EquipmentState(
-                    {ecs_entity_index:-1,dota_entity:-1 as EntityIndex,type:c.quipment.EQUIPMENT_TYPE.Headwear},
-                    {ecs_entity_index:-1,dota_entity:-1 as EntityIndex,type:c.quipment.EQUIPMENT_TYPE.Weapon},
-                    {ecs_entity_index:-1,dota_entity:-1 as EntityIndex,type:c.quipment.EQUIPMENT_TYPE.Clothes},
-                    {ecs_entity_index:-1,dota_entity:-1 as EntityIndex,type:c.quipment.EQUIPMENT_TYPE.Necklace},
-                    {ecs_entity_index:-1,dota_entity:-1 as EntityIndex,type:c.quipment.EQUIPMENT_TYPE.Back},
-                    {ecs_entity_index:-1,dota_entity:-1 as EntityIndex,type:c.quipment.EQUIPMENT_TYPE.Shoulder},
-                    {ecs_entity_index:-1,dota_entity:-1 as EntityIndex,type:c.quipment.EQUIPMENT_TYPE.Hand},
-                    {ecs_entity_index:-1,dota_entity:-1 as EntityIndex,type:c.quipment.EQUIPMENT_TYPE.Hand},
-                    {ecs_entity_index:-1,dota_entity:-1 as EntityIndex,type:c.quipment.EQUIPMENT_TYPE.Ring},
-                    {ecs_entity_index:-1,dota_entity:-1 as EntityIndex,type:c.quipment.EQUIPMENT_TYPE.Ring},
-                )
+        //         const equipmentState = new c.quipment.EquipmentState(
+        //             {ecs_entity_index:-1,dota_entity:-1 as EntityIndex,type:c.quipment.EQUIPMENT_TYPE.Headwear},
+        //             {ecs_entity_index:-1,dota_entity:-1 as EntityIndex,type:c.quipment.EQUIPMENT_TYPE.Weapon},
+        //             {ecs_entity_index:-1,dota_entity:-1 as EntityIndex,type:c.quipment.EQUIPMENT_TYPE.Clothes},
+        //             {ecs_entity_index:-1,dota_entity:-1 as EntityIndex,type:c.quipment.EQUIPMENT_TYPE.Necklace},
+        //             {ecs_entity_index:-1,dota_entity:-1 as EntityIndex,type:c.quipment.EQUIPMENT_TYPE.Back},
+        //             {ecs_entity_index:-1,dota_entity:-1 as EntityIndex,type:c.quipment.EQUIPMENT_TYPE.Shoulder},
+        //             {ecs_entity_index:-1,dota_entity:-1 as EntityIndex,type:c.quipment.EQUIPMENT_TYPE.Hand},
+        //             {ecs_entity_index:-1,dota_entity:-1 as EntityIndex,type:c.quipment.EQUIPMENT_TYPE.Hand},
+        //             {ecs_entity_index:-1,dota_entity:-1 as EntityIndex,type:c.quipment.EQUIPMENT_TYPE.Ring},
+        //             {ecs_entity_index:-1,dota_entity:-1 as EntityIndex,type:c.quipment.EQUIPMENT_TYPE.Ring},
+        //         )
 
-                const allModifierAndAttributeComps = new c.role.AllModifierAndAttributeComps(
-                    {},
-                    []
-                )
+        //         const allModifierAndAttributeComps = new c.role.AllModifierAndAttributeComps(
+        //             {},
+        //             []
+        //         )
 
-                const PlayerID = player_ent.get(c.base.PLAYER).PlayerID
-                const hero =  HeroList.GetAllHeroes().find(hero=>hero.GetPlayerOwnerID() == PlayerID)
+        //         const PlayerID = player_ent.get(c.base.PLAYER).PlayerID
+        //         const hero =  HeroList.GetAllHeroes().find(hero=>hero.GetPlayerOwnerID() == PlayerID)
 
+        //         const hero_comp = new c.base.HERO(hero.GetUnitName(),hero.entindex())
+        //         select_ent.add(hero_comp)
+        //         select_ent.add(new c.quipment.RbxBoxElement({}))
+        //         select_ent.add(inventory_comp)
+        //         select_ent.add(equipmentState)
+        //         select_ent.addTag(GameRules.tag.is_game_select_role)
+        //         select_ent.add(allModifierAndAttributeComps)
+        //         select_ent.add(new c.role.RoleWorldMapData(
+        //             STRING_WAIT("",(instance:RoleWorldMapData)=>{
+        //             //初始化 如果没有这个表 那么我们读取创造角色时候的地图
+        //             return select_ent.get(c.role.RoleInfo)?.born_map
+        //         }),STRING_WAIT("",(instance:any)=>{
+        //             //初始化 如果单位没有初始化城市 那么这个就用json数据表里的记载来初始化角色位置
+        //             return map_json[select_ent.get(c.role.RoleInfo)?.born_map as keyof typeof map_json].create_role_init_map_mark
+        //         }),TABLE_WAIT({},()=>{
+        //             return {map_index:"none",landmark_index:"none",schedule:0}
+        //         })))
 
-                const hero_comp = new c.base.HERO(hero.GetUnitName(),hero.entindex())
-                select_ent.add(hero_comp)
-                select_ent.add(inventory_comp)
-                select_ent.add(equipmentState)
-                select_ent.addTag(GameRules.tag.is_game_select_role)
-                select_ent.add(allModifierAndAttributeComps)
-                select_ent.add(new c.role.RoleWorldMapData(
-                    STRING_WAIT("",(instance:RoleWorldMapData)=>{
-                    //初始化 如果没有这个表 那么我们读取创造角色时候的地图
-                    return select_ent.get(c.role.RoleInfo)?.born_map
-                }),STRING_WAIT("",(instance:any)=>{
-                    //初始化 如果单位没有初始化城市 那么这个就用json数据表里的记载来初始化角色位置
-                    return map_json[select_ent.get(c.role.RoleInfo)?.born_map as keyof typeof map_json].create_role_init_map_mark
-                }),TABLE_WAIT({},()=>{
-                    return {map_index:"none",landmark_index:"none",schedule:0}
-                })))
-
-                this._create_warehouse_inventory()
-                return;
-            }
-        })
-        next_xstate("game_state_main")
-        Timers.CreateTimer(()=>{
-            if( container.http_comp_decorator_container_with_init.size == 0 ){
-                next_xstate("game_state_main")
-                next_xstate("ui_main")
-                return
-            }
-            return 0.5
-        })
+        //         this._create_warehouse_inventory()
+        //         return;
+        //     }
+        // })
+        // next_xstate("game_state_main")
+        // Timers.CreateTimer(()=>{
+        //     if( container.http_comp_decorator_container_with_init.size == 0 ){
+        //         next_xstate("game_state_main")
+        //         next_xstate("ui_main")
+        //         return
+        //     }
+        //     return 0.5
+        // })
     }
 
     public onAddedToEngine(): void {

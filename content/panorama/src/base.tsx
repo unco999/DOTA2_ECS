@@ -104,7 +104,7 @@ export const TilePanel = ({width,height,tile,children}:{tile:string,width:string
     marginTop:"10px",
     marginBottom:"10px",
     backgroundColor:"rgba(0,0,0,0.2)",
-    borderRadius:"3px",
+    borderRadius:"3px", 
     horizontalAlign:"center",flowChildren:"down",width,height}}
     >
         <Image hittest={false} src="s2r://panorama/images/hud/item_tooltip_passive.psd">

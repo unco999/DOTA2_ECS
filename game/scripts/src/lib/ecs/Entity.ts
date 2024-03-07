@@ -256,7 +256,7 @@ export class Entity implements ReadonlyEntity {
   public readonly id = GameRules.entityId++;
 
 
-  public _components: Record<number, unknown> = {};
+  public _components: Record<number, any> = {};
   private _linkedComponents: Record<number, LinkedComponentList<ILinkedComponent>> = {};
   private _tags: Set<Tag> = new Set();
 
@@ -385,6 +385,7 @@ export class Entity implements ReadonlyEntity {
     const component = this.get(componentClass);
     if (component === undefined) return;
     if (isLinkedComponent(component)) {
+      print("[ecs] withdraw")
       return this.withdrawComponent(component, componentClass as Class<ILinkedComponent>);
     } else {
       return this.remove(componentClass);
@@ -507,12 +508,13 @@ export class Entity implements ReadonlyEntity {
     const componentClass = getComponentClass(component, resolveClass);
     const componentId = getComponentId(componentClass, true)!;
     const componentList = this.getLinkedComponentList(componentId)!;
+    print("操你码")
+    DeepPrintTable(component)
     componentList.add(component);
     if (this._components[componentId - 1] === undefined) {
       this._components[componentId - 1] = componentList.head;
     }
     this.dispatchOnComponentAdded(component);
-    rawset(component,'$$$$entity'as keyof typeof component,this.id  as any)
     return this;
   }
 
@@ -756,6 +758,7 @@ export class Entity implements ReadonlyEntity {
    * @returns Component instance or `undefined` if it doesn't exists in the entity
    */
   public removeComponent<T>(componentClassOrTag: Class<T>): T | undefined {
+    print(`[ecs] removeComponent`)
     const id = getComponentId(componentClassOrTag);
     if (id === undefined || this._components[id - 1] === undefined) {
       return undefined;
@@ -964,20 +967,23 @@ export class Entity implements ReadonlyEntity {
     if (this._linkedComponents[componentClassOrId] !== undefined || !createIfNotExists) {
       return this._linkedComponents[componentClassOrId];
     } else {
+      print("创造了新节点撒大大撒旦")
       return this._linkedComponents[componentClassOrId] = new LinkedComponentList<ILinkedComponent>();
     }
   }
 
   private withdrawComponent<T extends K, K extends ILinkedComponent>(component: NonNullable<T>, resolveClass?: Class<K>): T | undefined {
+    print("[ecs] withdrawComponent")
     const componentClass = getComponentClass(component, resolveClass);
     const componentList = this.getLinkedComponentList(componentClass, false);
     if (!this.hasComponent(componentClass) || componentList === undefined) return undefined;
     const result = componentList.remove(component) ? component : undefined;
     const componentId = getComponentId(componentClass, true)!;
     if (componentList.isEmpty) {
-      delete this._components[componentId - 1];
-      delete this._linkedComponents[componentId - 1];
+      delete this._components[componentId - 1 ];
+      delete this._linkedComponents[componentId];
     } else {
+      print("[ecs] 头部link",componentList.head['uid'])
       this._components[componentId - 1] = componentList.head;
     }
     if (result !== undefined) {

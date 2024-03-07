@@ -1,19 +1,9 @@
 import { GenerateSplitVectors, distributePercentages, has_mask } from "../../fp";
 import { BaseModifier } from "../../utils/dota_ts_adapter";
 import { reloadable } from "../../utils/tstl-utils";
-
+import {rolltable} from "../../fp"
 
 export namespace FN {
-
-    const 摇奖数组表绝对抽中一个 = (roll_table:{击中几率:number,击中后随机的数值:{min:number,max:number}}[]):number => {
-        const seleced = roll_table.find(elm=>RollPercentage(elm.击中几率))
-        if(seleced){
-            return RandomInt(seleced.击中后随机的数值.min,seleced.击中后随机的数值.max)
-        }else{
-            const bad = table.shuffle(roll_table).pop()
-            return RandomInt(bad.击中后随机的数值.min,bad.击中后随机的数值.max)
-        }
-    }
     
     function 释放法术魔法消耗是否低于某个值(this:ModifierAtomicBind,input:输入数据<ModifierAbilityEvent>){
         assert(input.事件.ability,"释放法术魔法消耗是否超过某个值")
@@ -432,7 +422,7 @@ export namespace FN {
         },
         绑定参数生成:(剩余分数投入:number)=>{
             const 剩余分数 = 剩余分数投入 ? 剩余分数投入 / 35 : 0
-            const 转换数值 = 摇奖数组表绝对抽中一个([
+            const 转换数值 = rolltable([
                 {击中几率:10 + 剩余分数,击中后随机的数值:{min:20,max:30}},
                 {击中几率:20 + 剩余分数,击中后随机的数值:{min:15,max:20}},
                 {击中几率:30 + 剩余分数,击中后随机的数值:{min:12,max:17}},
@@ -473,7 +463,7 @@ export namespace FN {
         最终得分转换率:1.5,
         绑定参数生成:(剩余分数投入:number)=>{
             const 剩余分数 = 剩余分数投入 ? 剩余分数投入 / 35 : 0
-            const 转换数值 = 摇奖数组表绝对抽中一个([
+            const 转换数值 = rolltable([
                 {击中几率:10+剩余分数,击中后随机的数值:{min:20,max:30}},
                 {击中几率:20+剩余分数,击中后随机的数值:{min:15,max:20}},
                 {击中几率:30+剩余分数,击中后随机的数值:{min:12,max:17}},
@@ -513,7 +503,7 @@ export namespace FN {
         最终得分转换率:1.5,
         绑定参数生成:(剩余分数投入:number)=>{
             const 剩余分数 = 剩余分数投入 ? 剩余分数投入 / 35 : 0
-            const 转换数值 = 摇奖数组表绝对抽中一个([
+            const 转换数值 = rolltable([
                 {击中几率:10 + 剩余分数,击中后随机的数值:{min:20,max:30}},
                 {击中几率:20 + 剩余分数,击中后随机的数值:{min:15,max:20}},
                 {击中几率:30 + 剩余分数,击中后随机的数值:{min:12,max:17}},
@@ -556,7 +546,7 @@ export namespace FN {
         最终得分转换率:1.5,
         绑定参数生成:(剩余分数投入:number)=>{
             const 剩余分数 = 剩余分数投入 ? 剩余分数投入 / 35 : 0
-            const 转换数值 = 摇奖数组表绝对抽中一个([
+            const 转换数值 = rolltable([
                 {击中几率:10 + 剩余分数,击中后随机的数值:{min:20,max:30}},
                 {击中几率:20 + 剩余分数,击中后随机的数值:{min:15,max:20}},
                 {击中几率:30 + 剩余分数,击中后随机的数值:{min:12,max:17}},
@@ -600,7 +590,7 @@ export namespace FN {
         },
         绑定参数生成:(剩余分数投入:number)=>{
             const 剩余分数 = 剩余分数投入 ? 剩余分数投入 / 35 : 0
-            const 转换数值 = 摇奖数组表绝对抽中一个([
+            const 转换数值 = rolltable([
                 {击中几率:10 + 剩余分数,击中后随机的数值:{min:20,max:30}},
                 {击中几率:20 + 剩余分数,击中后随机的数值:{min:15,max:20}},
                 {击中几率:30 + 剩余分数,击中后随机的数值:{min:12,max:17}},
@@ -828,7 +818,7 @@ export namespace FN {
             [PROFESSION.弓箭手]:0.6,
         },
         绑定参数生成:(剩余分数:number)=>{
-            const 分裂次数 = 摇奖数组表绝对抽中一个([
+            const 分裂次数 = rolltable([
                 {击中几率:10,击中后随机的数值:{min:7,max:10}},
                 {击中几率:20,击中后随机的数值:{min:4,max:5}},
                 {击中几率:70,击中后随机的数值:{min:3,max:4}},

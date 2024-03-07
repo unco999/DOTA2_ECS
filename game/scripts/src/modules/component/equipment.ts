@@ -106,6 +106,21 @@ export class EquipMentAttribute{
     }
 }
 
+
+type item_name = string
+/**
+ * 
+ * 存储拉比克魔方的材料值
+ */
+@doc.watch("deep",to_client_event("player"))
+export class RbxBoxElement{
+    public constructor(
+        public element:Record<number,{item_name:item_name,num:number}>
+    ){
+
+    }
+}
+
 export function testCreateRandomItem(dota_item_name:string){
     const select_role = GameRules.QSet.is_select_role.first
     const player_id = select_role.get(c.base.PLAYER).PlayerID

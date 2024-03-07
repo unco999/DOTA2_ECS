@@ -9,7 +9,7 @@ import {Class} from '../utils/Class';
  */
 export function getComponentId<T>(
   component: Class<T>,
-  createIfNotExists: boolean = false,
+  createIfNotExists: boolean = true,
 ): number | undefined {
   if (component.hasOwnProperty(COMPONENT_CLASS_ID)) {
     return (component as ComponentId<T>)[COMPONENT_CLASS_ID];
@@ -26,7 +26,7 @@ export function getComponentClass<T extends K, K>(component: NonNullable<T>, res
   let componentClass = getmetatable(component).constructor as Class<T>;
   if (resolveClass) {
     if (!(component instanceof resolveClass || componentClass === resolveClass)) {
-      throw new Error('Resolve class should be an ancestor of component class');
+      print('Resolve class should be an ancestor of component class');
     }
     componentClass = resolveClass as Class<T>;
   }

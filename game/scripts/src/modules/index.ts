@@ -10,15 +10,27 @@ import { steam_id_http_init_system } from './systems/http_system';
 import type * as event from './systems/event';
 import type * as tag from './component/tag';
 import "./modifiers/base/collision_modifier"
-import { enquence_delay_call } from '../fp';
+import { create_city_road_wfc, create_with_static_table, damage_filter_register, enquence_delay_call } from '../fp';
 import { http_get_npc_sell_list_system, npc_buy_system } from './systems/npc';
-import type { Entity } from '../lib/ecs/Entity';
+import { Entity } from '../lib/ecs/Entity';
 import type { OkPanel } from './component/special';
 import type comp from "./component/index"
-import { sutep_system } from "./reload"
+import { sutep_system, test_system } from "./reload"
 import { Class } from '../lib/utils/Class';
 import "./modifiers/base/attribute_modifier"
 import type { euqipment_spcial_fuc } from './modifiers/base/attribute_modifier';
+
+import "./reload"
+import  '../ability/soldier/kuangzhan/han_di_zhi_yue_modifier';
+import  '../ability/soldier/kuangzhan/shi_xue_modifier';
+import "../modifier/dao_di"
+import "../ability/soldier/kuangzhan/sheng_ming_ke_wang_modifier_me";
+import "../ability/soldier/kuangzhan/sheng_ming_ke_wang_modifier_target";
+import "../ability/soldier/kuangzhan/shou_lue_kuang_modifier";
+import "../modifier/tui";
+import "../ability/soldier/kuangzhan/tou_zhi_wu_qi_modifier_thnker"
+import "../ability/card/base"
+
 interface DotaHttpContainerData {
     dataSource:string,
     database:string,
@@ -39,6 +51,10 @@ declare global {
         Entity:Entity
     }
 
+    interface CDOTA_BaseNPC{
+        Entity:Entity
+    }
+
     interface CDOTAGameRules {
         // 声明所有的GameRules模块，这个主要是为了方便其他地方的引用（保证单例模式）
         XNetTable: XNetTable;
@@ -51,6 +67,9 @@ declare global {
         enquence_delay_call:(fn:Function,name?:string,delay_ms?:number) =>boolean|void;
         reload:boolean
         euqipment_spcial_fuc:euqipment_spcial_fuc
+        dota_spawn_cache:SpawnGroupHandle[]
+        trigger_base:CBaseTrigger
+        damage_filter_register:(name:string,call:(event:DamageFilterEvent)=>boolean,clear?:boolean)=>any
     }
     function DeepToString(this:void,AnyTable);
     function TriggerOkPanel(this:void,tile:string,uid_name:string,type:string,data:AnyTable,call_back:(panel_event:OkPanel)=>void):void
@@ -114,8 +133,18 @@ export function ActivateModules() {
         // 初始化测试模块xD
         new Debug();
 
+        //新建一个地图组cache
+        GameRules.dota_spawn_cache = []
+        GameRules.trigger_base = Entities.FindAllByName("trigger_base").pop() as CBaseTrigger
 
-        DOTA_SpawnMapAtPosition("prefabs/base_clip",Vector(0,0,0),false,null,null,undefined);
+        /**伤害过滤器注册器 */
+        GameRules.damage_filter_register = damage_filter_register()
+
+        const spawn_id =  DOTA_SpawnMapAtPosition(`base`,Vector(0,0,128),false,null,null,undefined);
+
+        Timers.CreateTimer(3,()=>{
+            UnloadSpawnGroupByHandle(spawn_id)
+        })
 
         GameRules.world = new Engine();
         for(let [key,value] of pairs(GameRules.QSet)){
@@ -126,10 +155,24 @@ export function ActivateModules() {
         ListenToGameEvent("npc_spawned",(event)=>{
             const hero = EntIndexToHScript(event.entindex) as CDOTA_BaseNPC_Hero
             if(hero.IsHero()){
-                hero.AddNewModifier(hero,null,"collision_modifier",{duration:99999})
+                // hero.AddNewModifier(hero,null,"collision_modifier",{duration:99999})
                 hero.AddNewModifier(hero,null,"attribute_modifier",{duration:-1})
+                hero.HeroLevelUp(false)
+                hero.HeroLevelUp(false)
+                hero.HeroLevelUp(false)
+                hero.HeroLevelUp(false)
+                hero.HeroLevelUp(false)
+                for(let i = 0 ; i < 16 ; i++){
+                    const ability = hero.GetAbilityByIndex(i)
+                    if(ability){
+                        hero.RemoveAbility(ability.GetAbilityName())
+                    }
+                }
+                hero.AddAbility("card_base_ability")
+                hero.AddAbility("pick_card_ability")
+                hero.SetOrigin(Vector(0,0,0))
                 //必须要先建立init
-        
+
             } 
             if(hero.GetUnitName() == ("npc_kv_generator_test")){
                 let heath = hero.GetHealth()
@@ -143,10 +186,14 @@ export function ActivateModules() {
             }
         },[])
 
+
+
         ListenToGameEvent("game_rules_state_change",(event)=>{
             const state = GameRules.State_Get()
             if(state == GameState.PRE_GAME){
-                sutep_system()
+                // sutep_system()
+                test_system()
+
                 GameRules.reload = true;
             }
         },this)

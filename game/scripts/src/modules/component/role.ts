@@ -241,8 +241,8 @@ export class AllModifierAndAttributeComps{
 export class WarehouseInventory extends LinkedComponent{
     constructor(
         public slot_index:number,
-        public ItemSlots:Record<number,number>,
-        public is_lock:boolean
+        public ItemSlots:Record<number,EntityIndex>,
+        public is_lock:boolean,
     ){
         super()
     }
