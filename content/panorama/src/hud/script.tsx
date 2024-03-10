@@ -10,8 +10,8 @@ import { FC, useEffect, useMemo, useRef, useState } from 'react';
 import {Motion, spring} from "@serprex/react-motion"
 import { pop_tag } from '../config';
 import { LocalEvent } from '../def/local_event_def';
-import { AnchorPanel, TilePanel, luaToJsArray } from '../base';
-import { distance } from '../utils/lib';
+import { AnchorPanel, TilePanel, _flattenArrayOfTuples, luaToJsArray, setHexOpacity } from '../base';
+import { Point, distance } from '../utils/lib';
 import { useInterval } from '../hooks/useInterval';
 
 const main_style= {
@@ -30,6 +30,56 @@ const main_style= {
 const start_check_point:[number,number] = [945,1000]
 const end_check_point:[number,number] = [1419,982]
 
+const CanVas = () =>{
+    const canvas = useRef<any>()
+    const cur_shape = useRef<Point[]>([])
+    const brush_transition = useRef<Point[]>([])
+    const switch_input = useRef<boolean>()
+    const transition_index = useRef<number[]>([])
+    const not_move = useRef<number>(0)
+
+    useInterval(5,()=>{
+        if(!GameUI.IsMouseDown(0)){
+            not_move.current+= 0.5
+        }
+        if(cur_shape.current.length > 3 && !GameUI.IsMouseDown(0) && distance(cur_shape.current[cur_shape.current.length - 1],GameUI.GetCursorPosition()) < 30){
+            not_move.current++
+        }
+        if(cur_shape.current?.length > 80 || not_move.current > 50){
+            const data = cur_shape.current.map(elm=>{
+                const world = Game.ScreenXYToWorld(elm[0],elm[1])
+                return {x:world[0].toFixed(),y:world[1].toFixed()}
+            })
+            GameEvents.SendCustomGameEventToServer("http",{data})
+            cur_shape.current = []
+            brush_transition.current = []
+            switch_input.current = false
+            canvas.current?.ClearJS("rgba(0,0,0,0)")
+            transition_index.current = []
+            not_move.current = 0
+            return
+        }
+        if(GameUI.IsMouseDown(0)){
+            not_move.current = 0
+            cur_shape.current.push(GameUI.GetCursorPosition())
+            for(let i = 0 ; i < cur_shape.current.length - 1 ; i++){
+                if(transition_index.current.includes(i) || transition_index.current.includes(i + 1)){
+                    continue;
+                }
+                canvas.current?.DrawSoftLinePointsJS(2, _flattenArrayOfTuples([cur_shape.current[i],cur_shape.current[i + 1]]), 3,6, "#FFD700")
+            }
+            switch_input.current = false
+        }else if(!switch_input.current && !GameUI.IsMouseDown(0) && cur_shape.current.length < 80){
+            switch_input.current = true
+            brush_transition.current.push(GameUI.GetCursorPosition())
+            transition_index.current.push(cur_shape.current.length)
+        }
+    },undefined)
+
+    return   <GenericPanel hittest={false}  style={{width:"100%",height:"100%"}} ref={p=>canvas.current = p!} id="canvas1" type='UICanvas' />
+    
+}
+
 
 const MagicCardMain = () =>{
     const [update,set_update] = useState(false)
@@ -40,31 +90,32 @@ const MagicCardMain = () =>{
     const [merge,setmerge] = useState<boolean>(false)
 
     const [card_comp,card_link_comp_update] = useLinkComps("Card",(a,b)=>a?.index - b?.index) as [Card[],number]
+    const effect_main = useRef<ScenePanel>()
 
-    $.Msg(card_comp)
-
-    // useInterval(Game.GetGameFrameTime(),()=>{
-    //     if(GameUI.IsMouseDown(0)){
-    //         const cur = GameUI.GetCursorPosition()
-    //         if(distance(cur,start_check_point) < 222){
-    //             compise.current = true
-    //             cursor_position.current = cur
-    //         }
-    //     }
-    //     else{
-    //         if(compise.current == false) return;
-    //         const end_point = GameUI.GetCursorPosition()
-    //         if(compise.current && distance(end_point,end_check_point) < 222 && Object.keys(select_card_table).length > 1){
-    //             compise.current = false
-    //             cursor_position.current = [0,0]
-    //             setmerge(true)
-    //         }
-    //     }
-    // },undefined,select_card_table)
+    useInterval(Game.GetGameFrameTime(),()=>{
+        if(GameUI.IsMouseDown(1)){
+            const cur = GameUI.GetCursorPosition()
+            if(distance(cur,start_check_point) < 222){
+                compise.current = true
+                cursor_position.current = cur
+            }
+        }
+        else{
+            if(compise.current == false) return;
+            const end_point = GameUI.GetCursorPosition()
+            if(compise.current && distance(end_point,end_check_point) < 222 && Object.keys(select_card_table).length > 1){
+                compise.current = false
+                cursor_position.current = [0,0]
+                setmerge(true)
+            }
+        }
+    },undefined,select_card_table)
 
     useEffect(()=>{
         if(merge == true){
+            GameEvents.SendCustomGameEventToServer("c2s_card_event",{container_behavior:4,merge_data:select_card_table})
             set_select_card_table({})
+            effect_main.current?.ReloadScene()
             setmerge(false)
         }
     },[merge])
@@ -72,8 +123,9 @@ const MagicCardMain = () =>{
 
     
 
-    return <Panel style={{width:"1000px",height:"400px",border:"1px solid red",align:"right bottom"}}>
-        {card_comp?.map((elm,index)=><Card index={elm.index} merge={merge} dispatich={set_select_card_table} key={"Card"+elm?.uid + elm.index}  card_data={elm}/>)}
+    return <Panel hittest={false} style={{width:"1000px",height:"400px",align:"right bottom"}}>
+        {card_comp?.map((elm,index)=><Card index={elm.index} merge={merge} dispatich={set_select_card_table} key={"Card"+elm?.uid }  card_data={elm}/>)}
+        <DOTAScenePanel hittest={false} ref={p=>effect_main.current = p!}  style={{width:"100%",height:"100%"}} map={"magic_card_particle"} particleonly={true}/>
     </Panel>
 }
 
@@ -81,11 +133,18 @@ const Card = ({card_data,dispatich,merge,index}:{card_data:Card,index:number,mer
     const main = useRef<Panel>()
     const dummy = useRef<Panel>()
     const card_label = useRef<Panel>()
-    const is_select = useRef<boolean>()
+    const card_effect = useRef<ScenePanel>()
+    const is_select = useRef<boolean>(false)
 
     useEffect(()=>{
-        main.current?.AddClass(`car_index_${index}`)
+        main.current?.AddClass(`card_index_${index}`)
         dummy.current?.AddClass(`dummy_index_${index}`)
+        card_effect.current?.AddClass(`card_index_${index}`)
+        return () =>{
+            main.current?.RemoveClass(`card_index_${index}`)
+            dummy.current?.RemoveClass(`dummy_index_${index}`)
+            card_effect.current?.RemoveClass(`card_index_${index}`)
+        }
     },[index])
 
     const translate = (p?:Panel) =>{
@@ -93,47 +152,47 @@ const Card = ({card_data,dispatich,merge,index}:{card_data:Card,index:number,mer
         p?.AddClass(`card_index_${index}`)
     }
 
-    // useEffect(()=>{
-    //     translate(main.current)
-    //     translate(dummy.current)
-
-    //     return () =>{
-    //         main.current?.RemoveClass(`card_index_${card_data.index}`)
-    //     }
-    // },[card_data.index])
     useEffect(()=>{
         if(merge && is_select.current == true){
             main.current?.AddClass("merge")
             main.current?.RemoveClass("select")
             main.current?.RemoveClass("mouseover")
             main.current?.RemoveClass(`card_index_${index}`)
+
+             card_effect.current?.AddClass("merge")
+             card_effect.current?.RemoveClass("select")
+             card_effect.current?.RemoveClass("mouseover")
+             card_effect.current?.RemoveClass(`card_index_${index}`)
         }
     },[merge])
 
     const onmouseover = (p:Panel) =>{
         if(is_select.current == true) return
         main.current?.AddClass("mouseover")
+        card_effect.current?.AddClass("mouseover")
     }
     
     const onmouseout = (p:Panel) =>{
         main.current?.RemoveClass("mouseover")
+        card_effect.current?.RemoveClass("mouseover")
     }
 
     const dclick = (p:Panel) =>{
         is_select.current = !is_select.current 
         main.current?.ToggleClass("select")
+        card_effect.current?.ToggleClass("select")
         if(is_select.current == true){
-            dispatich(elm=> ({...elm,[index]:card_data.card_name}))
+            dispatich(elm=> ({...elm,[index]:card_data?.uid}))
         }else{
             dispatich(elm=> ({...elm,[index]:undefined}))
         }
     }
 
-    const ondrag = (p:Panel) => {
-        const abilityindex = Entities.GetAbility(Players.GetPlayerHeroEntityIndex(Players.GetLocalPlayer()),0)
-        const a = Players.GetPlayerHeroEntityIndex(Players.GetLocalPlayer())
-        Abilities.ExecuteAbility(abilityindex,a,false)
-    } 
+    // const ondrag = (p:Panel) => {
+    //     const abilityindex = Entities.GetAbility(Players.GetPlayerHeroEntityIndex(Players.GetLocalPlayer()),0)
+    //     const a = Players.GetPlayerHeroEntityIndex(Players.GetLocalPlayer())
+    //     Abilities.ExecuteAbility(abilityindex,a,false)
+    // } 
  
     const dbclieck = (p:Panel) =>{
         $.Msg("dbclieck",card_data.uid)
@@ -141,10 +200,11 @@ const Card = ({card_data,dispatich,merge,index}:{card_data:Card,index:number,mer
     }
 
     return <>
-            <Panel onload={translate} hittest={false} ref={p=>main.current=p!} className={`card`}>
-             <Label hittest={false} text={card_data?.uid} ref={p=>card_label.current = p!} className={`card_label`}/>
-            </Panel>
-            <Panel ondblclick={dbclieck} onactivate={ondrag} oncontextmenu={dclick} hittest={true} ref={p=>dummy.current = p!} onmouseover={onmouseover} onmouseout={onmouseout} className={`card_dummy`}/>
+            <Image src={"file://{images}/custom_game/card/" + card_data.image + ".png"} onload={translate} hittest={false} ref={p=>main.current=p!} className={`card`}>
+             <Label hittest={false} text={card_data?.card} ref={p=>card_label.current = p!} className={`card_label`}/>
+            </Image>
+            <DOTAScenePanel hittest={false} ref={p=>card_effect.current = p!} className={`card mask`} map={"card_effect"} particleonly={true}/>
+            <Panel ondblclick={dbclieck} onactivate={dclick} hittest={true} ref={p=>dummy.current = p!} onmouseover={onmouseover} onmouseout={onmouseout} className={`card_dummy`}/>
         </>
 }
 
@@ -830,6 +890,7 @@ render(
 <ItemToolTip/>
 <LevelCheckHud/>
 <MagicCardMain/>
+<CanVas/>
 </>
 , $.GetContextPanel());
 

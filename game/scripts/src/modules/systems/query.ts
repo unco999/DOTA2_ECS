@@ -46,9 +46,9 @@ export namespace Qset{
     .contains(GameRules.tag.is_in_kuang_dong)
     .build()
 
-    export const has_npc = new QueryBuilder()
-    .contains(c.npc.npc)
-    .build()
+    // export const has_npc = new QueryBuilder()
+    // .contains(c.npc.npc)
+    // .build()
 
     export const cur_in_city_map_ent = new QueryBuilder()
     .contains(GameRules.tag.is_cur_in_city_map_ent)

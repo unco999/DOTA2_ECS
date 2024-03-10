@@ -214,13 +214,13 @@ export namespace http_base{
                }
            }
        }).then((elm:any)=>{
-           const map_ent = GameRules.QSet.has_npc.first
-           map_ent.iterate(c.npc.npc,(comp)=>{
-               if(comp.npc_name == npc_name){
-                   comp.ui_data = elm.document.sell_list
-                   return;
-               } 
-           })
+        //    const map_ent = GameRules.QSet.has_npc.first
+        //    map_ent.iterate(c.npc.npc,(comp)=>{
+        //        if(comp.npc_name == npc_name){
+        //            comp.ui_data = elm.document.sell_list
+        //            return;
+        //        } 
+        //    })
        }).catch(err=>{
            print(err)
        })

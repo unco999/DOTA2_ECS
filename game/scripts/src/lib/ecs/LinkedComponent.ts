@@ -5,21 +5,13 @@
 
 export interface ILinkedComponent {
   id?: string;
-  next?: ILinkedComponent;
+  next?: ILinkedComponent | none;
 }
 
-/**
- * Simple ILinkedComponent implementation
- */
-export class LinkedComponent implements ILinkedComponent {
-
-  public constructor(public id?: string) {
-  }
-}
 
 /**
  * @internal
  */
 export function isLinkedComponent(component: any): component is ILinkedComponent {
-  return component !== undefined && getmetatable(component) && getmetatable(getmetatable(component))?.constructor.name == "LinkedComponent"
+  return component !== undefined && container.link_container.has(component.constructor.name)
 }

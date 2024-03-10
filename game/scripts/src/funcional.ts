@@ -91,3 +91,100 @@ export function findFarthestFivePoints(points: Vector[],count:number): Vector[] 
   return selectedPoints;  
 }  
 
+export function areAllStringsUnique(arr: string[]): boolean {  
+  const uniqueStrings = new Set<string>();  
+
+  for (const str of arr) {  
+      if (uniqueStrings.has(str)) {  
+          // 如果集合中已经存在这个字符串，说明有重复的  
+          return false;  
+      }  
+      uniqueStrings.add(str);  
+  }  
+
+  // 如果遍历完数组后没有发现重复，说明每个字符串都是唯一的  
+  return uniqueStrings.size === arr.length;  
+}  
+
+export function calculateCenter(coordinates: { x: number; y: number }[]): { x: number; y: number } {  
+  let sumX = 0;  
+  let sumY = 0;  
+  let count = 0;  
+
+  // 遍历坐标数组，累加x和y的值  
+  for (const { x, y } of coordinates) {  
+      sumX += Number(x);  
+      sumY += Number(y);  
+      print(sumX)
+      print(Number(x))
+      count++;  
+  }  
+
+  // 计算平均值得到中心点坐标  
+  const centerX = sumX / count;  
+  const centerY = sumY / count;  
+
+
+  // 返回中心点坐标  
+  return { x: centerX, y: centerY };  
+}  
+
+// 示例使用  
+const coords: { x: number; y: number }[] = [  
+  { x: 1, y: 2 },  
+  { x: 3, y: 4 },  
+  // ... 添加更多坐标点  
+  { x: 5, y: 6 }  
+];  
+
+
+export function isPointsLikeACircle(points: { x: number; y: number }[],bias:number) {  
+    // 计算质心  
+    const centroid = calculateCentroid(points);  
+      
+    // 计算每个点到质心的距离  
+    const distances = points.map(point => calculateDistance(point, centroid));  
+      
+    // 计算距离的标准差  
+    const standardDeviation = calculateStandardDeviation(distances);  
+      
+    // 设定一个阈值来判断距离是否足够接近（这个值可以根据实际情况调整）  
+    const threshold = distances.reduce((a, b) => Math.max(a, b), 0) * bias; // 例如，最大距离的10%作为阈值  
+      
+    // 如果标准差小于阈值，则认为这些点像一个圆  
+    return {centroid,is_circle:standardDeviation < threshold};  
+}  
+  
+// 计算质心（中心点）  
+function calculateCentroid(points: { x: number; y: number }[]): { x: number; y: number } {  
+    let sumX = 0;  
+    let sumY = 0;  
+    const count = points.length;  
+  
+    for (const { x, y } of points) {  
+        sumX += x;  
+        sumY += y;  
+    }  
+  
+    const centroidX = sumX / count;  
+    const centroidY = sumY / count;  
+  
+    return { x: centroidX, y: centroidY };  
+}  
+  
+// 计算两点之间的欧几里得距离  
+function calculateDistance(pointA: { x: number; y: number }, pointB: { x: number; y: number }): number {  
+    const dx = pointA.x - pointB.x;  
+    const dy = pointA.y - pointB.y;  
+    return Math.sqrt(dx * dx + dy * dy);  
+}  
+  
+// 计算一组数值的标准差  
+function calculateStandardDeviation(values: number[]): number {  
+    const mean = values.reduce((sum, value) => sum + value, 0) / values.length;  
+    const squaredDiffSum = values.reduce((sum, value) => sum + Math.pow(value - mean, 2), 0);  
+    const variance = squaredDiffSum / (values.length - 1);  
+    return Math.sqrt(variance);  
+}  
+
+  

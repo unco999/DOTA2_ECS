@@ -1,5 +1,4 @@
 import { Entity } from "../../lib/ecs/Entity";
-import { LinkedComponent } from "../../lib/ecs/LinkedComponent";
 import * as wolrd_map_json from "../../json/game_big_world_map.json"
 import { doc, to_save } from "../../fp";
 
@@ -39,21 +38,3 @@ export class CurDungeonConfig{
     }
 }
 
-@doc.watch("none",to_save())
-/**
- * 世界地图基础数据
- */
-export class WorldMapLandMark extends LinkedComponent{
-    constructor(
-        item_name:string,	
-        map_name:string,
-        map_index:number,
-        item_index:number,
-        item_path:string,
-        x:number,
-        y:number,
-        map_link_array:string[]
-    ){
-        super()
-    }
-} 

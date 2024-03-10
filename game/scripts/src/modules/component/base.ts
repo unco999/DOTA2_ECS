@@ -1,6 +1,5 @@
 import { doc, to_save } from "../../fp";
 import { Entity } from "../../lib/ecs/Entity";
-import { LinkedComponent } from "../../lib/ecs/LinkedComponent";
 
 @doc.watch("none",to_save())
 export class PLAYER{

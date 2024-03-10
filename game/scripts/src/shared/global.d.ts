@@ -141,15 +141,23 @@ declare const enum BaseCardType{
     风=0x1,火=0x2,雷=0x4,水=0x8,木=0x10,土=0x20,光=0x40,暗=0x80
 }
 
+declare const none = "none"
+
+declare type none = typeof none;
+
+
 declare interface Card{
     uid:string,
     card_name:string,
     card:BaseCardType,
     index:number,
     merge_sequence:BaseCardType[]
+    image:string
 }
 
 declare interface CardContainer{
     slots:Record<number,Card>
     discard:Record<number,Card>
 }
+
+declare type CardImage = string

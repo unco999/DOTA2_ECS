@@ -16,12 +16,18 @@ export class LinkedComponentList<T extends ILinkedComponent> {
     DeepPrintTable(linkedComponent)
     let prev: T | undefined = undefined;
     let current: T | undefined = this._head;
+    print("currentcurrentcurrentcurrentcurrentcurrentcurrentcurrentcurrent",current)
     while (current !== undefined) {
       if (current === linkedComponent) {
          print('Component is already appended, appending it once again will break linked items order');
       }
+      print("prev?.id",prev?.id)
       prev = current;
-      current = current.next as (T | undefined);
+      if(current.next != none){
+        current = current.next as (T | undefined);
+      }else{
+        current = undefined;
+      }
     }
     if (this._head === undefined) {
       this._head = linkedComponent;

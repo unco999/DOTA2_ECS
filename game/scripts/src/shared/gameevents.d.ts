@@ -132,7 +132,7 @@ declare interface CustomGameEventDeclarations {
     s2c_link_remove : {class_name:string,uid:string}
     c2s_item_to_warehouse_inventory:{dota_entity_id:EntityIndex,to_index_inventory:number,to_slot:number}
     c2s_warehouse_inventory_to_raw:{dota_entity_id:EntityIndex,to_index_inventory:number,to_slot:number}
-    c2s_card_event:{merge_data:Record<number,string>,container_behavior:CardContainerBehavior}
+    c2s_card_event:{merge_data:Record<number,string|undefined>,container_behavior:CardContainerBehavior}
     [key: string]: any
 }
 

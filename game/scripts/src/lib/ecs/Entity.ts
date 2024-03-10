@@ -423,6 +423,14 @@ export class Entity implements ReadonlyEntity {
       return undefined;
     }
     if (isLinkedComponent(componentOrResolveClass)) {
+      const entid = componentOrResolveClass["$$$$entity"]
+      const ent = GameRules.world.getEntityById(entid)
+      const playercom = ent.get(c.dungeon.PlayerInfoComp)
+      if(playercom){
+          CustomGameEventManager.Send_ServerToPlayer(PlayerResource.GetPlayer(playercom.player_num as PlayerID),"s2c_link_remove",{class_name:componentOrResolveClass.constructor.name,uid:componentOrResolveClass.id})
+      }else{
+          CustomGameEventManager.Send_ServerToAllClients("s2c_link_remove",{class_name:componentOrResolveClass.constructor.name,uid:componentOrResolveClass.id})
+      }
       return this.withdrawComponent(componentOrResolveClass, resolveClassOrId as Class<ILinkedComponent>);
     }
     return this.remove(resolveClassOrId ?? getComponentClass(componentOrResolveClass as NonNullable<T>));
@@ -508,12 +516,11 @@ export class Entity implements ReadonlyEntity {
     const componentClass = getComponentClass(component, resolveClass);
     const componentId = getComponentId(componentClass, true)!;
     const componentList = this.getLinkedComponentList(componentId)!;
-    print("操你码")
-    DeepPrintTable(component)
     componentList.add(component);
     if (this._components[componentId - 1] === undefined) {
       this._components[componentId - 1] = componentList.head;
     }
+    rawset(component,"$$$$entity" as any,this.id)
     this.dispatchOnComponentAdded(component);
     return this;
   }
@@ -893,7 +900,7 @@ export class Entity implements ReadonlyEntity {
       let linkedComponent: ILinkedComponent | undefined = component;
       while (linkedComponent !== undefined) {
         if (predicate(linkedComponent as T)) return linkedComponent as T;
-        linkedComponent = linkedComponent.next;
+        linkedComponent = linkedComponent.next as ILinkedComponent;
       }
     } else return predicate(component as T) ? component as T : undefined;
   }

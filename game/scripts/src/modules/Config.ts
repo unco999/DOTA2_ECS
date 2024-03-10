@@ -65,6 +65,17 @@ export namespace Config{
         }
     }
 
+    export const card_image_list = [
+        "card_1",
+        "card_2",
+        "card_3",
+        "card_4",
+        "card_5",
+        "card_6",
+        "card_7",
+        "card_8"
+    ]
+
     export const base_type_list = [
         BaseCardType.光,
         BaseCardType.土,

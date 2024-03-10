@@ -125,3 +125,23 @@ export const AnchorPanel = (x:number,y:number,panel:Panel) =>{
 }
 
 $.Msg("测试",GameUI.CustomUIConfig().comp_data_with_date_time_cache)
+
+export function setHexOpacity(hex:string, opacity:number) {  
+    // 确保十六进制颜色值是有效的  
+    if (!/^#([A-Fa-f0-9]{6})$/.test(hex)) {  
+        throw new Error('Invalid hex color code');  
+    }  
+  
+    // 确保透明度在0到255之间  
+    opacity = Math.round(Math.max(0, Math.min(255, opacity)));  
+  
+    // 提取红、绿、蓝分量并转换为两位十六进制  
+    let r = ("0" + parseInt(hex.slice(1, 3), 16).toString().slice(-2));  
+    let g = ("0" + parseInt(hex.slice(3, 5), 16).toString().slice(-2));  
+    let b = ("0" + parseInt(hex.slice(5, 7), 16).toString().slice(-2));  
+    let a = ("0" + opacity.toString(16)).slice(-2);  
+  
+    // 返回带有透明度的十六进制颜色字符串  
+    return `#${r}${g}${b}${a}`;  
+}  
+  

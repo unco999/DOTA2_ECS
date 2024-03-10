@@ -49,18 +49,22 @@ export function clear_event(...fns:((contenxt:InstanceType<any>)=>void)[]){
 }
 
 
-export const ecsGetKV = (obj:AnyTable,...args) => {
+export const ecsGetKV = (obj:AnyTable) => {
     const list: [string,any][] = []
-    const newobj =  _replace$2obj(obj)
-    for(const key in newobj){
-        list.push([key,newobj[key]])
-    }
-    if(list.length == 0){
-        const des = Object.getOwnPropertyDescriptors(obj)
-        for(let i in des){
-            des[i].set(args[i])
+    if(Object.keys(Object.getOwnPropertyDescriptors(obj)).length > 0){
+        const newtable = Object.getOwnPropertyDescriptors(obj)
+        print("情况")
+        DeepPrintTable(newtable)
+        const keys = Object.keys(newtable)
+        Object.values(keys).forEach(key=>{
+            list.push([key,none])
+        })
+
+    }else{
+        const newobj =  _replace$2obj(obj)
+        for(const key in newobj){
+            list.push([key,newobj[key]])
         }
-        return;
     }
     return list;
 }
@@ -104,7 +108,13 @@ export function has(obj:any,key:string|number){
 }
 
 export class doc{
-    
+
+static LinkComp(){
+    return (target:any)=>{
+        container.link_container.add(target.name)
+    }
+}
+
 static watch<T extends new (...args: ConstructorParameters<T>) => InstanceType<T>>(mode:"deep"|"none",...fns:((comp:InstanceType<T>,remove_tag?:boolean)=>void)[]) {
     return (target: T) => {
         const constructor = target.prototype.____constructor as (this:void,...args) => any
@@ -112,15 +122,11 @@ static watch<T extends new (...args: ConstructorParameters<T>) => InstanceType<T
         
         function unco_new(this:InstanceType<T>,...args:any) {
             constructor(this,...args)
-            print("创造了根本")
-            const cache_key = ecsGetKV(this,...args)
+            const cache_key = ecsGetKV(this)
             const contenxt = this;
-            DeepPrintTable(cache_key)
-            if(cache_key === null){
-                return
-            }
             for(let [key,value] of cache_key){
-                const newkey = container.comp_container.has(target.name) ? key  : "$$$$" + tostring(key)
+                // const newkey = container.comp_container.has(target.name) ? key  : "$$$$" + tostring(key)
+                const newkey = "$$$$" + key
                 if(type(value) == 'table'){
                     const mt = {
                       __metatable:value,
@@ -148,9 +154,7 @@ static watch<T extends new (...args: ConstructorParameters<T>) => InstanceType<T
                 else{
                     rawset(this as any,newkey,value)
                 }  
-                if(!container.comp_container.has(target.name)){
-                    rawset(this as any,key,null)
-                }
+                rawset(this as any,key,null)
             }
             Timers.CreateTimer(()=>{
                if(this["$$$$entity"]){
@@ -162,9 +166,10 @@ static watch<T extends new (...args: ConstructorParameters<T>) => InstanceType<T
             if(container.comp_container.has(target.name)) return; 
             const context = this
                 cache_key.forEach(([key,value])=>{
+                    print("设定了prop",key)
                 Object.defineProperty(this,key,{
                     "set":function(v){
-                        print("当前什么KEY",key,"设置为",typeof v == "object" && v['uid'])
+                        print("开始设置")
                         if(mode == "deep" && typeof v == 'object') {
                             const mt = {
                                 __metatable:v,
@@ -190,11 +195,11 @@ static watch<T extends new (...args: ConstructorParameters<T>) => InstanceType<T
                             fns.forEach(f=>f(this))
                             return
                         }
-                        context["$$$$" + key] = v
-                        fns.forEach(f=>f(context))
+                        this["$$$$" + key] = v
+                        fns.forEach(f=>f(this))
                     },
                     "get":function(){
-                        return context["$$$$" + key]
+                        return this["$$$$" + key]
                     },
                 })
             })
@@ -366,7 +371,7 @@ export function http(mode:"init"|"update"|'both' = "both",dataSource:string,data
 export function _replace$2obj(instance:object){
     let obj = {}
     for(let key in instance){
-        if( key.includes("next")||key.includes("____constructor")||key.includes("constructor")) continue
+        if( key.includes("____constructor")||key.includes("constructor")) continue
         obj[key.replace("$$$$","")] = typeof instance[key] == 'object' ? getmetatable(instance[key]) ?? instance[key] : instance[key]
     }
     return obj
@@ -429,26 +434,26 @@ export function to_system_net_table<T>(){
 
 export function to_client_event(owner:"player"|"hero"|"system"|"player_hero",is_clear:boolean = false){
     return (instance) => {
-        if(getmetatable(instance) && getmetatable(getmetatable(instance))?.constructor.name == "LinkedComponent"){
+        if(container.link_container.has(instance.constructor.name)){
             if(!container.to_client_event_container.has(instance)){
                 container.to_client_event_container.add(instance)
             }
+            print(instance?.constructor.name,"有新改动")
             GameRules.enquence_delay_call(()=>{
                 const comp = replace$2obj(instance)
-                if(comp['uid'] == null) return; 
                 const player_cmp = GameRules.world.getEntityById(instance['$$$$entity'])?.get(c.dungeon.PlayerInfoComp)
                 player_cmp && (comp["$$$$player_id"] = player_cmp.player_num);
-                print("[ecs] 添加了一个linkcomp",getmetatable(instance)?.constructor.name)
+                print("[ecs] 添加了一个linkcomp",instance?.constructor.name)
                 print(comp["uid"])
                 DeepPrintTable(comp)
 
                 if(player_cmp){
-                    CustomGameEventManager.Send_ServerToPlayer(PlayerResource.GetPlayer(player_cmp.player_num as PlayerID),"s2c_link_comp_to_event",{uid:comp["uid"],class_name:getmetatable(instance)?.constructor.name,comp,ecs_entity_index:instance['$$$$entity']})
+                    CustomGameEventManager.Send_ServerToPlayer(PlayerResource.GetPlayer(player_cmp.player_num as PlayerID),"s2c_link_comp_to_event",{uid:comp["uid"],class_name:instance?.constructor.name,comp,ecs_entity_index:instance['$$$$entity']})
                 }else{
-                    CustomGameEventManager.Send_ServerToAllClients("s2c_link_comp_to_event",{uid:comp["uid"],class_name:getmetatable(instance)?.constructor.name,comp,ecs_entity_index:instance['$$$$entity']})
+                    CustomGameEventManager.Send_ServerToAllClients("s2c_link_comp_to_event",{uid:comp["uid"],class_name:instance?.constructor.name,comp,ecs_entity_index:instance['$$$$entity']})
                 }
               return
-           },instance["$$$$uid"],111)
+           },instance["uid"],111)
             return;
         }   
     }
@@ -1127,3 +1132,16 @@ export function InfoTargetTagEvery(dota_ent:CBaseEntity,...args:INFO_TARGET_TAG[
 export function FindNullTagInfoTarget(dota_ent:CBaseEntity[],...args:INFO_TARGET_TAG[]){
     return dota_ent.filter(elm=> args.every(tag=>elm.GetIntAttr(tag) == 0))
 }
+
+export function fill():LuaMultiReturn<[none,none,none,none,none,none,none,none,none,none,none]>{
+    return $multi(none,none,none,none,none,none,none,none,none,none,none);
+}
+
+export const none1:[any] = [none]
+export const none2:[any,any] = [none,none]
+export const none3:[any,any,any] = [none,none,none]
+export const none4:[any,any,any,any] = [none,none,none,none]
+export const none5:[any,any,any,any,any] = [none,none,none,none,none]
+export const none6:[any,any,any,any,any,any] = [none,none,none,none,none,none]
+export const none7:[any,any,any,any,any,any,any] = [none,none,none,none,none,none,none]
+export const none8:[any,any,any,any,any,any,any,any] = [none,none,none,none,none,none,none,none]

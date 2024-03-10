@@ -179,7 +179,7 @@ if(!GameUI.CustomUIConfig().reload){
         hudRoot.FindChildTraverse("center_with_stats")!.FindChildTraverse("StatBranch")!.style.visibility = "collapse"
         const buff_container = hudRoot.FindChildTraverse("BuffContainer")?.FindChildTraverse("buffs")
 
-        center_with_stats!.style.marginLeft = "500px"
+        center_with_stats!.style.marginLeft = "950px"
         buff_container!.style.marginRight = "500px"
 
         buff_container!.style.marginRight = "500px"

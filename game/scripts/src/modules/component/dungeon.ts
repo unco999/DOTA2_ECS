@@ -1,6 +1,6 @@
 import { doc, to_client_event, to_player_net_table } from "../../fp";
 import { Entity } from "../../lib/ecs/Entity";
-import { LinkedComponent } from "../../lib/ecs/LinkedComponent";
+import { ILinkedComponent } from "../../lib/ecs/LinkedComponent";
 import { Config } from "../Config";
 
 export class DunGenonCache{
@@ -197,15 +197,19 @@ export class BossDerivative{
 /**
  * 卡牌数据
  */
+@doc.LinkComp()
 @doc.watch("none",to_client_event("player"))
-export class Card extends LinkedComponent{
+export class Card implements ILinkedComponent{
     constructor(
+        public id:string,
+        public next:none,
         public uid:string,
         public card_name:string,
         public card:BaseCardType,
         public index:number,
-        public merge_sequence:BaseCardType[]
+        public merge_sequence:BaseCardType[],
+        public image:CardImage
     ){
-        super(uid)
+
     }
 }

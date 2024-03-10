@@ -1,8 +1,8 @@
 import { Engine } from '../lib/ecs/Engine';
 import { Debug } from './Debug';
 import { GameConfig } from './GameConfig';
-import { create_role_system, eval_debug_system, game_init_system, game_loop_system, ok_panel_to_event_system, remove_role_system, role_in_game_ok_system, ui_system, unco_debug_system } from './systems/main_system';
-import { big_world_map_move_system, big_world_map_trigger_tileset, in_city_system, in_mark_system, shop_system, tileset_create_system } from './systems/map_system';
+// import { create_role_system, eval_debug_system, game_init_system, game_loop_system, ok_panel_to_event_system, remove_role_system, role_in_game_ok_system, ui_system, unco_debug_system } from './systems/main_system';
+// import { big_world_map_move_system, big_world_map_trigger_tileset, in_city_system, in_mark_system, shop_system, tileset_create_system } from './systems/map_system';
 import type * as  Qset  from './systems/query';
 import { XNetTable } from './xnet-table';
 import "../lib/utils/table"
@@ -11,7 +11,7 @@ import type * as event from './systems/event';
 import type * as tag from './component/tag';
 import "./modifiers/base/collision_modifier"
 import { create_city_road_wfc, create_with_static_table, damage_filter_register, enquence_delay_call } from '../fp';
-import { http_get_npc_sell_list_system, npc_buy_system } from './systems/npc';
+// import { http_get_npc_sell_list_system, npc_buy_system } from './systems/npc';
 import { Entity } from '../lib/ecs/Entity';
 import type { OkPanel } from './component/special';
 import type comp from "./component/index"
@@ -30,6 +30,7 @@ import "../ability/soldier/kuangzhan/shou_lue_kuang_modifier";
 import "../modifier/tui";
 import "../ability/soldier/kuangzhan/tou_zhi_wu_qi_modifier_thnker"
 import "../ability/card/base"
+import { calculateCenter, isPointsLikeACircle } from '../funcional';
 
 interface DotaHttpContainerData {
     dataSource:string,
@@ -80,6 +81,7 @@ declare global {
         to_client_event_container:Set<InstanceType<any>>;
         to_debug_container:Map<string,Class<any>>;
         to_save_container:Set<string>
+        link_container:Set<string>
         
         http_comp_decorator_container:Map<string,DotaHttpContainerData>
         http_comp_decorator_container_with_init:Map<string,DotaHttpContainerData>
@@ -98,6 +100,7 @@ declare global {
  **/
 export function ActivateModules() {
     if (GameRules.XNetTable == null) {
+        print("运行了")
         container = {} as any
         container.comp_container = new Set()
         container.comp_decorator_clear_container = new Map()
@@ -109,6 +112,7 @@ export function ActivateModules() {
         container.http_with_user_container= new Map();
         container.http_with_system_container = new Map();
         container.is_has_http_comp = new Map()
+        container.link_container = new Set()
         CustomGameEventManager.Send_ServerToAllClients("unco_game_init",{})
         // Object.entries(require('./component/index').default).forEach(elm=>{
         //    for(const key in elm[1] as any){
@@ -150,7 +154,24 @@ export function ActivateModules() {
         for(let [key,value] of pairs(GameRules.QSet)){
             GameRules.world.addQuery(value as any)
         }
-
+        
+        CustomGameEventManager.RegisterListener("http",(_,event)=>{
+            DeepPrintTable(event.data)
+            const vecs = Object.values(event.data) as {x:number,y:number}[]
+            const if_circle = isPointsLikeACircle(vecs,0.2)
+            if(if_circle.is_circle){
+                DebugDrawCircle(Vector(if_circle.centroid.x,if_circle.centroid.y,256),Vector(255,255,255),44,44,true,10) 
+            }else{
+                vecs.forEach((elm:{x:number,y:number})=>{
+                    DebugDrawCircle(Vector(elm.x,elm.y,256),Vector(255,255,255),44,44,true,10) 
+                })
+            }
+            
+            const json_str = JSON.encode(event)
+            const http = CreateHTTPRequest("POST","http://localhost:3123/")
+            http.SetHTTPRequestRawPostBody("application/json",json_str)
+            http.Send((res)=>{})
+        })
 
         ListenToGameEvent("npc_spawned",(event)=>{
             const hero = EntIndexToHScript(event.entindex) as CDOTA_BaseNPC_Hero

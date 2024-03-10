@@ -1,11 +1,12 @@
 import { CreateUpDown, FindNullTagInfoTarget, InfoTargetTagEvery, NearbyObstacles, PickArrayNumString2D, RemoveParticleCallBack, SetObstacles, TriggerBigWolrdTile, create_city_road_wfc, ecsGetKV, entity_distance, has, has_mask, interval } from "../../fp";
-import { findFarthestFivePoints, matchObject, pairElements } from "../../funcional";
+import { areAllStringsUnique, findFarthestFivePoints, matchObject, pairElements } from "../../funcional";
 import { Behaviortree } from "../../lib/Behavioraltree/Behaviortree";
 import { BtNode } from "../../lib/Behavioraltree/BtNode";
 import { CustomIcondition } from "../../lib/Behavioraltree/CustomIcondition";
 import { ConditionSequence } from "../../lib/Behavioraltree/ICondition/ConditionSequence ";
 import { Selector } from "../../lib/Behavioraltree/Selector";
 import { BuildBaseBehaviortree } from "../../lib/Behavioraltree/base_behaviortree";
+import { ClosestUnitInRange } from "../../lib/Behavioraltree/func/ai_utils";
 import { Entity } from "../../lib/ecs/Entity";
 import { System } from "../../lib/ecs/System";
 import { reloadable } from "../../utils/tstl-utils";
@@ -1084,17 +1085,75 @@ export class card_op_system extends System{
     
     drop(event:InstanceType<typeof GameRules.event.CardEvent>){
         print("[ecs] drop卡牌开始")
-
+        event.player_ent.iterate(c.dungeon.Card,(comp)=>{
+            print(comp.uid)
+            if(Object.values(event.merge_data).find(elm=> elm == comp.uid)){
+                print("删除了一张卡牌")
+                event.player_ent.pick(comp)
+            }
+        })
     }
 
     merge(event:InstanceType<typeof GameRules.event.CardEvent>){
         print("[ecs] 触发了卡牌合成")
+        const valarr = Object.values(event.merge_data)
+            
+        DeepPrintTable(valarr)
         
+        const merge_sequece_card:Card[] = []
+        for(let key in event.merge_data){
+            const card = event.player_ent.find(c.dungeon.Card,(comp)=>comp.uid == event.merge_data[key])
+            merge_sequece_card.push(card)
+        }
+        const iff1 = areAllStringsUnique(Object.values(event.merge_data))
+        let iff2 = false
+        let iff2count = 0
+        event.player_ent.iterate(c.dungeon.Card,(comp)=>{
+            print("[ecs] 当前存在的卡牌",comp.uid)
+            if(valarr.includes(comp.uid)){
+                iff2count++
+            } 
+        })
+        if(iff2count == valarr.length){
+            iff2 = true
+        }
+        print(`[ecs] 合成检测情况 iff2 ${iff2} iff1${iff1} iff2count${iff2count}`)
+        if(iff2 && iff1){
+            const uid = DoUniqueString("card")
+            const merge_card = new c.dungeon.Card(
+                uid,
+                none,
+                uid,
+                "合成卡表",
+                BaseCardType.光,
+                9,
+                merge_sequece_card.map(elm=>elm.card),
+                ""
+            )
+            merge_card.uid = uid,
+            merge_card.card_name = "合成元素"
+            merge_card.merge_sequence = merge_sequece_card.map(elm=>elm.card)
+            merge_card.id = uid
+            merge_card.card = merge_sequece_card.reduce((pre,cur)=>pre |= cur.card,1)
+            merge_card.image = table.random(Config.card_image_list)
+            event.player_ent.appendComponent(merge_card)
+        }
 
     }
 
-    play(event:InstanceType<typeof GameRules.event.CardEvent>){
+    play(event:InstanceType<typeof GameRules.event.CardEvent>){ 
         print("[ecs] 触发了卡牌效果")
+        const player_comp = event.player_ent.get(c.dungeon.PlayerInfoComp)
+        const player_dota_ent = EntIndexToHScript(player_comp.player_entity_index) as CDOTAPlayerController
+        const hero = player_dota_ent.GetAssignedHero()
+        const near_unit = ClosestUnitInRange(hero,600,UnitTargetTeam.ENEMY,UnitTargetType.ALL)
+        hero.Stop()
+        ExecuteOrderFromTable({
+            "AbilityIndex":hero.FindAbilityByName("card_base_ability").entindex(),
+            OrderType:UnitOrder.CAST_POSITION,
+            Position:near_unit ? near_unit.GetAbsOrigin() : hero.GetAbsOrigin().__add(RandomVector(RandomInt(-300,300))),
+            UnitIndex:hero.entindex()
+        })
     }
 
 
@@ -1102,6 +1161,7 @@ export class card_op_system extends System{
         this.engine.subscribe(GameRules.event.CardEvent,(event)=>{
             if(has_mask(event.card_event,CardContainerBehavior.合成)){
                 this.merge(event)
+                this.drop(event)                
                 this.sort(event)
                 return
             }

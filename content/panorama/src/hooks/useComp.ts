@@ -25,7 +25,6 @@ export function useLinkComps<T extends keyof compc_map>(compsName:T,sort?:(a:com
     useLocalEvent("link_comp_update",()=>{
         $.Msg("接收到事件了")
         if(GameUI.CustomUIConfig().with_link_comp_cache[compsName]){
-            $.Schedule(Game.GetGameFrameTime(),()=>{
                 $.Msg("有东西")
                 const data = GameUI.CustomUIConfig().with_link_comp_cache[compsName]?.map(elm=>elm.comp)
     
@@ -35,7 +34,6 @@ export function useLinkComps<T extends keyof compc_map>(compsName:T,sort?:(a:com
                     change_comps(data)
                 }
                 set_last_update_time(new Date().getTime())
-            })
         }
    })
 

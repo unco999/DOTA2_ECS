@@ -27,14 +27,19 @@ Label{
     transition-timing-function: cubic-bezier( 0.785, 0.385, 0.555, 1.505 );
     transition-duration: 0.25s;
 
-    background-color: black;
     width: 113px;
     height:150px;
     position: 99% 60% 0px;  
     opacity: 1;
+    border-radius: 8px;
     &.select{
         transform: translateY(-50px);
     }
+
+    // &.effect{
+    //     width: 160px;
+    //     height:250px;
+    // }
 
     &.merge{
         transition-duration: 1.5s;
@@ -46,6 +51,10 @@ Label{
         transform: rotateY(180deg);
     }
       .loop(8);
+}
+
+.mask{
+    opacity-mask:url("file://{images}/custom_game/card/card_mask.png") 1;
 }
 
 .card_label{
@@ -62,10 +71,9 @@ Label{
 .card_dummy{
     width: 113px;
     height:250px;
-    border: 1px solid red;
     background-color: rgba(0, 0, 0, 0.01);
     .loop(8);
-    z-index: 3;
+    z-index: 4;
 }
 
 .loop(@counter) when (@counter > 0) {  

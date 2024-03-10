@@ -116,7 +116,7 @@
 		"ScriptFile" "ability/card/base.lua"
 		"AbilityValues" {
 		}
-		"AbilityManaCost" "100"
+		"AbilityManaCost" "33"
 		"AbilityBehavior" "DOTA_ABILITY_BEHAVIOR_NO_TARGET"
 		"AbilityUnitTargetTeam" "DOTA_UNIT_TARGET_FRIENDLY_HERO"
 		"AbilityUnitTargetType" "DOTA_UNIT_TARGET_NONE"
