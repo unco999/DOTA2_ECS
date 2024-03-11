@@ -61,4 +61,6 @@ export interface LocalEvent {
     in_shop:{}
 
     open_nav:{}
+
+    proxy:{}
 }

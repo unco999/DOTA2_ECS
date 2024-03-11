@@ -161,3 +161,8 @@ declare interface CardContainer{
 }
 
 declare type CardImage = string
+
+declare const enum SpellType{
+    "圆圈点位",
+    "线点位"
+}

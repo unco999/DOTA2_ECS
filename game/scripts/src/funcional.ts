@@ -129,14 +129,6 @@ export function calculateCenter(coordinates: { x: number; y: number }[]): { x: n
   return { x: centerX, y: centerY };  
 }  
 
-// 示例使用  
-const coords: { x: number; y: number }[] = [  
-  { x: 1, y: 2 },  
-  { x: 3, y: 4 },  
-  // ... 添加更多坐标点  
-  { x: 5, y: 6 }  
-];  
-
 
 export function isPointsLikeACircle(points: { x: number; y: number }[],bias:number) {  
     // 计算质心  
@@ -187,4 +179,5 @@ function calculateStandardDeviation(values: number[]): number {
     return Math.sqrt(variance);  
 }  
 
-  
+export type Point = [number,number]
+export type PointSet = Point[]

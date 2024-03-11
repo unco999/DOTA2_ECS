@@ -1,4 +1,5 @@
 export type Point = [number, number];
+export type WorldPoint = [number, number,number];
 
 export function roundDecimal(p1:number,decimal:number){
     return Number(p1.toFixed(decimal));

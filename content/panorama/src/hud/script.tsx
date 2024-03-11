@@ -10,8 +10,8 @@ import { FC, useEffect, useMemo, useRef, useState } from 'react';
 import {Motion, spring} from "@serprex/react-motion"
 import { pop_tag } from '../config';
 import { LocalEvent } from '../def/local_event_def';
-import { AnchorPanel, TilePanel, _flattenArrayOfTuples, luaToJsArray, setHexOpacity } from '../base';
-import { Point, distance } from '../utils/lib';
+import { AnchorPanel, PointSub, TilePanel, _flattenArrayOfTuples, applySigmoidToPoint, averageHausdorffDistance, calculateAngleBetweenVectors2D, calculateCentroid, calculateSlope, circle, cosineSimilarity, cosineSimilarityStrictlyPositive, dir, dotProduct, euclideanDistance, findMinimumHausdorffDistanceOptimized, hausdorffDistance, isPointsLikeACircle, line, luaToJsArray, normalizeData, normalizeDistances, normalizePoint, setHexOpacity, shapeDiff, splitArrayByIndex, toFixedPoint, triangle, x } from '../base';
+import { Point, WorldPoint, distance } from '../utils/lib';
 import { useInterval } from '../hooks/useInterval';
 
 const main_style= {
@@ -37,20 +37,125 @@ const CanVas = () =>{
     const switch_input = useRef<boolean>()
     const transition_index = useRef<number[]>([])
     const not_move = useRef<number>(0)
+    const [str,setste] = useState<string>("当前没有输入")
 
-    useInterval(5,()=>{
-        if(!GameUI.IsMouseDown(0)){
-            not_move.current+= 0.5
+
+    
+
+    useInterval(3,()=>{
+        if(!GameUI.IsMouseDown(0) && cur_shape.current.length > 3 ){
+            not_move.current += 0.2
         }
         if(cur_shape.current.length > 3 && !GameUI.IsMouseDown(0) && distance(cur_shape.current[cur_shape.current.length - 1],GameUI.GetCursorPosition()) < 30){
-            not_move.current++
+            not_move.current += 0.1
         }
-        if(cur_shape.current?.length > 80 || not_move.current > 50){
-            const data = cur_shape.current.map(elm=>{
-                const world = Game.ScreenXYToWorld(elm[0],elm[1])
-                return {x:world[0].toFixed(),y:world[1].toFixed()}
-            })
-            GameEvents.SendCustomGameEventToServer("http",{data})
+        if(cur_shape.current?.length > 80 || not_move.current > 10){
+            const newdata = splitArrayByIndex(cur_shape.current,transition_index.current) as Point[][]
+            // newdata.forEach(point => {
+            //     const iff =  shapeDiff(point,liu_jiao_xing as Point[])
+            //     $.Msg(iff)
+            //     if(iff < 0.3){
+            //           $.Msg("liu_jiao_xing")
+            //     }else{
+            //           $.Msg("没有liu_jiao_xing")
+            //     }
+            // })
+            let merge_spell_data_dir:Point[] = []
+            const fowrad = PointSub(cur_shape.current[1],cur_shape.current[0])!
+            const center = calculateCentroid(cur_shape.current) as [number,number]
+            let weight = {
+                "直线":0,
+                "圆形":0,
+                "三角形":0,
+                "x":0
+            }
+            let last:Point[] = []
+            for(let i = 0 ; i < cur_shape.current.length ; i++){
+                let point = toFixedPoint(PointSub(cur_shape.current[i],center),3)
+                last.push(point)
+            }
+            let dirs:Point[] = []
+            for(let i = 0 ; i < cur_shape.current.length; i++){
+                if( cur_shape.current[i + 1]){
+                    const dir_v = PointSub(cur_shape.current[i + 1], cur_shape.current[i])
+                    dirs.push(dir_v)
+                }
+            }
+            let rate:number[] = []
+            for(let i = 0 ; i < dirs.length; i++){  
+                if( dirs[i + 1]){ 
+                    const dot = 180 - calculateAngleBetweenVectors2D(dirs[i],dirs[i + 1])
+                     const crossProduct = dirs[i][0] * dirs[i + 1][1] - dirs[i][1] * dirs[i + 1][0];  
+                     if (crossProduct < 0) {  
+                         // 逆时针方向  
+                        if(isNaN(dot!)) {
+                            continue;
+                        }
+                        rate.push(dot)
+                     } else if (crossProduct > 0) {  
+                         // 顺时针方向  
+                        if(isNaN(dot!)) {
+                            continue;
+                        }
+                        rate.push(-dot)
+                     } else {  
+                        // rate.push(180)
+                     }  
+                    // const slope = calculateSlope(fowrad,dirs[i])!
+                    // if(isNaN(slope!)) {
+                    //     $.Msg("一样")
+                    //     rate.push(0)
+                    //     continue;
+                    // }
+                    // $.Msg("斜率sin",Math.sin(slope))
+                    // rate.push(Math.sin(Math.abs(slope)))
+                     // 根据向量叉积判断方向  
+            
+                    
+                }
+            }
+            last = normalizeData(last)
+            const deg = rate.reduce((pre,cur)=>pre+cur) / rate.length
+            $.Msg(deg)
+            // $.Msg("最大变化值",max_rate)
+            // $.Msg("最小变化值",min_rate)
+            // $.Msg("平均值",max_rate - min_rate)
+
+            const distance1 = averageHausdorffDistance(last,circle) - deg * 0.001         
+            const distance2 = averageHausdorffDistance(last,triangle) - deg * 0.001
+            const distance3 = averageHausdorffDistance(last,x) - deg * 0.001
+            const distance4 = averageHausdorffDistance(last,line) + deg * 0.001
+            
+            $.Msg("圆型得分",distance1)
+            $.Msg("三角形得分",distance2)
+            $.Msg("叉得分",distance3)
+            $.Msg("直线得分",distance4)
+
+            const a = [{distance:distance1,name:"圆环咒语"},{distance:distance2,name:"三角形咒语"},{distance:distance3,name:"X咒语"},{distance:distance4,name:"直线咒语"}]
+            const zuidifen = a.sort((a,b)=> b.distance- a.distance).pop()
+            setste(zuidifen?.name!)
+            // $.Msg(diff)
+            // spell_data.forEach((elm,index,array)=>{
+            //     if(elm.type == "圆圈点位"){
+            //         $.Msg("开启了圆圈点位")
+            //         elm.points.forEach(point=>{
+            //           const id = Particles.CreateParticle("particles/econ/items/shredder/hero_shredder_icefx/shredder_chakram_ice.vpcf",ParticleAttachment_t.PATTACH_WORLDORIGIN,Players.GetPlayerHeroEntityIndex(Players.GetLocalPlayer()))
+            //           Particles.SetParticleControl(id,0,[Number(point[0]),Number(point[1]),256])
+            //         })
+            //     }
+            //     if(elm.type == "线点位"){
+            //         const id = Particles.CreateParticle("particles/units/heroes/hero_jakiro/jakiro_macropyre_ice_edgeb.vpcf",ParticleAttachment_t.PATTACH_WORLDORIGIN,Players.GetPlayerHeroEntityIndex(Players.GetLocalPlayer()))
+            //         elm.points.forEach((point,index,array)=>{
+            //             Particles.SetParticleControl(id,1,[Number(point[0]),Number(point[1]),256])
+            //             Particles.SetParticleControl(id,0,[Number(array[0][0]),Number(array[0][1]),256])
+            //         })
+            //     }
+            // })
+            // const data = cur_shape.current.map(elm=>{
+            //     const world = Game.ScreenXYToWorld(elm[0],elm[1])
+            //     return {x:world[0].toFixed(),y:world[1].toFixed()}
+            // })
+            // GameUI.CustomUIConfig().EventBus?.emit("proxy",{data})
             cur_shape.current = []
             brush_transition.current = []
             switch_input.current = false
@@ -71,12 +176,15 @@ const CanVas = () =>{
             switch_input.current = false
         }else if(!switch_input.current && !GameUI.IsMouseDown(0) && cur_shape.current.length < 80){
             switch_input.current = true
-            brush_transition.current.push(GameUI.GetCursorPosition())
+            brush_transition.current.push(GameUI.GetCursorPosition().map(elm=>([Number(elm.toFixed(0)),Number(elm.toFixed(1))])) as unknown as [number,number])
             transition_index.current.push(cur_shape.current.length)
         }
     },undefined)
 
-    return   <GenericPanel hittest={false}  style={{width:"100%",height:"100%"}} ref={p=>canvas.current = p!} id="canvas1" type='UICanvas' />
+    return  <>
+        <Label text={str} style={{fontSize:"40px",color:"gold",textShadow:"2px 2px 8px 3.0 #333333b0",align:"center center"}}/>
+        <GenericPanel hittest={false}  style={{width:"100%",height:"100%"}} ref={p=>canvas.current = p!} id="canvas1" type='UICanvas' />
+    </>
     
 }
 
@@ -912,5 +1020,4 @@ GameEvents.Subscribe("test_map",(event:any)=>{
             }
         }
 })
-
 
