@@ -1,4 +1,6 @@
-
+ECS框架 包括一些装备写法之类的  WFC自动生成地图
+不能运行 因为缺少地图和一些东西  主要是给一个帅哥的 
+欢迎观看
 
 #### [Russian lang](https://github.com/XavierCHN/x-template/blob/master/readme_rus.md)
 #### <a href="#x-template">中文说明</a>
