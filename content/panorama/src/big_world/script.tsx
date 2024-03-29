@@ -173,7 +173,6 @@ export const BigMapMain = () =>{
         let points = curveToBezier(curve as any,12);
         points = getPointsOnBezierCurveWithSplitting(points,0,6)
 
-                    
        for(let i = 0 ; i < points.length - 1 ; i++){
             (i + count! ) % 2 == 0 && canvas.current?.DrawSoftLinePointsJS(2, _flattenArrayOfTuples([points[i],points[i + 1]]), 22,10, "#000000")
           }

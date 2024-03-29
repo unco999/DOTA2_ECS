@@ -191,6 +191,7 @@ export class Debug {
 
            }
         }
+        
         // if(cmd == "test"){
 
         //     let t = newproxy(true)
@@ -220,9 +221,11 @@ export class Debug {
         }
         if(cmd == "t"){
             const hero = PlayerResource.GetPlayer(keys.playerid).GetAssignedHero()
-            hero.RemoveModifierByName("testm")
-            const buff = hero.AddNewModifier(hero,null,"testm",{duration:-1})
-            buff.SendBuffRefreshToClients()
+            const model = CreateRune(hero.GetOrigin().__add(RandomVector(100)),RuneType.ARCANE)
+            model.SetModel("models/items/rubick/first_movement_of_magic_back/first_movement_of_magic_back.vmdl")
+            // hero.RemoveModifierByName("testm")
+            // const buff = hero.AddNewModifier(hero,null,"testm",{duration:-1})
+            // buff.SendBuffRefreshToClients()
         }
         if(cmd == "skin"){
             cache.forEach((elm:CBaseModelEntity)=>{
@@ -403,7 +406,9 @@ export class Debug {
                 print("活着的")
             }
 
-        
+            GameRules.SetCustomGameTeamMaxPlayers(DotaTeam.CUSTOM_1,2)
+
+            
             // const 
 
             // const unit = CreateUnitByName("npc_dota_neutral_kobold",Vector(666,222,128),false,null,null,DotaTeam.BADGUYS);
@@ -416,6 +421,13 @@ export class Debug {
         }
         if(cmd == "ecsitem"){
             c.quipment.testCreateRandomItem(args[0])
+        }
+        if(cmd == "camera"){
+            CustomGameEventManager.Send_ServerToAllClients("send_camera_sequcen",[
+                {Easing:"inOutExpo",await:1,duration:1,position:{x:6666,y:6666,z:128},call_back_event_name:DoUniqueString("event"),height:1000},
+                {Easing:"inOutExpo",await:1,duration:1,position:{x:3333,y:3333,z:128},call_back_event_name:DoUniqueString("event"),height:7000},
+                {Easing:"inOutExpo",await:1,duration:1,position:{x:111,y:11,z:128},call_back_event_name:DoUniqueString("event"),height:1300}
+            ])
         }
         if(cmd == "dropitem"){
         // request(OpenAPI,{

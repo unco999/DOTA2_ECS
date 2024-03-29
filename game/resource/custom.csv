@@ -64,3 +64,15 @@ element_16,english,木元素,
 element_32,english,土元素,
 element_64,english,光元素,
 element_128,english,暗元素
+
+
+liu_mang_xing,english,六芒星(召唤咒),
+circle,english,圆形(控制咒),
+triangle1,english,正三角(增益咒),
+triangle2,english,倒三角(诅咒),
+x,english,X(毁灭咒),
+xline,english,曲线(伤害咒),
+line,english,直线(生成咒),
+san_shu_xian,english,扩张直线(大范围生成咒),
+liang_shu_xian,english,小型扩张直线(中范围生成咒),
+fail,english,咒语失败,

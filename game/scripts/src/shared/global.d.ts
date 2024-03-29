@@ -141,6 +141,10 @@ declare const enum BaseCardType{
     风=0x1,火=0x2,雷=0x4,水=0x8,木=0x10,土=0x20,光=0x40,暗=0x80
 }
 
+declare const enum SpellShape{
+    直线=0x1,三直线=0x2,曲线=0x4,正三角=0x8,倒三角=0x10,六芒星=0x20,圆形=0x40
+}
+
 declare const none = "none"
 
 declare type none = typeof none;
@@ -165,4 +169,28 @@ declare type CardImage = string
 declare const enum SpellType{
     "圆圈点位",
     "线点位"
+}
+
+declare interface SpellCardData {
+    name?:string,
+    score?:number,
+    vertex?:[number,number][],
+    center?:[number,number,number]|undefined,
+    screen_center?:[number,number]|undefined
+    radius?:number,
+    screen?:[number,number][]
+}
+
+declare interface ToWorldSpellCardData {
+    name?:string,
+    score?:number,
+    vertex?:Vector[],
+    center?:Vector|undefined,
+    radius?:number
+}
+
+declare const enum SpellCardState{
+    "ready",
+    "start",
+    "end"
 }

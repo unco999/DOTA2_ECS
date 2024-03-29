@@ -4,7 +4,7 @@
 
 import { enquence_delay_call } from "../fp";
 import { euqipment_spcial_fuc } from "./modifiers/base/attribute_modifier";
-import { card_root_system, root_level_system, root_system } from "./systems/dungeon";
+import { root_card_system, custom_ability_main_system, root_level_system, root_system, root_custom_ability_spell } from "./systems/dungeon";
 import { EquipmentStateUpSystem, InventorySytemOnAdd, RbxBoxSystem, UpdateAllsAttributeSystem, WarehouseInventorySystem } from "./systems/equipment";
 import { steam_id_http_init_system } from "./systems/http_system";
 // import { game_init_system, ok_panel_to_event_system, game_loop_system, create_role_system, remove_role_system, ui_system, role_in_game_ok_system, unco_debug_system, eval_debug_system } from "./systems/main_system";
@@ -27,15 +27,22 @@ if(GameRules?.reload){
         }
     }
     GameRules?.world.removeAllSystems()
-    sutep_system()
+    // test_system()
+    reload()
     GameRules.enquence_delay_call = enquence_delay_call()
     collectgarbage("collect")
+}
+
+export function reload(){
+    GameRules.world.addSystem(new root_card_system())
+    GameRules.world.addSystem(new root_custom_ability_spell())
 }
 
 export function test_system(){
     GameRules.world.addSystem(new root_system())
     GameRules.world.addSystem(new root_level_system())
-    GameRules.world.addSystem(new card_root_system())
+    GameRules.world.addSystem(new root_card_system())
+    GameRules.world.addSystem(new root_custom_ability_spell())
 }
 
 export function sutep_system(){

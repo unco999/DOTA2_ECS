@@ -99,6 +99,11 @@ declare type compc_map = {
     Card:Card
 }
 
+declare interface CameraSequenceData{
+    target?:EntityIndex,
+    position?:{x:number,y:number,z:number},
+}
+
 declare interface CustomGameEventDeclarations {
     LargePopupBox: {
         tag_name: string;
@@ -131,8 +136,9 @@ declare interface CustomGameEventDeclarations {
     s2c_link_comp_to_event: { uid:string,class_name:string, ecs_entity_index: EntityIndex, comp:Partial<compc_map[keyof compc_map]> }
     s2c_link_remove : {class_name:string,uid:string}
     c2s_item_to_warehouse_inventory:{dota_entity_id:EntityIndex,to_index_inventory:number,to_slot:number}
-    c2s_warehouse_inventory_to_raw:{dota_entity_id:EntityIndex,to_index_inventory:number,to_slot:number}
-    c2s_card_event:{merge_data:Record<number,string|undefined>,container_behavior:CardContainerBehavior}
+    c2s_warehouse_inventory_to_raw:{dota_entity_id:EntityIndex,to_index_inventory:number,to_slot:number,data?:SpellCardData[]}
+    c2s_card_event:{merge_data:Record<number,string|null>,container_behavior:CardContainerBehavior,spell_data?:SpellCardData[]}
+    send_camera_sequcen:CameraSequcen
     [key: string]: any
 }
 

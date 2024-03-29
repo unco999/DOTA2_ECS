@@ -15,6 +15,17 @@
     }
 }
 
+
+@keyframes HRotation {
+    0% {
+        hue-rotation: 0deg;
+    }
+    100% {
+        hue-rotation: 180deg;
+    }
+}
+
+
 Label{
     color:black;
     align:center center;
@@ -23,6 +34,7 @@ Label{
 
 
 .card{
+
     transition-property:transform,position,width,height,opacity;
     transition-timing-function: cubic-bezier( 0.785, 0.385, 0.555, 1.505 );
     transition-duration: 0.25s;
@@ -54,9 +66,18 @@ Label{
 }
 
 .mask{
-    opacity-mask:url("file://{images}/custom_game/card/card_mask.png") 1;
+    // opacity-mask:url("file://{images}/custom_game/card/card_mask.png") 1;
+    // border: 1px solid red;
+    width: 122px;
+    height:167px;
+    transform: translate3d(-5px,-8px,0px);
 }
 
+.canvas1{
+    animation-name: HRotation;
+    animation-iteration-count: 999999;
+    animation-duration: 2s;
+}
 .card_label{
     z-index: 3;
     font-size:30px;
@@ -76,6 +97,7 @@ Label{
     z-index: 4;
 }
 
+
 .loop(@counter) when (@counter > 0) {  
     &.dummy_index_@{counter} {  
       position: (@counter * 11.5% - 11.5%) 40% 0px;  
@@ -89,3 +111,35 @@ Label{
     }  
     .loop(@counter - 1);  
   }  
+
+  @keyframes HRotation {
+    0% {
+        opacity-mask: url("file://{images}/custom_game/card/scaning.psd") 1
+    }
+    50% {
+        opacity-mask: url("file://{images}/custom_game/card/scaning.psd") 0.8
+    }
+    100% {
+        opacity-mask: url("file://{images}/custom_game/card/scaning.psd") 1
+    }
+}
+
+.scans{
+    width: 200%;
+    height: 120%;
+    background-color: rgb(255, 255, 255);
+    opacity-mask: url("file://{images}/custom_game/card/scaning.psd") 1;
+    transition-timing-function: cubic-bezier(0.39, 0.575, 0.565, 1);
+    transition-property:transform,opacity,pre-transform-scale2d,background-color;
+    transition-duration: 1s;
+    pre-transform-rotate2d: 45deg;
+    transform: translate3d(-100px,-100px,0px);
+    pre-transform-scale2d: 2;
+    opacity: 0;
+    &.animation{
+        opacity: 2;
+        pre-transform-scale2d: 2;
+        background-color: rgb(248, 239, 186);
+        transform: translate3d(60px,150px,0px) ;
+    }
+}

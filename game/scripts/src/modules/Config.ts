@@ -10,6 +10,9 @@ export namespace Config{
 
     export const aggro_scalar = 0.7
 
+    /**平均地面高度 */
+    export const world_florr_height = 128
+
     export const level_behaivor = {
         "cai_ji_guan":{
             

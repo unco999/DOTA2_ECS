@@ -63,4 +63,6 @@ export interface LocalEvent {
     open_nav:{}
 
     proxy:{}
+
+    scans:{duration:number,parent:Panel}
 }

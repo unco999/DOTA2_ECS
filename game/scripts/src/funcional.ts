@@ -181,3 +181,49 @@ function calculateStandardDeviation(values: number[]): number {
 
 export type Point = [number,number]
 export type PointSet = Point[]
+
+
+export function ToWorld(Point:{x:number|string,y:number|string}|[number|string,number|string],height:number){
+    if(Point == null){
+        print("[ecs] 转换世界坐标失败 没有获得Point")
+    }
+    print("[ecs] 转换世界坐标",Point)
+    return Vector(Point['x'] ?? Point["0"] ?? Point[0], Point['y'] ?? Point["1"] ?? Point[1],height)
+}
+
+export function chunk<T>(array: T[], chunkSize: number): T[][] {  
+  if (chunkSize <= 0) {  
+     print('Chunk size must be a positive integer.');  
+  }  
+  
+  const result: T[][] = [];  
+  for (let i = 0; i < array.length; i += chunkSize) {  
+    const end = Math.min(i + chunkSize, array.length);  
+    result.push(array.slice(i, end));  
+  }  
+  return result;  
+} 
+
+export function CreateParticle(path:string,hero:CDOTA_BaseNPC_Hero,duration:number,ParticleAttachment:ParticleAttachment){
+    const pid = ParticleManager.CreateParticle(path,ParticleAttachment,hero)
+    GameRules.enquence_delay_call(()=>{
+        ParticleManager.DestroyParticle(pid,true)
+        ParticleManager.ReleaseParticleIndex(pid)
+    },undefined,duration)
+    return pid
+}
+
+export function CreateParticleArray(path:string,count:number,hero:CDOTA_BaseNPC_Hero,duration:number,ParticleAttachment:ParticleAttachment){
+    let pidarray:ParticleID[] = []
+    for(let i = 0; i < count ; i++){
+       const pid = ParticleManager.CreateParticle(path,ParticleAttachment,hero)
+       pidarray.push(pid)
+    }
+    GameRules.enquence_delay_call(()=>{
+      pidarray.forEach(pid=>{
+        ParticleManager.DestroyParticle(pid,true)
+        ParticleManager.ReleaseParticleIndex(pid)
+      })
+    },undefined,duration)
+    return pidarray
+}

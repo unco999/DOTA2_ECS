@@ -144,7 +144,7 @@ export function ActivateModules() {
         /**伤害过滤器注册器 */
         GameRules.damage_filter_register = damage_filter_register()
 
-        const spawn_id =  DOTA_SpawnMapAtPosition(`base`,Vector(0,0,128),false,null,null,undefined);
+        const spawn_id =  DOTA_SpawnMapAtPosition(`base`,Vector(0,0,0),false,null,null,undefined);
 
         Timers.CreateTimer(3,()=>{
             UnloadSpawnGroupByHandle(spawn_id)
@@ -166,6 +166,8 @@ export function ActivateModules() {
                     DebugDrawCircle(Vector(elm.x,elm.y,256),Vector(255,255,255),44,44,true,10) 
                 })
             }
+
+            
             
             const json_str = JSON.encode(event)
             const http = CreateHTTPRequest("POST","http://localhost:3123/")
@@ -213,12 +215,13 @@ export function ActivateModules() {
             const state = GameRules.State_Get()
             if(state == GameState.PRE_GAME){
                 // sutep_system()
-                test_system()
+                // test_system()
 
                 GameRules.reload = true;
             }
         },this)
 
+        
 
         
     }

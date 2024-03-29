@@ -1,5 +1,5 @@
 import { doc, to_client_event, to_player_net_table } from "../../fp";
-import { Entity } from "../../lib/ecs/Entity";
+import { Entity, Entity } from "../../lib/ecs/Entity";
 import { ILinkedComponent } from "../../lib/ecs/LinkedComponent";
 import { Config } from "../Config";
 
@@ -181,10 +181,16 @@ export class BossDataRaw{
     }
 }
 
+
+
+
+
+
 /**
  * boss的衍生实体缓存 比如召唤物之类的
  */
 export class BossDerivative{
+
     constructor(
         public npc:Record<string,CDOTA_BaseNPC>,
         public prop:Record<string,CBaseAnimatingActivity>,
@@ -210,6 +216,13 @@ export class Card implements ILinkedComponent{
         public merge_sequence:BaseCardType[],
         public image:CardImage
     ){
+        
+    }
+}
 
+
+export class SpellComponent{
+
+    constructor(){
     }
 }

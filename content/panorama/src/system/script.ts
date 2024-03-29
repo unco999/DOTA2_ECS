@@ -1,5 +1,5 @@
 import { luaToJsArray } from "../base";
-
+import  "./camera"
 
 
 
@@ -139,11 +139,11 @@ if(!GameUI.CustomUIConfig().reload){
     const timer = () => {$.Schedule(Game.GetGameFrameTime(),()=>{
     if(Players.GetPlayerHeroEntityIndex(Players.GetLocalPlayer()) != -1){
         GameUI.CustomUIConfig().reload = true;
-        GameUI.SetCameraDistance(1900)
+        // GameUI.SetCameraDistance(4000)
         GameUI.SetCameraYaw(45)
         GameUI.SetCameraPitchMin(55)
         GameUI.SetCameraPitchMax(55)
-        GameUI.SetCameraTarget(Players.GetPlayerHeroEntityIndex(Players.GetLocalPlayer()))
+        // GameUI.SetCameraTarget(Players.GetPlayerHeroEntityIndex(Players.GetLocalPlayer()))
         
 
 

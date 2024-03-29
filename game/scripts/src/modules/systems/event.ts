@@ -140,12 +140,22 @@ export namespace event{
             public card_event:CardContainerBehavior,
             public player_ent:Entity,
             /**@string uid */
-            public  merge_data:Record<number,string>
+            public merge_data:Record<number,string>,
+            public spell_data?:SpellCardData[],
         ){
 
         }
     }
     
+    export class SpellCardEvent{
+        constructor(
+            public spell_data:ToWorldSpellCardData[],
+            public player_ent:Entity,
+            public spell_card_state:SpellCardState
+        ){
+            
+        }
+    }
 }
 
 

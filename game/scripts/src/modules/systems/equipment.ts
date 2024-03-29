@@ -282,7 +282,7 @@ export class WarehouseInventorySystem extends System{
     public onAddedToEngine(): void {
         
         CustomGameEventManager.RegisterListener("c2s_warehouse_inventory_to_raw",(_,event)=>{
-            this.to_raw(event)
+            // this.to_raw(event)
         })
         CustomGameEventManager.RegisterListener("c2s_item_to_warehouse_inventory",(_,event)=>{
             const role = GameRules.QSet.is_select_role.first

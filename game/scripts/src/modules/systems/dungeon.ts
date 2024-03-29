@@ -1,5 +1,5 @@
 import { CreateUpDown, FindNullTagInfoTarget, InfoTargetTagEvery, NearbyObstacles, PickArrayNumString2D, RemoveParticleCallBack, SetObstacles, TriggerBigWolrdTile, create_city_road_wfc, ecsGetKV, entity_distance, has, has_mask, interval } from "../../fp";
-import { areAllStringsUnique, findFarthestFivePoints, matchObject, pairElements } from "../../funcional";
+import { CreateParticleArray, ToWorld, areAllStringsUnique, chunk, findFarthestFivePoints, matchObject, pairElements } from "../../funcional";
 import { Behaviortree } from "../../lib/Behavioraltree/Behaviortree";
 import { BtNode } from "../../lib/Behavioraltree/BtNode";
 import { CustomIcondition } from "../../lib/Behavioraltree/CustomIcondition";
@@ -1142,18 +1142,36 @@ export class card_op_system extends System{
     }
 
     play(event:InstanceType<typeof GameRules.event.CardEvent>){ 
+        if(event.spell_data == null) return
         print("[ecs] 触发了卡牌效果")
         const player_comp = event.player_ent.get(c.dungeon.PlayerInfoComp)
         const player_dota_ent = EntIndexToHScript(player_comp.player_entity_index) as CDOTAPlayerController
         const hero = player_dota_ent.GetAssignedHero()
         const near_unit = ClosestUnitInRange(hero,600,UnitTargetTeam.ENEMY,UnitTargetType.ALL)
-        hero.Stop()
-        ExecuteOrderFromTable({
-            "AbilityIndex":hero.FindAbilityByName("card_base_ability").entindex(),
-            OrderType:UnitOrder.CAST_POSITION,
-            Position:near_unit ? near_unit.GetAbsOrigin() : hero.GetAbsOrigin().__add(RandomVector(RandomInt(-300,300))),
-            UnitIndex:hero.entindex()
+        const converterObject:ToWorldSpellCardData[] = Object.values(event.spell_data).map(elm=>{
+            const vertex:Vector[] = []
+            DeepPrintTable(vertex)
+            for(let i = 0 ; i < 999 ; i++){
+                if(elm.vertex[i.toString()] == null){
+                    break;
+                }
+                DeepPrintTable(elm.vertex[i.toString()])
+                const point = elm.vertex[i.toString()] as [number,number]
+                vertex.push(Vector(point["0"],point["1"],128))
+            }
+            return {
+                center:Vector(elm.center["0"],elm.center["1"],Config.world_florr_height),
+                name:elm.name,
+                radius:elm.radius ? parseInt(elm.radius.toString()) : 0,
+                score:Number(elm.score),
+                vertex:vertex
+            }
         })
+        this.dispatch(new GameRules.event.SpellCardEvent(
+            converterObject,
+            event.player_ent,
+            SpellCardState.ready
+        ))
     }
 
 
@@ -1198,7 +1216,8 @@ export class card_event_register_system extends System{
             this.dispatch(new GameRules.event.CardEvent(
                 event.container_behavior,
                 p_ent,
-                event.merge_data
+                event.merge_data,
+                Object.values(event.spell_data) as SpellCardData[]
             ))
         })
     }
@@ -1206,10 +1225,100 @@ export class card_event_register_system extends System{
 
 
 @reloadable
-export class card_root_system extends System{
+export class root_card_system extends System{
 
     public onAddedToEngine(): void {
        this.engine.addSystem(new card_op_system())
        this.engine.addSystem(new card_event_register_system())
     }
+}
+
+/**卡牌技能释放系统 */
+@reloadable
+export class root_custom_ability_spell extends System{
+
+    ['circle'](data:ToWorldSpellCardData,event:InstanceType<typeof GameRules.event.SpellCardEvent>){
+        DebugDrawText(data.center,"circle咒语",true,10)
+        DebugDrawCircle(data.center,Vector(255,255,255),data.radius,data.radius,true,10)
+    }
+
+    ["line"](data:ToWorldSpellCardData,event:InstanceType<typeof GameRules.event.SpellCardEvent>){
+        print("line",data.center)
+        DebugDrawText(data.center,"line咒语",true,10)
+        data.vertex.forEach(elm=>{
+            DebugDrawCircle(elm,Vector(255,255,255),20,20,true,10)
+            print("我的",elm)
+        })
+        const player = event.player_ent
+        const dota_player = PlayerResource.GetPlayer(player.get(c.dungeon.PlayerInfoComp).player_num as PlayerID)
+        const hero = dota_player.GetAssignedHero() as CDOTA_BaseNPC_Hero
+        const id = ParticleManager.CreateParticle("particles/ice/unco_ice_main_01.vpcf",ParticleAttachment.WORLDORIGIN,hero)
+        ParticleManager.SetParticleControl(id,0,data.vertex[0])
+        ParticleManager.SetParticleControl(id,1,data.vertex[data.vertex.length - 1])
+    }
+
+    ["triangle"](data:ToWorldSpellCardData,event:InstanceType<typeof GameRules.event.SpellCardEvent>){
+        DebugDrawText(data.center,"triangle咒语",true,10)
+        DebugDrawCircle(data.center,Vector(255,255,255),data.radius,data.radius,true,10)
+    }
+
+    ["xline"](data:ToWorldSpellCardData,event:InstanceType<typeof GameRules.event.SpellCardEvent>){
+        print("参与")
+        DebugDrawText(data.center,"Xline",true,10)
+        const player = event.player_ent
+        const dota_player = PlayerResource.GetPlayer(player.get(c.dungeon.PlayerInfoComp).player_num as PlayerID)
+        const hero = dota_player.GetAssignedHero() as CDOTA_BaseNPC_Hero
+        const vec_s = chunk(data.vertex,6)
+
+        const array = CreateParticleArray("particles/econ/items/tinker/tinker_ti10_immortal_laser/tinker_ti10_immortal_laser.vpcf",vec_s.length,hero,8000,ParticleAttachment.WORLDORIGIN)        
+
+        vec_s.forEach((elm,index)=>{
+            const pid = array[index]
+            const units = FindUnitsInRadius(hero.GetTeam(),elm[0],hero,200,UnitTargetTeam.ENEMY,UnitTargetType.ALL,UnitTargetFlags.NONE,FindOrder.ANY,false)
+            units.forEach(elm=>{
+                ApplyDamage({
+                    ability:null,
+                    attacker:hero,
+                    damage:500,
+                    damage_flags:DamageFlag.NONE,
+                    damage_type:DamageTypes.MAGICAL,
+                    victim:elm
+                })
+            })
+            ParticleManager.SetParticleControl(pid,1,elm[0])
+            ParticleManager.SetParticleControl(pid,9,elm[elm.length - 1])
+        })
+    }
+
+    ["x"](data:ToWorldSpellCardData,event:InstanceType<typeof GameRules.event.SpellCardEvent>){
+        DebugDrawText(data.center,"X咒语",true,10)
+        DebugDrawCircle(data.center,Vector(255,255,255),data.radius,data.center,true,10)
+    }
+
+    _spell(event:InstanceType<typeof GameRules.event.SpellCardEvent>){
+        const data = event.spell_data
+        data.forEach(elm=>{
+            print(elm.name);
+            (this[elm.name] as Function)(elm,event)
+        })
+        /**释放完毕 继续转发事件 */
+        event.spell_card_state = SpellCardState.start
+        this.dispatch(event)
+    }
+
+    public onAddedToEngine(): void {
+        this.engine.subscribe(GameRules.event.SpellCardEvent,(event)=>{
+            if(event.spell_card_state == SpellCardState.ready){
+                this._spell(event)
+            }
+        })
+    }
+}
+
+/**技能主系统 */
+@reloadable
+export class custom_ability_main_system extends System{
+    public onAddedToEngine(): void {
+        this.engine.addSystem(new root_custom_ability_spell())
+     }
 }

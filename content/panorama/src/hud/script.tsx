@@ -3,15 +3,15 @@ import 'panorama-polyfill-x/lib/timers';
 
 import { render, useGameEvent, useNetTableKey } from 'react-panorama-x';
 import { useXNetTableKey } from '../hooks/useXNetTable';
-import { onLocalEvent, useLocalEvent } from '../utils/event-bus';
+import { emitLocalEvent, onLocalEvent, useLocalEvent } from '../utils/event-bus';
 import { useCompWithPlayer, useCompWithSystem, useLinkComps } from '../hooks/useComp';
 import { FC, useEffect, useMemo, useRef, useState } from 'react';
 //@ts-ignore
 import {Motion, spring} from "@serprex/react-motion"
 import { pop_tag } from '../config';
 import { LocalEvent } from '../def/local_event_def';
-import { AnchorPanel, PointSub, TilePanel, _flattenArrayOfTuples, applySigmoidToPoint, averageHausdorffDistance, calculateAngleBetweenVectors2D, calculateCentroid, calculateSlope, circle, cosineSimilarity, cosineSimilarityStrictlyPositive, dir, dotProduct, euclideanDistance, findMinimumHausdorffDistanceOptimized, hausdorffDistance, isPointsLikeACircle, line, luaToJsArray, normalizeData, normalizeDistances, normalizePoint, setHexOpacity, shapeDiff, splitArrayByIndex, toFixedPoint, triangle, x } from '../base';
-import { Point, WorldPoint, distance } from '../utils/lib';
+import { AnchorPanel, PointSub, TilePanel, _flattenArrayOfTuples, applySigmoidToPoint,getRandomHexColor, averageHausdorffDistance, calculateAngleBetweenVectors2D, calculateCentroid, calculateSlope, circle, cosineSimilarity, cosineSimilarityStrictlyPositive, dir, dotProduct, euclideanDistance, findMinimumHausdorffDistanceOptimized, hausdorffDistance, isPointsLikeACircle, line, luaToJsArray, normalizeData, normalizeDistances, normalizePoint, setHexOpacity, splitArrayByIndex, toFixedPoint, triangle1,triangle2, x, WindowsAdapter, xline, toFixed4, toFixed4String, shake, groupByKey, areSegmentsParallel, sigmoid, chunk, angleBetweenPoints, groupByPredicate, crossProduct2D } from '../base';
+import { Point, WorldPoint, check, distance, val } from '../utils/lib';
 import { useInterval } from '../hooks/useInterval';
 
 const main_style= {
@@ -30,7 +30,7 @@ const main_style= {
 const start_check_point:[number,number] = [945,1000]
 const end_check_point:[number,number] = [1419,982]
 
-const CanVas = () =>{
+const CanVas = ({merge_card}:{merge_card:Record<number,string|null>}) =>{
     const canvas = useRef<any>()
     const cur_shape = useRef<Point[]>([])
     const brush_transition = useRef<Point[]>([])
@@ -38,130 +38,294 @@ const CanVas = () =>{
     const transition_index = useRef<number[]>([])
     const not_move = useRef<number>(0)
     const [str,setste] = useState<string>("当前没有输入")
+    const effect = useRef<ScenePanel>()
 
 
-    
+    const clear = () =>{
+        cur_shape.current = []
+        brush_transition.current = []
+        switch_input.current = false
+        canvas.current?.ClearJS("rgba(0,0,0,0)")
+        transition_index.current = []
+        not_move.current = 0
+        effect.current!.FireEntityInput("cursor","SetControlPoint",`3:0 0 0 `)
+    }
+
+
+    const check_radius = (points:Point[],center:Point) => {
+        let radius = 0
+        points.forEach(elm=>{
+            const temp = distance(elm,center)
+            if(temp > radius){
+                radius = temp
+            }
+        })
+        return toFixed4(radius)
+    }
+
+    const to_world = (min:SpellCardData,elm:Point[],center:Point) =>{ 
+        if(min ==null || elm == null){
+            return
+        }
+        // min!.screen_center = center
+        const world_center = Game.ScreenXYToWorld(min!.center![0],min!.center![1]).map(elm=>toFixed4(elm)) as [number,number,number]
+        const world_vexter = min?.vertex?.map(elm=>{
+            const world_point = Game.ScreenXYToWorld(...elm)
+            return [toFixed4(world_point[0]),toFixed4(world_point[1]),256]
+        }) 
+        switch(min?.name){
+            case "circle":{
+                min.center = world_center
+                min.radius = check_radius(elm,center)
+                break;
+            }
+            case "triangle":{
+                min.center = world_center
+                min.radius = check_radius(elm,center)
+                break;
+            }
+            case "x":{
+                min.center = world_center
+                min.radius = check_radius(elm,center)
+                break;
+            }
+            case "line":{
+                min.center =  world_center 
+                min.vertex = world_vexter as any
+                break;   
+            }
+            case "xline":{
+                min.center = world_center
+                min.vertex = world_vexter as any
+                break;    
+            }
+        }
+        return min
+    }
+
+
+    const input = () =>{
+        const newdata = splitArrayByIndex(cur_shape.current,transition_index.current) as Point[][]
+        const input_list = newdata.map(elm=>{
+            const center = calculateCentroid(elm) as Point
+
+            // const center = toFixedPoint(calculateCentroid(elm) as Point,4) as [number,number]
+            let last:Point[] = []
+
+            let left = 99999
+            let right = -99999
+            let top = -99999
+            let bottom = 99999
+            for(let i = 0 ; i < elm.length ; i++){
+                const sub = PointSub(elm[i],elm[0])
+                last.push(sub)
+                if(sub[0] < left){
+                    left = sub[0]
+                }
+                if(sub[0] > right){
+                    right = sub[0]
+                }
+                if(sub[1] < bottom){
+                    bottom = sub[1]
+                }
+                if(sub[1] > top){
+                    top = sub[1]
+                }
+            }
+
+            const normalizewidth = Math.abs(right - left)
+            const normalizeheight = Math.abs(bottom - top)
+            last = last.map(elm=> ([ toFixed4(elm[0] / normalizewidth),toFixed4(elm[1] / normalizeheight)]))
+
+            let degs = 0
+            let maxdeg = -999999
+            let mindeg = 999999
+            let reduce:number[] = []
+            for(let i = 1 ; i < last.length ; i ++){
+                if(last[i + 1]){
+                    const orign = crossProduct2D([0.001,0.001],last[i + 1])
+                    reduce.push(Number((orign * 10000).toFixed(0)))
+                    const deg = crossProduct2D(last[i],last[i + 1]) + orign
+                    if(maxdeg < deg){
+                        maxdeg = deg
+                    }
+                    if(mindeg > deg){
+                        mindeg = deg
+                    }
+                    degs += deg
+                }
+            }
+            degs = degs - maxdeg + mindeg
+
+            let rate = 0
+            for(let i = 0 ; i < reduce.length ; i++){
+                const left = reduce[i]
+                const right = reduce[i + 1]
+                if(left && right){
+                    rate += toFixed4(left / right)
+                }
+            }
+            if(rate < 20){
+                return to_world({name:"line",score:0,vertex:elm,center:elm[0] as any},elm,center)
+            }
+            let score:SpellCardData[] = [
+                {name:"circle",score:averageHausdorffDistance(last,circle),vertex:elm,center:center},
+                {name:"triangle1",score:averageHausdorffDistance(last,triangle1),vertex:elm,center:center},
+                {name:"triangle2",score:averageHausdorffDistance(last,triangle2),vertex:elm,center:center},
+                {name:"x",score:averageHausdorffDistance(last,x),vertex:elm,center:center},
+                {name:"xline",score:0.500001 + (rate * -0.007),vertex:elm,center:elm[0] as any},
+            ]
+            // score.forEach(elm=>{
+            //     elm.score! += weight(toFixed4(Math.abs(degs)))[elm.name!]
+            // })
+            const min = score.sort((a,b)=> b.score! - a.score!).pop()
+            if(min!.score! > 0.35){
+                return {name:"fail",score:0,vertex:[],center:undefined}
+            }
+            
+
+            // // score.forEach(elm=>{
+            // //     $.Msg("原始距离",elm.score)
+            // //     // elm.score! += deg_weight[elm.name! as keyof typeof deg_weight]
+            // //     // $.Msg(elm.name,`加分平均角度`, deg_weight[elm.name! as keyof typeof deg_weight])
+            // //     // elm.score! += max_deg_weight[elm.name! as keyof typeof max_deg_weight]
+            // //     // $.Msg(elm.name,`最大角度`, max_deg_weight[elm.name! as keyof typeof deg_weight])
+            // //     // elm.score! += zero_wegiht[elm.name! as keyof typeof zero_wegiht]
+            // //     // $.Msg(elm.name,`0角度`, zero_wegiht[elm.name! as keyof typeof deg_weight])
+            // //     elm.score! += cos90[elm.name! as keyof typeof cos90]
+            // //     $.Msg(elm.name,`加分平均角度`, cos90[elm.name! as keyof typeof deg_weight])
+            // //     elm.score! += high_cos[elm.name as keyof typeof high_cos]
+            // //     $.Msg(elm.name,`转角频率`, high_cos[elm.name! as keyof typeof deg_weight])
+            // //     elm.score! += cross_3_max[elm.name! as keyof typeof cross_3_max]
+            // //     $.Msg(elm.name,`跨点检测`, cross_3_max[elm.name! as keyof typeof cross_3_max])
+            // // })
+            // // $.Msg("当前角度",deg)
+            // const poplist = score.sort((a,b)=>b.score! - a.score!)
+            // // $.Msg(poplist);
+            // const fail = score.map(elm=>elm.score).every(elm=> elm! > 0.5 )
+            // if(fail){
+            //     return {name:"fail",score:averageHausdorffDistance(last,xline),vertex:[],center:undefined}
+            // }
+
+            // const min = poplist.pop()
+            // min!.screen = elm;
+            return to_world(min!,elm,center)
+        })
+
+        return input_list as SpellCardData[]
+    }
+
+    const special_check = (input:SpellCardData[]) => {
+        const check_table = groupByKey(input,"name")
+        if(check_table['triangle1']?.length == 1 && check_table['triangle2']?.length == 1 && Object.keys(check_table).length == 2){
+            /**特殊图形检测   六芒星 */
+            const point1 = check_table['triangle1'][0].screen_center
+            const point2 = check_table['triangle2'][0].screen_center
+            if(distance(point1!,point2!) < 100){
+                return "liu_mang_xing"
+            }
+        }
+        if(check_table['line']?.length == 3){
+            /**特殊图形检测   三竖线 */
+            const line1length = check_table['line'][0].screen?.length!
+            const line2length = check_table['line'][1].screen?.length!
+            const line3length = check_table['line'][2].screen?.length!
+            const line1start = check_table['line'][0].screen![0]!
+            const line2start = check_table['line'][1].screen![0]!
+            const line3start = check_table['line'][2].screen![0]!
+            const line1end = check_table['line'][0].screen![line1length - 1]!
+            const line2end = check_table['line'][1].screen![line2length - 1]!
+            const line3end = check_table['line'][2].screen![line3length - 1]!
+            const dir1 = PointSub(line1end,line1start)
+            const dir2 = PointSub(line2end,line2start)
+            const dir3 = PointSub(line3end,line3start)
+            const areAllParallel = (  
+                calculateAngleBetweenVectors2D(dir1, dir2) < 5 &&  
+                calculateAngleBetweenVectors2D(dir2, dir3) < 5 &&
+                calculateAngleBetweenVectors2D(dir1, dir3) < 5
+            );
+            if(areAllParallel){
+                return "san_shu_xian"
+            }
+        }
+        if(check_table['line']?.length == 2){
+            /**特殊图形检测   三竖线 */
+            const line1length = check_table['line'][0].screen?.length!
+            const line2length = check_table['line'][1].screen?.length!
+            const line1start = check_table['line'][0].screen![0]!
+            const line2start = check_table['line'][1].screen![0]!
+            const line1end = check_table['line'][0].screen![line1length - 1]!
+            const line2end = check_table['line'][1].screen![line2length - 1]!
+            const dir1 = PointSub(line1end,line1start)
+            const dir2 = PointSub(line2end,line2start)
+            const areAllParallel = (  
+                calculateAngleBetweenVectors2D(dir1, dir2) < 5 
+            );
+            if(areAllParallel){
+                return "liang_shu_xian"
+            }
+        }
+        if(check_table['xline']?.length == 3){
+            /**特殊图形检测   三曲线 */
+            return "san_qu_xian"
+        }
+    }
+
+    /**关于图形的平均叉积判断 */
+    const weight = (deg:number):Record<string,number> =>{
+        if(deg > 1.35){
+            return {circle:-0.035,triangle1:5,triangle2:5,x:5,xline:5,line:5}
+        }
+        if(deg > 0.99 && deg < 1.2){
+            return {circle:-0.01,triangle1:-0.01,triangle2:-0.01,x:0,xline:-0.01,line:5}
+        }
+        if(deg > 0.5 && deg < 0.8){
+            return {circle:-0.01,triangle1:-0.01,triangle2:-0.01,x:-0.01,xline:-0.01,line:0}
+        }
+        if(deg > 0.15 && deg < 0.5){
+            return {circle:-0.01,triangle1:-0.01,triangle2:-0.01,x:-0.01,xline:-0.01,line:-0.01}
+        }
+        return {circle:5,triangle1:-0.05,triangle2:-0.05,x:0,xline:-0.05,line:-0.01}
+    }
+
 
     useInterval(3,()=>{
-        if(!GameUI.IsMouseDown(0) && cur_shape.current.length > 3 ){
+        // const if_merge_card = Object.values(merge_card).length
+        // // $.Msg(if_merge_card)
+        // if(if_merge_card == 0){
+        //     timer_open = false
+        //     clear()
+        //     return
+        // }
+        if(effect.current){
+            let [x,y] = GameUI.GetCursorPosition()
+            // x = Game.GetScreenWidth() / 1920 * x
+            // y = Game.GetScreenHeight() / 1080 * y
+            effect.current.FireEntityInput("cursor","SetControlPoint",`0:${x} ${y} ${0}`)
+            effect.current.FireEntityInput("cursor","SetControlPoint",`3:1 0 0 `)
+        }
+        if(!GameUI.IsMouseDown(0) && cur_shape.current.length > 15 ){
             not_move.current += 0.2
         }
-        if(cur_shape.current.length > 3 && !GameUI.IsMouseDown(0) && distance(cur_shape.current[cur_shape.current.length - 1],GameUI.GetCursorPosition()) < 30){
+        if(cur_shape.current.length > 15 && !GameUI.IsMouseDown(0) && distance(cur_shape.current[cur_shape.current.length - 1],GameUI.GetCursorPosition()) < 30){
             not_move.current += 0.1
         }
-        if(cur_shape.current?.length > 80 || not_move.current > 10){
-            const newdata = splitArrayByIndex(cur_shape.current,transition_index.current) as Point[][]
-            // newdata.forEach(point => {
-            //     const iff =  shapeDiff(point,liu_jiao_xing as Point[])
-            //     $.Msg(iff)
-            //     if(iff < 0.3){
-            //           $.Msg("liu_jiao_xing")
-            //     }else{
-            //           $.Msg("没有liu_jiao_xing")
-            //     }
-            // })
-            let merge_spell_data_dir:Point[] = []
-            const fowrad = PointSub(cur_shape.current[1],cur_shape.current[0])!
-            const center = calculateCentroid(cur_shape.current) as [number,number]
-            let weight = {
-                "直线":0,
-                "圆形":0,
-                "三角形":0,
-                "x":0
-            }
-            let last:Point[] = []
-            for(let i = 0 ; i < cur_shape.current.length ; i++){
-                let point = toFixedPoint(PointSub(cur_shape.current[i],center),3)
-                last.push(point)
-            }
-            let dirs:Point[] = []
-            for(let i = 0 ; i < cur_shape.current.length; i++){
-                if( cur_shape.current[i + 1]){
-                    const dir_v = PointSub(cur_shape.current[i + 1], cur_shape.current[i])
-                    dirs.push(dir_v)
-                }
-            }
-            let rate:number[] = []
-            for(let i = 0 ; i < dirs.length; i++){  
-                if( dirs[i + 1]){ 
-                    const dot = 180 - calculateAngleBetweenVectors2D(dirs[i],dirs[i + 1])
-                     const crossProduct = dirs[i][0] * dirs[i + 1][1] - dirs[i][1] * dirs[i + 1][0];  
-                     if (crossProduct < 0) {  
-                         // 逆时针方向  
-                        if(isNaN(dot!)) {
-                            continue;
-                        }
-                        rate.push(dot)
-                     } else if (crossProduct > 0) {  
-                         // 顺时针方向  
-                        if(isNaN(dot!)) {
-                            continue;
-                        }
-                        rate.push(-dot)
-                     } else {  
-                        // rate.push(180)
-                     }  
-                    // const slope = calculateSlope(fowrad,dirs[i])!
-                    // if(isNaN(slope!)) {
-                    //     $.Msg("一样")
-                    //     rate.push(0)
-                    //     continue;
-                    // }
-                    // $.Msg("斜率sin",Math.sin(slope))
-                    // rate.push(Math.sin(Math.abs(slope)))
-                     // 根据向量叉积判断方向  
+        if(cur_shape.current?.length > 150 || not_move.current > 10){
+            const data = input()
+            const special = special_check(data)
             
-                    
-                }
+            if(special){
+                setste($.Localize("#" + special))
+            }else{
+                setste(data.map(elm=>$.Localize("#" + elm.name)).toString())
             }
-            last = normalizeData(last)
-            const deg = rate.reduce((pre,cur)=>pre+cur) / rate.length
-            $.Msg(deg)
-            // $.Msg("最大变化值",max_rate)
-            // $.Msg("最小变化值",min_rate)
-            // $.Msg("平均值",max_rate - min_rate)
-
-            const distance1 = averageHausdorffDistance(last,circle) - deg * 0.001         
-            const distance2 = averageHausdorffDistance(last,triangle) - deg * 0.001
-            const distance3 = averageHausdorffDistance(last,x) - deg * 0.001
-            const distance4 = averageHausdorffDistance(last,line) + deg * 0.001
-            
-            $.Msg("圆型得分",distance1)
-            $.Msg("三角形得分",distance2)
-            $.Msg("叉得分",distance3)
-            $.Msg("直线得分",distance4)
-
-            const a = [{distance:distance1,name:"圆环咒语"},{distance:distance2,name:"三角形咒语"},{distance:distance3,name:"X咒语"},{distance:distance4,name:"直线咒语"}]
-            const zuidifen = a.sort((a,b)=> b.distance- a.distance).pop()
-            setste(zuidifen?.name!)
-            // $.Msg(diff)
-            // spell_data.forEach((elm,index,array)=>{
-            //     if(elm.type == "圆圈点位"){
-            //         $.Msg("开启了圆圈点位")
-            //         elm.points.forEach(point=>{
-            //           const id = Particles.CreateParticle("particles/econ/items/shredder/hero_shredder_icefx/shredder_chakram_ice.vpcf",ParticleAttachment_t.PATTACH_WORLDORIGIN,Players.GetPlayerHeroEntityIndex(Players.GetLocalPlayer()))
-            //           Particles.SetParticleControl(id,0,[Number(point[0]),Number(point[1]),256])
-            //         })
-            //     }
-            //     if(elm.type == "线点位"){
-            //         const id = Particles.CreateParticle("particles/units/heroes/hero_jakiro/jakiro_macropyre_ice_edgeb.vpcf",ParticleAttachment_t.PATTACH_WORLDORIGIN,Players.GetPlayerHeroEntityIndex(Players.GetLocalPlayer()))
-            //         elm.points.forEach((point,index,array)=>{
-            //             Particles.SetParticleControl(id,1,[Number(point[0]),Number(point[1]),256])
-            //             Particles.SetParticleControl(id,0,[Number(array[0][0]),Number(array[0][1]),256])
-            //         })
-            //     }
+            shake()
+            // GameEvents.SendCustomGameEventToServer("c2s_card_event",{
+            //     container_behavior:16,
+            //     merge_data:merge_card,
+            //     spell_data:data
             // })
-            // const data = cur_shape.current.map(elm=>{
-            //     const world = Game.ScreenXYToWorld(elm[0],elm[1])
-            //     return {x:world[0].toFixed(),y:world[1].toFixed()}
-            // })
-            // GameUI.CustomUIConfig().EventBus?.emit("proxy",{data})
-            cur_shape.current = []
-            brush_transition.current = []
-            switch_input.current = false
-            canvas.current?.ClearJS("rgba(0,0,0,0)")
-            transition_index.current = []
-            not_move.current = 0
+            clear()
             return
         }
         if(GameUI.IsMouseDown(0)){
@@ -171,7 +335,7 @@ const CanVas = () =>{
                 if(transition_index.current.includes(i) || transition_index.current.includes(i + 1)){
                     continue;
                 }
-                canvas.current?.DrawSoftLinePointsJS(2, _flattenArrayOfTuples([cur_shape.current[i],cur_shape.current[i + 1]]), 3,6, "#FFD700")
+                canvas.current?.DrawSoftLinePointsJS(2, _flattenArrayOfTuples([cur_shape.current[i],cur_shape.current[i + 1]]), cur_shape.current.length / i + 5,20, "#FFFFFF")
             }
             switch_input.current = false
         }else if(!switch_input.current && !GameUI.IsMouseDown(0) && cur_shape.current.length < 80){
@@ -179,11 +343,14 @@ const CanVas = () =>{
             brush_transition.current.push(GameUI.GetCursorPosition().map(elm=>([Number(elm.toFixed(0)),Number(elm.toFixed(1))])) as unknown as [number,number])
             transition_index.current.push(cur_shape.current.length)
         }
-    },undefined)
+    },Object.values(merge_card).length > 0,
+    clear,
+    [merge_card])
 
     return  <>
         <Label text={str} style={{fontSize:"40px",color:"gold",textShadow:"2px 2px 8px 3.0 #333333b0",align:"center center"}}/>
         <GenericPanel hittest={false}  style={{width:"100%",height:"100%"}} ref={p=>canvas.current = p!} id="canvas1" type='UICanvas' />
+        <DOTAScenePanel hittest={false} ref={p=>effect.current = p!}  style={{width:"100%",height:"100%"}} map={"cursor"} particleonly={true}/>
     </>
     
 }
@@ -194,30 +361,12 @@ const MagicCardMain = () =>{
     const cursor_position = useRef<[number,number]>([0,0])
     const compise = useRef<boolean>(false)
 
-    const [select_card_table,set_select_card_table] = useState<Record<number,string|undefined>>({})
+    const [select_card_table,set_select_card_table] = useState<Record<number,string|null>>({})
     const [merge,setmerge] = useState<boolean>(false)
 
     const [card_comp,card_link_comp_update] = useLinkComps("Card",(a,b)=>a?.index - b?.index) as [Card[],number]
     const effect_main = useRef<ScenePanel>()
 
-    useInterval(Game.GetGameFrameTime(),()=>{
-        if(GameUI.IsMouseDown(1)){
-            const cur = GameUI.GetCursorPosition()
-            if(distance(cur,start_check_point) < 222){
-                compise.current = true
-                cursor_position.current = cur
-            }
-        }
-        else{
-            if(compise.current == false) return;
-            const end_point = GameUI.GetCursorPosition()
-            if(compise.current && distance(end_point,end_check_point) < 222 && Object.keys(select_card_table).length > 1){
-                compise.current = false
-                cursor_position.current = [0,0]
-                setmerge(true)
-            }
-        }
-    },undefined,select_card_table)
 
     useEffect(()=>{
         if(merge == true){
@@ -231,13 +380,16 @@ const MagicCardMain = () =>{
 
     
 
-    return <Panel hittest={false} style={{width:"1000px",height:"400px",align:"right bottom"}}>
+    return <>
+        <CanVas merge_card={select_card_table}/>
+        <Panel hittest={false} style={{width:"1000px",height:"400px",align:"right bottom"}}>
         {card_comp?.map((elm,index)=><Card index={elm.index} merge={merge} dispatich={set_select_card_table} key={"Card"+elm?.uid }  card_data={elm}/>)}
         <DOTAScenePanel hittest={false} ref={p=>effect_main.current = p!}  style={{width:"100%",height:"100%"}} map={"magic_card_particle"} particleonly={true}/>
     </Panel>
+    </>
 }
 
-const Card = ({card_data,dispatich,merge,index}:{card_data:Card,index:number,merge:boolean,dispatich:React.Dispatch<React.SetStateAction<Record<number, string|undefined>>>}) =>{
+const Card = ({card_data,dispatich,merge,index}:{card_data:Card,index:number,merge:boolean,dispatich:React.Dispatch<React.SetStateAction<Record<number, string|null>>>}) =>{
     const main = useRef<Panel>()
     const dummy = useRef<Panel>()
     const card_label = useRef<Panel>()
@@ -252,6 +404,10 @@ const Card = ({card_data,dispatich,merge,index}:{card_data:Card,index:number,mer
             main.current?.RemoveClass(`card_index_${index}`)
             dummy.current?.RemoveClass(`dummy_index_${index}`)
             card_effect.current?.RemoveClass(`card_index_${index}`)
+            dispatich(elm=>{
+                delete elm[index] 
+                return elm
+            })
         }
     },[index])
 
@@ -285,14 +441,18 @@ const Card = ({card_data,dispatich,merge,index}:{card_data:Card,index:number,mer
         card_effect.current?.RemoveClass("mouseover")
     }
 
-    const dclick = (p:Panel) =>{
+    const click = (p:Panel) =>{
+        // emitLocalEvent("scans",{duration:1,parent:main.current!})
         is_select.current = !is_select.current 
         main.current?.ToggleClass("select")
         card_effect.current?.ToggleClass("select")
         if(is_select.current == true){
             dispatich(elm=> ({...elm,[index]:card_data?.uid}))
         }else{
-            dispatich(elm=> ({...elm,[index]:undefined}))
+            dispatich(elm=>{
+                delete elm[index] 
+                return {...elm}
+            })
         }
     }
 
@@ -303,7 +463,6 @@ const Card = ({card_data,dispatich,merge,index}:{card_data:Card,index:number,mer
     // } 
  
     const dbclieck = (p:Panel) =>{
-        $.Msg("dbclieck",card_data.uid)
         GameEvents.SendCustomGameEventToServer("c2s_card_event",{container_behavior:16,merge_data:{1:card_data.uid}})
     }
 
@@ -311,8 +470,8 @@ const Card = ({card_data,dispatich,merge,index}:{card_data:Card,index:number,mer
             <Image src={"file://{images}/custom_game/card/" + card_data.image + ".png"} onload={translate} hittest={false} ref={p=>main.current=p!} className={`card`}>
              <Label hittest={false} text={card_data?.card} ref={p=>card_label.current = p!} className={`card_label`}/>
             </Image>
-            <DOTAScenePanel hittest={false} ref={p=>card_effect.current = p!} className={`card mask`} map={"card_effect"} particleonly={true}/>
-            <Panel ondblclick={dbclieck} onactivate={dclick} hittest={true} ref={p=>dummy.current = p!} onmouseover={onmouseover} onmouseout={onmouseout} className={`card_dummy`}/>
+            <DOTAScenePanel hittest={false} ref={p=>card_effect.current = p!} className={`card mask card_effect`} map={"card_effect"} particleonly={true}/>
+            <Panel ondblclick={dbclieck} onactivate={click} hittest={true} ref={p=>dummy.current = p!} onmouseover={onmouseover} onmouseout={onmouseout} className={`card_dummy`}/>
         </>
 }
 
@@ -998,11 +1157,18 @@ render(
 <ItemToolTip/>
 <LevelCheckHud/>
 <MagicCardMain/>
-<CanVas/>
 </>
 , $.GetContextPanel());
 
-
+onLocalEvent("scans",(event)=>{
+    const elm = $.CreatePanel("Panel",$.GetContextPanel(),"scans")
+    elm.SetParent(event.parent)
+    elm.AddClass("scans")
+    elm.AddClass("animation")
+    $.Schedule(event.duration,()=>{
+        elm.DeleteAsync(0)
+    })
+})
 
 GameEvents.Subscribe("test_map",(event:any)=>{
     const data = event.data

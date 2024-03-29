@@ -5,6 +5,7 @@
     <styles>
         <include src="s2r://panorama/styles/dotastyles.vcss_c" />
         <include src="./styles.less" />
+        <include src="./test.css" />
     </styles>
     <Panel class="root" hittest="false" />
 </root>

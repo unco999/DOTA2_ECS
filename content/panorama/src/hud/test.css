@@ -1,0 +1,24 @@
+@keyframes HRotation {
+    0% {
+        opacity-mask: url("file://{images}/custom_game/card/scaning.psd") 1
+    }
+    50% {
+        opacity-mask: url("file://{images}/custom_game/card/scaning.psd") 0.8
+    }
+    100% {
+        opacity-mask: url("file://{images}/custom_game/card/scaning.psd") 1
+    }
+}
+
+
+.card_effect{
+    background-color: aqua;
+    /* opacity-mask-scroll-up-down: url("file://{images}/custom_game/card/scaning.psd") 1;
+    animation-name: HRotation;
+    animation-iteration-count: 999999;
+    animation-duration: 0.25s;
+    background-color:rgb(255, 255, 255);
+    background-position: 0px 100% 0px;
+    animation-name: HRotation;
+    animation-iteration-count: 999999; */
+}
